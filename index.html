@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en-US">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -7,6 +8,7 @@
     <title>Doom clock</title>
     <link rel="stylesheet" href="clock.css">
 </head>
+
 <body>
     <header>
         <h1>Doom clock</h1>
@@ -18,12 +20,15 @@
         <button id="start_button">Start</button>
     </div>
 
-    <div id="settings_menu">
+    <div class="settings_menu">
         <input type="number" value="15" id="time">
+        <input type="text" id="field_size">
+        <input type="text" id="buyin_amount">
         <input type="text" id="levels">
     </div>
 
-    <script src="clock.js"></script>
+    <script src="clock.js" defer></script>
 
 </body>
+
 </html>

@@ -7,3 +7,13 @@ body{
     font-size: 100px;
     margin: 0 auto;
 }
+.settings_menu{
+    /* align-items: center;
+    justify-content: center; */
+    flex-direction: column;
+}
+input
+{
+    width:10%;
+}
+
