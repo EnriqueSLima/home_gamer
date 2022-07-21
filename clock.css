@@ -8,12 +8,23 @@ body{
     margin: 0 auto;
 }
 .settings_menu{
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
+    width: 50%;
+    margin: 0 auto;
+    grid-template-columns: auto auto auto auto;
+    place-items: center;
 }
-input
-{
-    width:15%;
+
+/* Hide number input arrows */
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+/* Firefox */
+input[type=number] {
+    width: 30%;
+    text-align: center;
+  -moz-appearance: textfield;
 }
 

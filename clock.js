@@ -1,30 +1,37 @@
 let bool = false; //tracks whether the clock is paused or not
 let button = document.getElementById("start_button");
 let clock = document.getElementsByClassName("clock")[0];
-let duration = document.getElementById("time").value;
-duration = duration * 60;
+let small = document.getElementsByClassName("small_blind");
+let big = document.getElementsByClassName("big_blind");
+let blinds = document.getElementsByClassName("levels")[0];
+let duration = document.getElementsByClassName("time")[0].value;
+duration *= 60;
+let blinds_counter = 0;
 
-function update_label () {
+function update_blinds() {
+    blinds.innerHTML = small[blinds_counter].value + "/" + big[blinds_counter].value;
+    blinds_counter++;
+}
+
+function update_timer () {
+
+    if (!duration) { 
+        update_blinds();
+        duration = 15 * 60;
+    }
 
     minutes = parseInt(duration / 60, 10);
     seconds = parseInt(duration % 60, 10);
 
     minutes = minutes < 10 ? "0" + minutes : minutes;
     seconds = seconds < 10 ? "0" + seconds : seconds;
-    clock.textContent = minutes + ":" + seconds;
+    clock.innerHTML = minutes + ":" + seconds;
     duration--;
 
-    // if (!minutes) {
-    //     duration = 15;
-    //     clock.innerHTML = (minutes + ':' + seconds);
-    // } else {
-    //     clock.innerHTML = (minutes + ":" + seconds);
-    //     seconds--;
-    // }
 }
 function start_stop (){
     if(!bool) {
-        interval = setInterval(update_label, 1000);
+        interval = setInterval(update_timer, 1000);
         button.innerHTML = "Stop";
         bool = true;
     }
@@ -47,7 +54,7 @@ settings_menu.style.display = "none";
 function display_menu() {
     if (settings_menu.style.display == "none") {
         main.style.display = "none";
-        settings_menu.style.display = "flex";
+        settings_menu.style.display = "grid";
     }
     else{
         settings_menu.style.display = "none";
