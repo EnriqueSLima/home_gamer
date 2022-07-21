@@ -8,12 +8,12 @@ body{
     margin: 0 auto;
 }
 .settings_menu{
-    /* align-items: center;
-    justify-content: center; */
+    align-items: center;
+    justify-content: center;
     flex-direction: column;
 }
 input
 {
-    width:10%;
+    width:15%;
 }
 

@@ -1,18 +1,26 @@
 let bool = false; //tracks whether the clock is paused or not
 let button = document.getElementById("start_button");
-let time = document.getElementById("time").value;
 let clock = document.getElementsByClassName("clock")[0];
-let number = 12;
+let duration = document.getElementById("time").value;
+duration = duration * 60;
 
-clock.innerHTML = time + ':' + "0" + number;
 function update_label () {
-    if (!time) {
-        time = 15;
-        clock.innerHTML = (time + ':' + "0" + number).slice(-2);
-    } else {
-        clock.innerHTML = (time + ":" + "0" + number).slice(-2);
-        number--;
-    }
+
+    minutes = parseInt(duration / 60, 10);
+    seconds = parseInt(duration % 60, 10);
+
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+    clock.textContent = minutes + ":" + seconds;
+    duration--;
+
+    // if (!minutes) {
+    //     duration = 15;
+    //     clock.innerHTML = (minutes + ':' + seconds);
+    // } else {
+    //     clock.innerHTML = (minutes + ":" + seconds);
+    //     seconds--;
+    // }
 }
 function start_stop (){
     if(!bool) {
