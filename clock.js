@@ -4,29 +4,29 @@ let clock = document.getElementsByClassName("clock")[0];
 let small = document.getElementsByClassName("small_blind");
 let big = document.getElementsByClassName("big_blind");
 let blinds = document.getElementsByClassName("levels")[0];
-let duration = document.getElementsByClassName("time")[0].value;
-duration *= 60;
-let blinds_counter = 0;
+let duration = document.getElementsByClassName("time");
+let rounds_counter = 0;
+duration[rounds_counter].value *= 60;
+blinds.innerHTML = small[rounds_counter].value + "/" + big[rounds_counter].value
 
 function update_blinds() {
-    blinds.innerHTML = small[blinds_counter].value + "/" + big[blinds_counter].value;
-    blinds_counter++;
+    rounds_counter++;
+    blinds.innerHTML = small[rounds_counter].value + "/" + big[rounds_counter].value;
 }
 
 function update_timer () {
-
-    if (!duration) { 
+    if (duration[rounds_counter].value == 0) { 
         update_blinds();
-        duration = 15 * 60;
+        duration[rounds_counter].value *= 60;
     }
 
-    minutes = parseInt(duration / 60, 10);
-    seconds = parseInt(duration % 60, 10);
+    let minutes = parseInt(duration[rounds_counter].value / 60, 10);
+    let seconds = parseInt(duration[rounds_counter].value % 60, 10);
 
     minutes = minutes < 10 ? "0" + minutes : minutes;
     seconds = seconds < 10 ? "0" + seconds : seconds;
     clock.innerHTML = minutes + ":" + seconds;
-    duration--;
+    duration[rounds_counter].value--;
 
 }
 function start_stop (){
