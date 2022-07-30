@@ -7,8 +7,9 @@ body{
     font-size: 100px;
     margin: 0 auto;
 }
-.settings_menu{
-    width: 50%;
+#settings_menu{
+    /* width: 50%; */
+    display: none;
     margin: 0 auto;
     grid-template-columns: auto auto auto auto;
     place-items: center;
@@ -22,9 +23,12 @@ input::-webkit-inner-spin-button {
   margin: 0;
 }
 /* Firefox */
-input[type=number] {
+/* input[type=number] {
     width: 30%;
     text-align: center;
   -moz-appearance: textfield;
+} */
+input[type=number] {
+  text-align: center;
 }
 

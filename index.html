@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Doom clock</title>
     <link rel="stylesheet" href="clock.css">
+    <script src="clock.js" defer></script>
 </head>
 
 <body>
@@ -15,34 +16,35 @@
         <button id="settings_button">settings</button>
     </header>
     <div id="main">
+        <div id="level_number"></div>
         <div class="clock"></div>
         <div class="levels"></div>
         <button id="start_button">Start</button>
     </div>
 
-    <div class="settings_menu">
+    <div id="settings_menu">
         <label for=""></label>
-        <label for="">Duration</label>
+        <label for="">Duration (minutes)</label>
         <label for="">Small blind</label>
         <label for="">Big blind</label>
-        <label for="round1">Round 1:</label>
-        <input type="number" value=".1" class="time">
+        <label for="level1">Level 1:</label>
+        <input type="number" value="" class="time">
         <input type="number" step="50" value="100" class="small_blind">
         <input type="number" step="50" value="200" class="big_blind">
-        <label for="round2">Round 2:</label>
-        <input type="number" value=".1" class="time">
+        <label for="level2">Level 2:</label>
+        <input type="number" value="" class="time">
         <input type="number" step="50" value="100" class="small_blind">
         <input type="number" step="50" value="300" class="big_blind">
-        <label for="round2">Round 3:</label>
-        <input type="number" value="15" class="time">
+        <label for="level2">Level 3:</label>
+        <input type="number" value="" class="time">
         <input type="number" step="50" value="200" class="small_blind">
         <input type="number" step="50" value="400" class="big_blind">
+        <!-- <p id="test">click me</p> -->
         <!-- <input type="text" id="field_size">
         <input type="text" id="buyin_amount">
         <input type="text" id="levels"> -->
     </div>
 
-    <script src="clock.js" defer></script>
 
 </body>
 
