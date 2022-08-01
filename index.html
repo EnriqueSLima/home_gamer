@@ -12,16 +12,19 @@
 
 <body>
     <header>
-        <h1>Doom clock</h1>
         <button id="settings_button">settings</button>
     </header>
+
+    <!-- MAIN CONTENT -->
     <div id="main">
-        <div id="level_number"></div>
-        <div class="clock"></div>
-        <div class="levels"></div>
+        <div id="round_number"></div>
+        <div id="clock"></div>
+        <div id="current_level"></div>
+        <div id="next_level"></div>
         <button id="start_button">Start</button>
     </div>
 
+    <!-- SETTINGS MENU -->
     <div id="settings_menu">
         <label for=""></label>
         <label for="">Duration (minutes)</label>
@@ -35,14 +38,15 @@
         <input type="number" value="" class="time">
         <input type="number" step="50" value="100" class="small_blind">
         <input type="number" step="50" value="300" class="big_blind">
-        <label for="level2">Level 3:</label>
+        <label for="level3">Level 3:</label>
         <input type="number" value="" class="time">
         <input type="number" step="50" value="200" class="small_blind">
         <input type="number" step="50" value="400" class="big_blind">
-        <!-- <p id="test">click me</p> -->
-        <!-- <input type="text" id="field_size">
-        <input type="text" id="buyin_amount">
-        <input type="text" id="levels"> -->
+        <label for="level4">Level 4:</label>
+        <input type="number" value="" class="time">
+        <input type="number" step="50" value="300" class="small_blind">
+        <input type="number" step="50" value="600" class="big_blind">
+
     </div>
 
 

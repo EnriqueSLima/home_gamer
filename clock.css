@@ -1,18 +1,19 @@
-body{
-    background:green;
-    text-align: center;
+*{
+  margin: 20px;
 }
-.clock
-{
-    font-size: 100px;
-    margin: 0 auto;
+body {
+  background: green;
+  color: white;
+  text-align: center;
 }
-#settings_menu{
-    /* width: 50%; */
-    display: none;
-    margin: 0 auto;
-    grid-template-columns: auto auto auto auto;
-    place-items: center;
+#clock {
+  font-size: 100px;
+  margin: 0 auto;
+}
+#settings_menu {
+  margin: 0 auto;
+  grid-template-columns: auto auto auto auto;
+  place-items: center;
 }
 
 /* Hide number input arrows */
@@ -20,15 +21,10 @@ body{
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
   -webkit-appearance: none;
-  margin: 0;
 }
 /* Firefox */
-/* input[type=number] {
-    width: 30%;
-    text-align: center;
+input[type="number"] {
   -moz-appearance: textfield;
-} */
-input[type=number] {
+  width: 30%;
   text-align: center;
 }
-
