@@ -12,43 +12,77 @@
 
 <body>
     <header>
-        <button id="settings_button">settings</button>
+        <button id="settings_button">Settings</button>
     </header>
-
     <!-- MAIN CONTENT -->
     <div id="main">
-        <div id="round_number"></div>
-        <div id="clock"></div>
-        <div id="current_level"></div>
-        <div id="next_level"></div>
-        <button id="start_button">Start</button>
+        <div id="left">
+            <div id="round_number"></div>
+            <div>Players</div>
+            <div id="player_display">0</div>
+            <div >Average</div>
+            <div id="average">0</div>
+        </div>
+        <div id="center">
+            <div id="clock"></div>
+            <div id="current_level"></div>
+            <div id="next_level"></div>
+            <button id="start_button">Start</button>
+            <button id="add_new_player">Add player</button>
+            <button id="eliminate_player">Eliminate player</button>
+            <br>
+            <span class="general_display"></span>
+            <span class="general_display"></span>
+            <span class="general_display"></span>
+        </div>
+        <div id="right">
+            <div id="time_elapsed">Time elapsed</div>
+            <div id="break_in">Next break</div>
+            <div id="chip_count">Chip count</div>
+        </div>
     </div>
 
     <!-- SETTINGS MENU -->
     <div id="settings_menu">
-        <label for=""></label>
-        <label for="">Duration (minutes)</label>
-        <label for="">Small blind</label>
-        <label for="">Big blind</label>
-        <label for="level1">Level 1:</label>
-        <input type="number" value="" class="time">
-        <input type="number" step="50" value="100" class="small_blind">
-        <input type="number" step="50" value="200" class="big_blind">
-        <label for="level2">Level 2:</label>
-        <input type="number" value="" class="time">
-        <input type="number" step="50" value="100" class="small_blind">
-        <input type="number" step="50" value="300" class="big_blind">
-        <label for="level3">Level 3:</label>
-        <input type="number" value="" class="time">
-        <input type="number" step="50" value="200" class="small_blind">
-        <input type="number" step="50" value="400" class="big_blind">
-        <label for="level4">Level 4:</label>
-        <input type="number" value="" class="time">
-        <input type="number" step="50" value="300" class="small_blind">
-        <input type="number" step="50" value="600" class="big_blind">
-
+        <form autocomplete="off">
+            <div id="general_settings">
+                <label for=""></label>
+                <label for="">Money</label>
+                <label for="">Chips</label>
+                <label for="buyin">Buy-in</label>
+                <input type="number" value="0" id="buyin_money">
+                <input type="number" value="0" id="buyin_chips">
+                <label for="rebuy">Rebuy</label>
+                <input type="number" value="0" id="rebuy_money">
+                <input type="number" value="0" id="rebuy_chips">
+                <label for="addon">Add on</label>
+                <input type="number" value="0" id="addon_money">
+                <input type="number" value="0" id="addon_chips">
+            </div>
+            <div id="blind_structure">
+                <label for=""></label>
+                <label for="">Duration (minutes)</label>
+                <label for="">Small blind</label>
+                <label for="">Big blind</label>
+                <label for="level1">Level 1</label>
+                <input type="number" value="15" class="time">
+                <input type="number" step="25" value="100" class="small_blind">
+                <input type="number" step="25" value="200" class="big_blind">
+                <label for="level2">Level 2</label>
+                <input type="number" value="15" class="time">
+                <input type="number" step="25" value="100" class="small_blind">
+                <input type="number" step="25" value="300" class="big_blind">
+                <label for="level3">Level 3</label>
+                <input type="number" value="15" class="time">
+                <input type="number" step="25" value="200" class="small_blind">
+                <input type="number" step="25" value="400" class="big_blind">
+                <label for="level4">Level 4</label>
+                <input type="number" value="15" class="time">
+                <input type="number" step="25" value="300" class="small_blind">
+                <input type="number" step="25" value="600" class="big_blind">
+            </div>
+        </form>
     </div>
-
 
 </body>
 

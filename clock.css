@@ -1,17 +1,46 @@
-*{
-  margin: 20px;
+/* GENERAL STYLES */
+* {
+  box-sizing: border-box;
+  font-size: 1.1rem;
 }
 body {
   background: green;
   color: white;
+}
+
+/* MAIN STYLES */
+#main {
+  display: grid;
+  grid-template-columns: 20% 60% 20%;
+}
+#center {
+  margin-top: -20px;
   text-align: center;
 }
-#clock {
-  font-size: 100px;
-  margin: 0 auto;
+#right {
+  text-align: right;
 }
+#round_number {
+  font-size: 4vw;
+}
+#clock {
+  font-size: 15vw;
+}
+#current_level {
+  font-size: 4vw;
+}
+
+/* SETTINGS MENU STYLES */
 #settings_menu {
-  margin: 0 auto;
+  border: white solid 1px;
+}
+#general_settings {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  place-items: center;
+}
+#blind_structure {
+  display: grid;
   grid-template-columns: auto auto auto auto;
   place-items: center;
 }
@@ -27,4 +56,5 @@ input[type="number"] {
   -moz-appearance: textfield;
   width: 30%;
   text-align: center;
+  border-radius: 20px;
 }
