@@ -9,6 +9,8 @@ let player_display = document.getElementById("player_display");
 let add_new_player = document.getElementById("add_new_player");
 let eliminate_player_button = document.getElementById("eliminate_player");
 let general_display = document.getElementsByClassName("general_display");
+let add_player_menu = document.getElementById("add_player_menu");
+let close_menu = document.getElementsByClassName("right")[0];
 
 // SETTINGS MENU VARIABLES
 let settings_menu = document.getElementById("settings_menu");
@@ -29,19 +31,31 @@ let rounds_counter = 0;
 let player_count = 0;
 let player_left = 0;
 
+// PLAYER CONSTRUCTOR
+class Player {
+  constructor(player_name, buyin, rebuy, addon, eliminated) {
+    this.player_name = player_name;
+    this.buyin = buyin;
+    this.rebuy = rebuy;
+    this.addon = addon;
+    this.eliminated = eliminated;
+  }
+}
+
 // DEFAULT SETTINGS MENU INITIAL VALUES
 for (let index = 0; index < duration.length; index++) {
   aux[index] = duration[index].value * 60;
 }
 settings_menu.style.display = "none";
+add_player_menu.style.display = "none"
 
 // DEFAULT MAIN CONTENT INITIAL VALUES
 round.innerHTML = "Round " + (rounds_counter + 1);
 clock.innerHTML = duration[0].value + ":00";
 current_level.innerHTML =
-  small[rounds_counter].value + " / " + big[rounds_counter].value;
+small[rounds_counter].value + " / " + big[rounds_counter].value;
 next_level.innerHTML =
-  small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
+small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
 general_display[0].innerHTML = "Buy ins ";
 general_display[1].innerHTML = "Rebuys ";
 general_display[2].innerHTML = "Add ons ";
@@ -49,7 +63,7 @@ general_display[2].innerHTML = "Add ons ";
 // MAIN MENU FUNCTIONS
 function start_stop() {
   if (!bool) {
-    interval = setInterval(update_display, 1000);
+    interval = setInterval(update_timer, 1000);
     start_button.innerHTML = "Stop";
     bool = true;
   } else {
@@ -58,8 +72,8 @@ function start_stop() {
     bool = false;
   }
 }
-function update_display() {
-  if (aux[rounds_counter] == 0) {
+function update_timer() {
+  if (aux[rounds_counter] === 0) {
     let snd = new Audio("blindsup.mp3");
     snd.play();
     update_blinds();
@@ -82,12 +96,17 @@ function update_blinds() {
     small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
 }
 function add_player() {
-  let player_add = prompt("How many player would you like to add?");
-  let sum = parseInt(player_add, 10);
-  if (sum) {
-    player_count += sum;
-    player_left += sum;
-    player_display.innerHTML = player_left + " / " + player_count;
+  // let player_add = prompt("How many player would you like to add?");
+  // let sum = parseInt(player_add, 10);
+  // if (sum) {
+  //   player_count += sum;
+  //   player_left += sum;
+  //   player_display.innerHTML = player_left + " / " + player_count;
+  // }
+  if (add_player_menu.style.display === "none") {
+    add_player_menu.style.display = "block";
+  } else {
+    add_player_menu.style.display = "none";
   }
 }
 function eliminate_player() {
@@ -115,12 +134,13 @@ start_button.onclick = start_stop;
 settings_button.onclick = display_menu;
 eliminate_player_button.onclick = eliminate_player;
 add_new_player.onclick = add_player;
+close_menu.onclick = add_player;
 
 // SETTINGS MENU EVENT HANDLERS
 for (let index = 0; index < aux.length; index++) {
   duration[index].onchange = function () {
     aux[index] = this.value * 60;
-    rounds_counter == index ? update_display() : "";
+    rounds_counter == index ? update_timer() : "";
   };
 }
 for (let index = 0; index < small.length; index++) {
@@ -145,3 +165,4 @@ for (let index = 0; index < big.length; index++) {
     }
   };
 }
+// ADD NEW PLAYER EVENT HANDLERS

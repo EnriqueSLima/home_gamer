@@ -19,7 +19,7 @@
         <div id="left">
             <div id="round_number"></div>
             <div>Players</div>
-            <div id="player_display">0</div>
+            <div id="player_display">0/0</div>
             <div >Average</div>
             <div id="average">0</div>
         </div>
@@ -37,10 +37,27 @@
         </div>
         <div id="right">
             <div id="time_elapsed">Time elapsed</div>
-            <div id="break_in">Next break</div>
+            <div id="next_break">Next break</div>
             <div id="chip_count">Chip count</div>
         </div>
     </div>
+
+    <form autocomplete="off">
+        <div id="add_player_menu">
+            <div id="add_player_menu_content">
+                <span></span><span></span><span></span>
+                <span class="right">&times;</span>
+                <label for="">Name</label>
+                <input type="text" name="" id="player_name">
+                <label for="buyin">Buy in</label>
+                <input type="checkbox" name="" id="buyin">
+                <label for="rebuy">Rebuy</label>
+                <input type="number" name="" id="rebuy">
+                <label for="addon">Add on</label>
+                <input type="checkbox" name="" id="addon">
+            </div>
+        </div>
+    </form>
 
     <!-- SETTINGS MENU -->
     <div id="settings_menu">
