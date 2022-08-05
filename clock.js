@@ -6,11 +6,10 @@ let current_level = document.getElementById("current_level");
 let next_level = document.getElementById("next_level");
 let start_button = document.getElementById("start_button");
 let player_display = document.getElementById("player_display");
-let add_new_player = document.getElementById("add_new_player");
+let add_player_button1 = document.getElementById("add_player_button1");
 let eliminate_player_button = document.getElementById("eliminate_player");
-let general_display = document.getElementsByClassName("general_display");
 let add_player_menu = document.getElementById("add_player_menu");
-let close_menu = document.getElementsByClassName("right")[0];
+let general_display = document.getElementsByClassName("general_display");
 
 // SETTINGS MENU VARIABLES
 let settings_menu = document.getElementById("settings_menu");
@@ -24,6 +23,9 @@ let rebuy_chips = document.getElementById("rebuy_chips");
 let addon_money = document.getElementById("addon_money");
 let addon_chips = document.getElementById("addon_chips");
 
+// ADD PLAYER MENU VARIABLES
+let close_button = document.getElementsByClassName("right")[0];
+
 // COUNTERS AND AUXILIARY VARIABLES
 let bool = false; //tracks whether the clock is paused or not
 let aux = []; // auxiliary variable used to calculate timer values
@@ -35,10 +37,10 @@ let player_left = 0;
 class Player {
   constructor(player_name, buyin, rebuy, addon, eliminated) {
     this.player_name = player_name;
-    this.buyin = buyin;
+    this.buyin = false;
     this.rebuy = rebuy;
-    this.addon = addon;
-    this.eliminated = eliminated;
+    this.addon = false;
+    this.eliminated = false;
   }
 }
 
@@ -47,18 +49,18 @@ for (let index = 0; index < duration.length; index++) {
   aux[index] = duration[index].value * 60;
 }
 settings_menu.style.display = "none";
-add_player_menu.style.display = "none"
+add_player_menu.style.display = "none";
 
 // DEFAULT MAIN CONTENT INITIAL VALUES
 round.innerHTML = "Round " + (rounds_counter + 1);
 clock.innerHTML = duration[0].value + ":00";
 current_level.innerHTML =
-small[rounds_counter].value + " / " + big[rounds_counter].value;
+  small[rounds_counter].value + " / " + big[rounds_counter].value;
 next_level.innerHTML =
-small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
-general_display[0].innerHTML = "Buy ins ";
-general_display[1].innerHTML = "Rebuys ";
-general_display[2].innerHTML = "Add ons ";
+  small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
+// general_display[0].innerHTML = "Buy ins ";
+// general_display[1].innerHTML = "Rebuys ";
+// general_display[2].innerHTML = "Add ons ";
 
 // MAIN MENU FUNCTIONS
 function start_stop() {
@@ -95,20 +97,6 @@ function update_blinds() {
   next_level.innerHTML =
     small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
 }
-function add_player() {
-  // let player_add = prompt("How many player would you like to add?");
-  // let sum = parseInt(player_add, 10);
-  // if (sum) {
-  //   player_count += sum;
-  //   player_left += sum;
-  //   player_display.innerHTML = player_left + " / " + player_count;
-  // }
-  if (add_player_menu.style.display === "none") {
-    add_player_menu.style.display = "block";
-  } else {
-    add_player_menu.style.display = "none";
-  }
-}
 function eliminate_player() {
   let player_remove = prompt("How many players would you like to remove?");
   let remove = parseInt(player_remove, 10);
@@ -119,7 +107,7 @@ function eliminate_player() {
 }
 
 // SETTINGS MENU FUNCTIONS
-function display_menu() {
+function display_settings_menu() {
   if (settings_menu.style.display == "none") {
     main.style.display = "none";
     settings_menu.style.display = "block";
@@ -129,12 +117,39 @@ function display_menu() {
   }
 }
 
+// PLAYER MENU FUNCTIONS
+function display_player_menu() {
+  let player_name = document.getElementById("player_name").value;
+  let buyin = document.getElementById("buyin");
+  let rebuy = document.getElementById("rebuy").value;
+  let addon = document.getElementById("addon");
+  let add_player_button2 = document.getElementById("add_player_button2");
+  add_player_menu.style.display = "block";
+}
+
+function add_player() {
+  let players = [];
+  if (buyin.checked) {
+    players[player_count] = new Player(player_name, buyin, rebuy, addon);
+    players[player_count].buyin = true;
+    if (addon.checked) {
+      players[player_count].addon = true;
+    }
+    general_display[0].innerHTML = players[player_count].player_name.value;
+    general_display[1].innerHTML = players[player_count].buyin;
+    general_display[2].innerHTML = players[player_count].rebuy.value;
+    general_display[3].innerHTML = players[player_count].addon;
+    player_count++;
+    player_left++;
+    player_display.innerHTML = player_left + " / " + player_count;
+  }
+  add_player_menu.style.display = "none";
+}
 // MAIN MENU EVENT HANDLERS
 start_button.onclick = start_stop;
-settings_button.onclick = display_menu;
+settings_button.onclick = display_settings_menu;
 eliminate_player_button.onclick = eliminate_player;
-add_new_player.onclick = add_player;
-close_menu.onclick = add_player;
+add_player_button1.onclick = display_player_menu;
 
 // SETTINGS MENU EVENT HANDLERS
 for (let index = 0; index < aux.length; index++) {
@@ -165,4 +180,6 @@ for (let index = 0; index < big.length; index++) {
     }
   };
 }
-// ADD NEW PLAYER EVENT HANDLERS
+
+// PLAYER MENU EVENT HANDLERS
+add_player_button2.onclick = add_player;

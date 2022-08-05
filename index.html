@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Doom clock</title>
+    <title>Home gamer</title>
     <link rel="stylesheet" href="clock.css">
     <script src="clock.js" defer></script>
 </head>
@@ -13,6 +13,7 @@
 <body>
     <header>
         <button id="settings_button">Settings</button>
+        <button id="player_structure">Player structure</button>
     </header>
     <!-- MAIN CONTENT -->
     <div id="main">
@@ -20,7 +21,7 @@
             <div id="round_number"></div>
             <div>Players</div>
             <div id="player_display">0/0</div>
-            <div >Average</div>
+            <div>Average</div>
             <div id="average">0</div>
         </div>
         <div id="center">
@@ -28,9 +29,10 @@
             <div id="current_level"></div>
             <div id="next_level"></div>
             <button id="start_button">Start</button>
-            <button id="add_new_player">Add player</button>
+            <button id="add_player_button1">Add player</button>
             <button id="eliminate_player">Eliminate player</button>
             <br>
+            <span class="general_display"></span>
             <span class="general_display"></span>
             <span class="general_display"></span>
             <span class="general_display"></span>
@@ -42,24 +44,7 @@
         </div>
     </div>
 
-    <form autocomplete="off">
-        <div id="add_player_menu">
-            <div id="add_player_menu_content">
-                <span></span><span></span><span></span>
-                <span class="right">&times;</span>
-                <label for="">Name</label>
-                <input type="text" name="" id="player_name">
-                <label for="buyin">Buy in</label>
-                <input type="checkbox" name="" id="buyin">
-                <label for="rebuy">Rebuy</label>
-                <input type="number" name="" id="rebuy">
-                <label for="addon">Add on</label>
-                <input type="checkbox" name="" id="addon">
-            </div>
-        </div>
-    </form>
-
-    <!-- SETTINGS MENU -->
+    <!-- MENUS -->
     <div id="settings_menu">
         <form autocomplete="off">
             <div id="general_settings">
@@ -100,6 +85,29 @@
             </div>
         </form>
     </div>
+
+    <div id="player_structure_menu">
+        <div id="players_in">Players in</div>
+        <div id="players_out">Players out</div>
+    </div>
+    <form autocomplete="off">
+        <div id="add_player_menu">
+                <div id="player_menu_content">
+                    <span></span><span></span><span></span>
+                    <span class="right">&times;</span>
+                    <label for="">Name</label>
+                    <input type="text" name="" id="player_name">
+                    <label for="buyin">Buy in</label>
+                    <input type="checkbox" name="" id="buyin" checked>
+                    <label for="rebuy">Rebuy</label>
+                    <input type="number" name="" id="rebuy">
+                    <label for="addon">Add on</label>
+                    <input type="checkbox" name="" id="addon">
+                    <button type="button" id="add_player_button2">Add player</button>
+                    <button type="reset">Reset</button>
+                </div>
+            </div>
+        </form>
 
 </body>
 
