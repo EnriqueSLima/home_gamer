@@ -4,9 +4,9 @@
   font-size: 1.1rem;
 }
 html {
-  background: radial-gradient(purple, darkblue);
+  background: radial-gradient(darkgreen, darkblue);
   height: 100%;
-  color: white;
+  color: rgb(225, 225, 0);
 }
 
 /* MAIN STYLES */
@@ -17,6 +17,7 @@ html {
 #center {
   margin-top: -30px;
   text-align: center;
+  color: white;
 }
 #right {
   text-align: right;

@@ -6,8 +6,9 @@ let current_level = document.getElementById("current_level");
 let next_level = document.getElementById("next_level");
 let start_button = document.getElementById("start_button");
 let player_display = document.getElementById("player_display");
-let add_player_button1 = document.getElementById("add_player_button1");
-let eliminate_player_button = document.getElementById("eliminate_player");
+let display_player_menu_button = document.getElementById(
+  "display_player_menu_button"
+);
 let add_player_menu = document.getElementById("add_player_menu");
 let general_display = document.getElementsByClassName("general_display");
 
@@ -24,14 +25,14 @@ let addon_money = document.getElementById("addon_money");
 let addon_chips = document.getElementById("addon_chips");
 
 // ADD PLAYER MENU VARIABLES
-let close_button = document.getElementsByClassName("right")[0];
+let close_add_player_button = document.getElementsByClassName("right")[0];
 
 // COUNTERS AND AUXILIARY VARIABLES
 let bool = false; //tracks whether the clock is paused or not
 let aux = []; // auxiliary variable used to calculate timer values
 let rounds_counter = 0;
 let player_count = 0;
-let player_left = 0;
+let players_left = 0;
 
 // PLAYER CONSTRUCTOR
 class Player {
@@ -58,9 +59,11 @@ current_level.innerHTML =
   small[rounds_counter].value + " / " + big[rounds_counter].value;
 next_level.innerHTML =
   small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
-// general_display[0].innerHTML = "Buy ins ";
-// general_display[1].innerHTML = "Rebuys ";
-// general_display[2].innerHTML = "Add ons ";
+general_display[0].innerHTML = "Buy ins ";
+general_display[1].innerHTML = "Rebuys ";
+general_display[2].innerHTML = "Add ons ";
+
+// DEFAULT ADD PLAYER MENU INITIAL VALUES
 
 // MAIN MENU FUNCTIONS
 function start_stop() {
@@ -97,14 +100,6 @@ function update_blinds() {
   next_level.innerHTML =
     small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
 }
-function eliminate_player() {
-  let player_remove = prompt("How many players would you like to remove?");
-  let remove = parseInt(player_remove, 10);
-  if (remove) {
-    player_left -= remove;
-    player_display.innerHTML = player_left + " / " + player_count;
-  }
-}
 
 // SETTINGS MENU FUNCTIONS
 function display_settings_menu() {
@@ -117,7 +112,7 @@ function display_settings_menu() {
   }
 }
 
-// PLAYER MENU FUNCTIONS
+// ADD PLAYER MENU FUNCTIONS
 function display_player_menu() {
   let player_name = document.getElementById("player_name").value;
   let buyin = document.getElementById("buyin");
@@ -126,7 +121,6 @@ function display_player_menu() {
   let add_player_button2 = document.getElementById("add_player_button2");
   add_player_menu.style.display = "block";
 }
-
 function add_player() {
   let players = [];
   if (buyin.checked) {
@@ -135,21 +129,76 @@ function add_player() {
     if (addon.checked) {
       players[player_count].addon = true;
     }
-    general_display[0].innerHTML = players[player_count].player_name.value;
-    general_display[1].innerHTML = players[player_count].buyin;
-    general_display[2].innerHTML = players[player_count].rebuy.value;
-    general_display[3].innerHTML = players[player_count].addon;
+
+    let create_player = document.createElement("div");
+    let players_in = document.getElementById("players_in");
+    let eliminate_player_button = document.createElement("button");
+    let remove_player_button = document.createElement("button");
+    eliminate_player_button.id = "eliminate_player";
+    eliminate_player_button.title = "Eliminate player";
+    remove_player_button.id = "remove_player_button";
+    remove_player_button.title = "Remove player";
+    eliminate_player_button.innerHTML = "&#45;";
+    remove_player_button.innerHTML = "&times;";
+    eliminate_player_button.addEventListener("click", eliminate_player);
+    remove_player_button.addEventListener("click", remove_player);
+
+    create_player.innerHTML =
+      players[player_count].player_name.value +
+      " " +
+      players[player_count].rebuy.value +
+      " " +
+      players[player_count].addon +
+      " ";
+    players_in.appendChild(create_player).appendChild(eliminate_player_button);
+    create_player.appendChild(remove_player_button);
+
     player_count++;
-    player_left++;
-    player_display.innerHTML = player_left + " / " + player_count;
+    players_left++;
+    player_display.innerHTML = players_left + " / " + player_count;
   }
+  add_player_menu.style.display = "none";
+}
+function eliminate_player() {
+  let players_out = document.getElementById("players_out");
+  let add_back_player = document.createElement("button");
+  let node = this.parentNode.cloneNode(true);
+
+  add_back_player.innerHTML = "&plus;";
+  add_back_player.title = "Add back player";
+  node.childNodes[1].remove();
+  node.insertBefore(add_back_player, node.childNodes[1]);
+
+  add_back_player.onclick = function () {
+    add_player();
+    this.parentNode.remove();
+    player_count--; // because add_player() has player_count++
+    player_display.innerHTML = players_left + " / " + player_count;
+  };
+  node.childNodes[2].onclick = remove_player;
+
+  players_out.appendChild(node);
+  this.parentNode.remove();
+  players_left--;
+  player_display.innerHTML = players_left + " / " + player_count;
+}
+function remove_player() {
+  if (this.parentNode.parentNode.id === "players_out") {
+    player_count--;
+  } else {
+    players_left--;
+    player_count--;
+  }
+  this.parentNode.remove();
+  player_display.innerHTML = players_left + " / " + player_count;
+}
+function close_add_player_menu() {
   add_player_menu.style.display = "none";
 }
 // MAIN MENU EVENT HANDLERS
 start_button.onclick = start_stop;
 settings_button.onclick = display_settings_menu;
-eliminate_player_button.onclick = eliminate_player;
-add_player_button1.onclick = display_player_menu;
+display_player_menu_button.onclick = display_player_menu;
 
 // SETTINGS MENU EVENT HANDLERS
 for (let index = 0; index < aux.length; index++) {
@@ -181,5 +230,6 @@ for (let index = 0; index < big.length; index++) {
   };
 }
 
-// PLAYER MENU EVENT HANDLERS
+// ADD PLAYER MENU EVENT HANDLERS
 add_player_button2.onclick = add_player;
+close_add_player_button.onclick = close_add_player_menu;
