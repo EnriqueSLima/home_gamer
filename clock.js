@@ -179,6 +179,7 @@ function eliminate_player() {
     this.parentNode.remove();
     node1.childNodes[1].remove();
     node1.insertBefore(eliminate_player_button1, node1.childNodes[1]);
+    node1.childNodes[2].onclick = remove_player;
     players_in.appendChild(node1);
     players_left++;
     player_display.innerHTML = players_left + " / " + player_count;
