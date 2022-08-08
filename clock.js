@@ -63,8 +63,6 @@ general_display[0].innerHTML = "Buy ins ";
 general_display[1].innerHTML = "Rebuys ";
 general_display[2].innerHTML = "Add ons ";
 
-// DEFAULT ADD PLAYER MENU INITIAL VALUES
-
 // MAIN MENU FUNCTIONS
 function start_stop() {
   if (!bool) {
@@ -113,7 +111,7 @@ function display_settings_menu() {
 }
 
 // ADD PLAYER MENU FUNCTIONS
-function display_player_menu() {
+function display_add_player_menu() {
   let player_name = document.getElementById("player_name").value;
   let buyin = document.getElementById("buyin");
   let rebuy = document.getElementById("rebuy").value;
@@ -134,9 +132,8 @@ function add_player() {
     let players_in = document.getElementById("players_in");
     let eliminate_player_button = document.createElement("button");
     let remove_player_button = document.createElement("button");
-    eliminate_player_button.id = "eliminate_player";
+
     eliminate_player_button.title = "Eliminate player";
-    remove_player_button.id = "remove_player_button";
     remove_player_button.title = "Remove player";
     eliminate_player_button.innerHTML = "&#45;"; // hyphen entity
     remove_player_button.innerHTML = "&times;";
@@ -161,36 +158,35 @@ function add_player() {
 }
 function eliminate_player() {
   let players_out = document.getElementById("players_out");
-  let add_back_player = document.createElement("button");
-  let node = this.parentNode.cloneNode(true);
+  let player_node = this.parentNode.cloneNode(true);
+  player_node.childNodes[1].innerHTML = "&plus;";
+  player_node.childNodes[1].title = "Add back player";
+  
+  player_node.childNodes[1].onclick = add_back_player;
+  player_node.childNodes[2].onclick = remove_player;
 
-  add_back_player.innerHTML = "&plus;";
-  add_back_player.title = "Add back player";
-  node.childNodes[1].remove();
-  node.insertBefore(add_back_player, node.childNodes[1]);
-
-  add_back_player.onclick = function () {
-    let node1 = this.parentNode.cloneNode(true);
-    let eliminate_player_button1 = document.createElement("button");
-    eliminate_player_button1.innerHTML = "&#45;";
-    eliminate_player_button1.title = "Eliminate player";
-    eliminate_player_button1.addEventListener("click", eliminate_player);
-
-    this.parentNode.remove();
-    node1.childNodes[1].remove();
-    node1.insertBefore(eliminate_player_button1, node1.childNodes[1]);
-    node1.childNodes[2].onclick = remove_player;
-    players_in.appendChild(node1);
-    players_left++;
-    player_display.innerHTML = players_left + " / " + player_count;
-  };
-  node.childNodes[2].onclick = remove_player;
-
-  players_out.appendChild(node);
+  players_out.appendChild(player_node);
   this.parentNode.remove();
   players_left--;
   player_display.innerHTML = players_left + " / " + player_count;
 }
+function add_back_player() {
+
+  let elimination_node = this.parentNode.cloneNode(true);
+
+  elimination_node.childNodes[1].innerHTML = "&#45;";
+  elimination_node.childNodes[1].title = "Eliminate player";
+
+  this.childNodes.innerHTML = elimination_node;
+  this.parentNode.remove();
+
+  elimination_node.childNodes[1].onclick = eliminate_player;
+  elimination_node.childNodes[2].onclick = remove_player;
+
+  players_in.appendChild(elimination_node);
+  players_left++;
+  player_display.innerHTML = players_left + " / " + player_count;
+};
 function remove_player() {
   if (this.parentNode.parentNode.id === "players_out") {
     player_count--;
@@ -207,7 +203,7 @@ function close_add_player_menu() {
 // MAIN MENU EVENT HANDLERS
 start_button.onclick = start_stop;
 settings_button.onclick = display_settings_menu;
-display_player_menu_button.onclick = display_player_menu;
+display_player_menu_button.onclick = display_add_player_menu;
 
 // SETTINGS MENU EVENT HANDLERS
 for (let index = 0; index < aux.length; index++) {
