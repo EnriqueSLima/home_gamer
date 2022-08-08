@@ -138,7 +138,7 @@ function add_player() {
     eliminate_player_button.title = "Eliminate player";
     remove_player_button.id = "remove_player_button";
     remove_player_button.title = "Remove player";
-    eliminate_player_button.innerHTML = "&#45;";
+    eliminate_player_button.innerHTML = "&#45;"; // hyphen entity
     remove_player_button.innerHTML = "&times;";
     eliminate_player_button.addEventListener("click", eliminate_player);
     remove_player_button.addEventListener("click", remove_player);
@@ -170,9 +170,17 @@ function eliminate_player() {
   node.insertBefore(add_back_player, node.childNodes[1]);
 
   add_back_player.onclick = function () {
-    add_player();
+    let node1 = this.parentNode.cloneNode(true);
+    let eliminate_player_button1 = document.createElement("button");
+    eliminate_player_button1.innerHTML = "&#45;";
+    eliminate_player_button1.title = "Eliminate player";
+    eliminate_player_button1.addEventListener("click", eliminate_player);
+
     this.parentNode.remove();
-    player_count--; // because add_player() has player_count++
+    node1.childNodes[1].remove();
+    node1.insertBefore(eliminate_player_button1, node1.childNodes[1]);
+    players_in.appendChild(node1);
+    players_left++;
     player_display.innerHTML = players_left + " / " + player_count;
   };
   node.childNodes[2].onclick = remove_player;
