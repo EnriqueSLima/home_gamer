@@ -115,14 +115,16 @@ function update_chip_average_count() {
     parseInt(rebuy_chips.value * rebuy_amount) +
     parseInt(addon_chips.value * addon_amount);
   chip_count.innerHTML = chip_count_calc;
+  average_calc = parseInt(chip_count_calc / players_left);
 
-  average_calc = parseInt(chip_count_calc / player_count);
+  isNaN(average_calc) ? (average_calc = 0) : "";
   average.innerHTML = average_calc;
 }
 function update_pot_total() {
   let buyin_money = document.getElementById("buyin_money");
   let rebuy_money = document.getElementById("rebuy_money");
   let addon_money = document.getElementById("addon_money");
+  // NEEDS LOGIC
 }
 
 // SETTINGS MENU FUNCTIONS
@@ -176,7 +178,6 @@ function add_player() {
     create_player.appendChild(remove_player_button);
 
     player_count++;
-
     players_left++;
     player_display.innerHTML = players_left + " / " + player_count;
 
@@ -197,6 +198,7 @@ function eliminate_player() {
   this.parentNode.remove();
   players_left--;
   player_display.innerHTML = players_left + " / " + player_count;
+  update_chip_average_count();
 }
 function add_back_player() {
   let elimination_node = this.parentNode.cloneNode(true);
@@ -213,6 +215,7 @@ function add_back_player() {
   players_in.appendChild(elimination_node);
   players_left++;
   player_display.innerHTML = players_left + " / " + player_count;
+  update_chip_average_count();
 }
 function remove_player() {
   if (this.parentNode.parentNode.id === "players_out") {
@@ -223,6 +226,7 @@ function remove_player() {
   }
   this.parentNode.remove();
   player_display.innerHTML = players_left + " / " + player_count;
+  update_chip_average_count();
 }
 function close_add_player_menu() {
   add_player_menu.style.display = "none";
