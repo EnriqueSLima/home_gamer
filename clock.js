@@ -17,14 +17,9 @@ let settings_menu = document.getElementById("settings_menu");
 let small = document.getElementsByClassName("small_blind");
 let big = document.getElementsByClassName("big_blind");
 let duration = document.getElementsByClassName("time");
-let buyin_money = document.getElementById("buyin_money");
-let buyin_chips = document.getElementById("buyin_chips");
-let rebuy_money = document.getElementById("rebuy_money");
-let rebuy_chips = document.getElementById("rebuy_chips");
-let addon_money = document.getElementById("addon_money");
-let addon_chips = document.getElementById("addon_chips");
 
 // ADD PLAYER MENU VARIABLES
+let players = [];
 let close_add_player_button = document.getElementsByClassName("right")[0];
 
 // COUNTERS AND AUXILIARY VARIABLES
@@ -98,10 +93,41 @@ function update_blinds() {
   next_level.innerHTML =
     small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
 }
+function update_chip_average_count() {
+  let buyin_chips = document.getElementById("buyin_chips");
+  let rebuy_chips = document.getElementById("rebuy_chips");
+  let addon_chips = document.getElementById("addon_chips");
+  let rebuy_amount = 0;
+  let addon_amount = 0;
+  let average = document.getElementById("average");
+  let chip_count = document.getElementById("chip_count");
+  let average_calc = 0;
+  let chip_count_calc = 0;
+
+  for (let index = 0; index < player_count; index++) {
+    rebuy_amount += parseInt(players[index].rebuy);
+    if (players[index].addon === true) {
+      addon_amount++;
+    }
+  }
+  chip_count_calc =
+    parseInt(buyin_chips.value * player_count) +
+    parseInt(rebuy_chips.value * rebuy_amount) +
+    parseInt(addon_chips.value * addon_amount);
+  chip_count.innerHTML = chip_count_calc;
+
+  average_calc = parseInt(chip_count_calc / player_count);
+  average.innerHTML = average_calc;
+}
+function update_pot_total() {
+  let buyin_money = document.getElementById("buyin_money");
+  let rebuy_money = document.getElementById("rebuy_money");
+  let addon_money = document.getElementById("addon_money");
+}
 
 // SETTINGS MENU FUNCTIONS
 function display_settings_menu() {
-  if (settings_menu.style.display == "none") {
+  if (settings_menu.style.display === "none") {
     main.style.display = "none";
     settings_menu.style.display = "block";
   } else {
@@ -112,22 +138,21 @@ function display_settings_menu() {
 
 // ADD PLAYER MENU FUNCTIONS
 function display_add_player_menu() {
+  add_player_menu.style.display = "block";
+}
+function add_player() {
   let player_name = document.getElementById("player_name").value;
   let buyin = document.getElementById("buyin");
   let rebuy = document.getElementById("rebuy").value;
   let addon = document.getElementById("addon");
   let add_player_button2 = document.getElementById("add_player_button2");
-  add_player_menu.style.display = "block";
-}
-function add_player() {
-  let players = [];
+
   if (buyin.checked) {
-    players[player_count] = new Player(player_name, buyin, rebuy, addon);
+    players.push(new Player(player_name, buyin, rebuy, addon));
     players[player_count].buyin = true;
     if (addon.checked) {
       players[player_count].addon = true;
     }
-
     let create_player = document.createElement("div");
     let players_in = document.getElementById("players_in");
     let eliminate_player_button = document.createElement("button");
@@ -141,9 +166,9 @@ function add_player() {
     remove_player_button.addEventListener("click", remove_player);
 
     create_player.innerHTML =
-      players[player_count].player_name.value +
+      players[player_count].player_name +
       " " +
-      players[player_count].rebuy.value +
+      players[player_count].rebuy +
       " " +
       players[player_count].addon +
       " ";
@@ -151,8 +176,11 @@ function add_player() {
     create_player.appendChild(remove_player_button);
 
     player_count++;
+
     players_left++;
     player_display.innerHTML = players_left + " / " + player_count;
+
+    update_chip_average_count();
   }
   add_player_menu.style.display = "none";
 }
@@ -161,7 +189,7 @@ function eliminate_player() {
   let player_node = this.parentNode.cloneNode(true);
   player_node.childNodes[1].innerHTML = "&plus;";
   player_node.childNodes[1].title = "Add back player";
-  
+
   player_node.childNodes[1].onclick = add_back_player;
   player_node.childNodes[2].onclick = remove_player;
 
@@ -171,7 +199,6 @@ function eliminate_player() {
   player_display.innerHTML = players_left + " / " + player_count;
 }
 function add_back_player() {
-
   let elimination_node = this.parentNode.cloneNode(true);
 
   elimination_node.childNodes[1].innerHTML = "&#45;";
@@ -186,7 +213,7 @@ function add_back_player() {
   players_in.appendChild(elimination_node);
   players_left++;
   player_display.innerHTML = players_left + " / " + player_count;
-};
+}
 function remove_player() {
   if (this.parentNode.parentNode.id === "players_out") {
     player_count--;
@@ -209,16 +236,16 @@ display_player_menu_button.onclick = display_add_player_menu;
 for (let index = 0; index < aux.length; index++) {
   duration[index].onchange = function () {
     aux[index] = this.value * 60;
-    rounds_counter == index ? update_timer() : "";
+    rounds_counter === index ? update_timer() : "";
   };
 }
 for (let index = 0; index < small.length; index++) {
   small[index].onchange = function () {
     small[index].value = this.value;
-    if (rounds_counter == index) {
+    if (rounds_counter === index) {
       current_level.innerHTML = small[index].value + " / " + big[index].value;
     }
-    if (rounds_counter + 1 == index) {
+    if (rounds_counter + 1 === index) {
       next_level.innerHTML = small[index].value + " / " + big[index].value;
     }
   };
@@ -226,10 +253,10 @@ for (let index = 0; index < small.length; index++) {
 for (let index = 0; index < big.length; index++) {
   big[index].onchange = function () {
     big[index].value = this.value;
-    if (rounds_counter == index) {
+    if (rounds_counter === index) {
       current_level.innerHTML = small[index].value + " / " + big[index].value;
     }
-    if (rounds_counter + 1 == index) {
+    if (rounds_counter + 1 === index) {
       next_level.innerHTML = small[index].value + " / " + big[index].value;
     }
   };
