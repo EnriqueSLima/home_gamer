@@ -31,12 +31,11 @@ let players_left = 0;
 
 // PLAYER CONSTRUCTOR
 class Player {
-  constructor(player_name, buyin, rebuy, addon, eliminated) {
+  constructor(player_name, buyin, rebuy, addon) {
     this.player_name = player_name;
     this.buyin = false;
     this.rebuy = rebuy;
     this.addon = false;
-    this.eliminated = false;
   }
 }
 
@@ -121,10 +120,21 @@ function update_chip_average_count() {
   average.innerHTML = average_calc;
 }
 function update_pot_total() {
+  let pot_total = document.getElementById("pot_total");
   let buyin_money = document.getElementById("buyin_money");
   let rebuy_money = document.getElementById("rebuy_money");
   let addon_money = document.getElementById("addon_money");
-  // NEEDS LOGIC
+  let rebuy_calc = 0;
+  let addon_calc = 0;
+
+  for (let index = 0; index < players.length; index++) {
+    rebuy_calc += parseInt(players[index].rebuy);
+    if(players[index].addon)
+      addon_calc++;
+  }
+  pot_total_calc = (parseInt(buyin_money.value) * player_count) + (rebuy_calc * parseInt(rebuy_money.value)) + (addon_calc * parseInt(addon_money.value));
+
+  pot_total.innerHTML = pot_total_calc;
 }
 
 // SETTINGS MENU FUNCTIONS
@@ -182,6 +192,7 @@ function add_player() {
     player_display.innerHTML = players_left + " / " + player_count;
 
     update_chip_average_count();
+    update_pot_total();
   }
   add_player_menu.style.display = "none";
 }
@@ -227,10 +238,29 @@ function remove_player() {
   this.parentNode.remove();
   player_display.innerHTML = players_left + " / " + player_count;
   update_chip_average_count();
+  update_pot_total();
 }
 function close_add_player_menu() {
   add_player_menu.style.display = "none";
 }
+
+// PLAYER STRUCTURE FUNCTIONS
+let display_player_structure_button = document.getElementById(
+  "player_structure"
+);
+// player_structure_menu.style.display = "none";
+display_player_structure_button.onclick = display_player_structure;
+
+function display_player_structure() {
+  if(player_structure_menu.style.display == "none") {
+    main.style.display = "none";
+    player_structure_menu.style.display = "grid";
+  } else {''
+    main.style.display = "grid";
+    player_structure_menu.style.display = "none";
+  }
+}
+
 // MAIN MENU EVENT HANDLERS
 start_button.onclick = start_stop;
 settings_button.onclick = display_settings_menu;
