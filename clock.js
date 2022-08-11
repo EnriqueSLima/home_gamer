@@ -5,7 +5,7 @@ let clock = document.getElementById("clock");
 let current_level = document.getElementById("current_level");
 let next_level = document.getElementById("next_level");
 let start_button = document.getElementById("start_button");
-let player_display = document.getElementById("player_display");
+let player_count_display = document.getElementById("player_count_display");
 let display_player_menu_button = document.getElementById(
   "display_player_menu_button"
 );
@@ -29,13 +29,65 @@ let rounds_counter = 0;
 let player_count = 0;
 let players_left = 0;
 
-// PLAYER CONSTRUCTOR
+// PLAYER CONSTRUCTORS
 class Player {
-  constructor(player_name, buyin, rebuy, addon) {
+  constructor(player_name, buyin, rebuy, addon, total) {
     this.player_name = player_name;
     this.buyin = false;
     this.rebuy = rebuy;
     this.addon = false;
+    this.total = function () {
+      let player_total = 0;
+      player_total =
+        parseInt(buyin_money.value) + parseInt(rebuy_money.value) * this.rebuy;
+      if (this.addon) {
+        player_total += parseInt(addon_money.value);
+      }
+      return player_total;
+    };
+  }
+}
+class Player_display {
+  constructor() {
+    this.player_div = function () {
+      let player_div = document.createElement("div");
+      let name_span = document.createElement("span");
+      let buyin_span = document.createElement("span");
+      let rebuy_span = document.createElement("span");
+      let addon_span = document.createElement("span");
+      let total_span = document.createElement("span");
+      let eliminate_player_button = document.createElement("button");
+      let remove_player_button = document.createElement("button");
+
+      eliminate_player_button.title = "Eliminate player";
+      remove_player_button.title = "Remove player";
+      eliminate_player_button.innerHTML = "&#45;"; // hyphen entity
+      remove_player_button.innerHTML = "&times;";
+      eliminate_player_button.addEventListener("click", eliminate_player);
+      remove_player_button.addEventListener("click", remove_player);
+
+      for (const x of players) {
+        player_div.id = x.player_name;
+        name_span.id = x.player_name;
+        name_span.innerHTML = x.player_name;
+        buyin_span.innerHTML = "R$ " + buyin_money.value;
+        rebuy_span.innerHTML =
+          "R$ " + parseInt(x.rebuy) * rebuy_money.value + " (" + x.rebuy + ")";
+        addon_span.innerHTML = "R$ " + addon_money.value;
+        if (!x.addon) {
+          addon_span.innerHTML = "R$ 0";
+        }
+        total_span.innerHTML = "R$ " + x.total();
+      }
+      player_div.appendChild(name_span);
+      player_div.appendChild(buyin_span);
+      player_div.appendChild(rebuy_span);
+      player_div.appendChild(addon_span);
+      player_div.appendChild(total_span);
+      player_div.appendChild(eliminate_player_button);
+      player_div.appendChild(remove_player_button);
+      return player_div;
+    };
   }
 }
 
@@ -129,10 +181,12 @@ function update_pot_total() {
 
   for (let index = 0; index < players.length; index++) {
     rebuy_calc += parseInt(players[index].rebuy);
-    if(players[index].addon)
-      addon_calc++;
+    if (players[index].addon) addon_calc++;
   }
-  pot_total_calc = (parseInt(buyin_money.value) * player_count) + (rebuy_calc * parseInt(rebuy_money.value)) + (addon_calc * parseInt(addon_money.value));
+  pot_total_calc =
+    parseInt(buyin_money.value) * player_count +
+    rebuy_calc * parseInt(rebuy_money.value) +
+    addon_calc * parseInt(addon_money.value);
 
   pot_total.innerHTML = pot_total_calc;
 }
@@ -165,31 +219,16 @@ function add_player() {
     if (addon.checked) {
       players[player_count].addon = true;
     }
-    let create_player = document.createElement("div");
+
     let players_in = document.getElementById("players_in");
-    let eliminate_player_button = document.createElement("button");
-    let remove_player_button = document.createElement("button");
-
-    eliminate_player_button.title = "Eliminate player";
-    remove_player_button.title = "Remove player";
-    eliminate_player_button.innerHTML = "&#45;"; // hyphen entity
-    remove_player_button.innerHTML = "&times;";
-    eliminate_player_button.addEventListener("click", eliminate_player);
-    remove_player_button.addEventListener("click", remove_player);
-
-    create_player.innerHTML =
-      players[player_count].player_name +
-      " " +
-      players[player_count].rebuy +
-      " " +
-      players[player_count].addon +
-      " ";
-    players_in.appendChild(create_player).appendChild(eliminate_player_button);
-    create_player.appendChild(remove_player_button);
+    let player_display = new Player_display();
+    
+    player_display = player_display.player_div();
+    players_in.appendChild(player_display);
 
     player_count++;
     players_left++;
-    player_display.innerHTML = players_left + " / " + player_count;
+    player_count_display.innerHTML = players_left + " / " + player_count;
 
     update_chip_average_count();
     update_pot_total();
@@ -208,7 +247,7 @@ function eliminate_player() {
   players_out.appendChild(player_node);
   this.parentNode.remove();
   players_left--;
-  player_display.innerHTML = players_left + " / " + player_count;
+  player_count_display.innerHTML = players_left + " / " + player_count;
   update_chip_average_count();
 }
 function add_back_player() {
@@ -225,7 +264,7 @@ function add_back_player() {
 
   players_in.appendChild(elimination_node);
   players_left++;
-  player_display.innerHTML = players_left + " / " + player_count;
+  player_count_display.innerHTML = players_left + " / " + player_count;
   update_chip_average_count();
 }
 function remove_player() {
@@ -236,7 +275,7 @@ function remove_player() {
     player_count--;
   }
   this.parentNode.remove();
-  player_display.innerHTML = players_left + " / " + player_count;
+  player_count_display.innerHTML = players_left + " / " + player_count;
   update_chip_average_count();
   update_pot_total();
 }
@@ -245,17 +284,17 @@ function close_add_player_menu() {
 }
 
 // PLAYER STRUCTURE FUNCTIONS
-let display_player_structure_button = document.getElementById(
-  "player_structure"
-);
+let display_player_structure_button =
+  document.getElementById("player_structure");
 // player_structure_menu.style.display = "none";
 display_player_structure_button.onclick = display_player_structure;
 
 function display_player_structure() {
-  if(player_structure_menu.style.display == "none") {
+  if (player_structure_menu.style.display == "none") {
     main.style.display = "none";
     player_structure_menu.style.display = "grid";
-  } else {''
+  } else {
+    ("");
     main.style.display = "grid";
     player_structure_menu.style.display = "none";
   }

@@ -77,6 +77,12 @@ html {
   place-items: center;
 }
 
+#players_in > * {
+  display: grid;
+  grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+  padding: 10px;
+}
+
 /* Hide number input arrows */
 /* Chrome, Safari, Edge, Opera */
 input::-webkit-outer-spin-button,
@@ -89,3 +95,4 @@ input[type="number"] {
   text-align: center;
   border-radius: 20px;
 }
+
