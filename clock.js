@@ -184,7 +184,7 @@ function update_pot_total() {
     if (players[index].addon) addon_calc++;
   }
   pot_total_calc =
-    parseInt(buyin_money.value) * player_count +
+    player_count * parseInt(buyin_money.value) +
     rebuy_calc * parseInt(rebuy_money.value) +
     addon_calc * parseInt(addon_money.value);
 
@@ -238,11 +238,11 @@ function add_player() {
 function eliminate_player() {
   let players_out = document.getElementById("players_out");
   let player_node = this.parentNode.cloneNode(true);
-  player_node.childNodes[1].innerHTML = "&plus;";
-  player_node.childNodes[1].title = "Add back player";
+  player_node.childNodes[5].innerHTML = "&plus;";
+  player_node.childNodes[5].title = "Add back player";
 
-  player_node.childNodes[1].onclick = add_back_player;
-  player_node.childNodes[2].onclick = remove_player;
+  player_node.childNodes[5].onclick = add_back_player;
+  player_node.childNodes[6].onclick = remove_player;
 
   players_out.appendChild(player_node);
   this.parentNode.remove();
@@ -253,14 +253,14 @@ function eliminate_player() {
 function add_back_player() {
   let elimination_node = this.parentNode.cloneNode(true);
 
-  elimination_node.childNodes[1].innerHTML = "&#45;";
-  elimination_node.childNodes[1].title = "Eliminate player";
+  elimination_node.childNodes[5].innerHTML = "&#45;";
+  elimination_node.childNodes[5].title = "Eliminate player";
 
   this.childNodes.innerHTML = elimination_node;
   this.parentNode.remove();
 
-  elimination_node.childNodes[1].onclick = eliminate_player;
-  elimination_node.childNodes[2].onclick = remove_player;
+  elimination_node.childNodes[5].onclick = eliminate_player;
+  elimination_node.childNodes[6].onclick = remove_player;
 
   players_in.appendChild(elimination_node);
   players_left++;
@@ -268,12 +268,9 @@ function add_back_player() {
   update_chip_average_count();
 }
 function remove_player() {
-  if (this.parentNode.parentNode.id === "players_out") {
-    player_count--;
-  } else {
-    players_left--;
-    player_count--;
-  }
+  players.pop(this);
+  player_count--;
+  players_left--;
   this.parentNode.remove();
   player_count_display.innerHTML = players_left + " / " + player_count;
   update_chip_average_count();
@@ -294,7 +291,6 @@ function display_player_structure() {
     main.style.display = "none";
     player_structure_menu.style.display = "grid";
   } else {
-    ("");
     main.style.display = "grid";
     player_structure_menu.style.display = "none";
   }
