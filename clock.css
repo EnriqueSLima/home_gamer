@@ -61,6 +61,13 @@ html {
   text-align: right;
   cursor: pointer;
 }
+#count_display {
+  text-align: right;
+
+}
+.general_display {
+  margin: 10px;
+}
 
 /* SETTINGS MENU STYLES */
 #settings_menu {

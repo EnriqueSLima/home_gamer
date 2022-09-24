@@ -295,7 +295,7 @@ function close_add_player_menu() {
 // PLAYER STRUCTURE FUNCTIONS
 let display_player_structure_button =
   document.getElementById("player_structure");
-// player_structure_menu.style.display = "none";
+player_structure_menu.style.display = "none";
 display_player_structure_button.onclick = display_player_structure;
 
 function display_player_structure() {
