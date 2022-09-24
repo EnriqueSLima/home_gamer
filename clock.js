@@ -245,7 +245,7 @@ function eliminate_player() {
   player_node.childNodes[5].title = "Add back player";
 
   player_node.childNodes[5].onclick = add_back_player;
-  player_node.childNodes[6].onclick = remove_player;
+  player_node.childNodes[6].remove();
 
   players_out.appendChild(player_node);
   this.parentNode.remove();
@@ -255,9 +255,12 @@ function eliminate_player() {
 }
 function add_back_player() {
   let elimination_node = this.parentNode.cloneNode(true);
+  let remove_player_button = document.createElement("button");
+  remove_player_button.innerHTML = "&times";
 
   elimination_node.childNodes[5].innerHTML = "&#45;";
   elimination_node.childNodes[5].title = "Eliminate player";
+  elimination_node.appendChild(remove_player_button);
 
   this.childNodes.innerHTML = elimination_node;
   this.parentNode.remove();
@@ -272,9 +275,10 @@ function add_back_player() {
 }
 function remove_player() {
   let player_to_remove = this.parentNode.childNodes[0].id;
+
   for (let index = 0; index < players.length; index++) {
     if(players[index].player_name === player_to_remove)
-      players.splice(index, 1);
+        players.splice(index, 1);
   }
 
   player_count--;
