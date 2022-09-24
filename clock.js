@@ -189,6 +189,10 @@ function update_pot_total() {
     addon_calc * parseInt(addon_money.value);
 
   pot_total.innerHTML = pot_total_calc;
+  general_display[0].innerHTML = "Buy ins " + player_count;
+  general_display[1].innerHTML = "Rebuys " + rebuy_calc;
+  general_display[2].innerHTML = "Add ons " + addon_calc;
+
 }
 
 // SETTINGS MENU FUNCTIONS
@@ -222,14 +226,13 @@ function add_player() {
 
     let players_in = document.getElementById("players_in");
     let player_display = new Player_display();
-    
+
     player_display = player_display.player_div();
     players_in.appendChild(player_display);
 
     player_count++;
     players_left++;
     player_count_display.innerHTML = players_left + " / " + player_count;
-
     update_chip_average_count();
     update_pot_total();
   }
@@ -268,7 +271,12 @@ function add_back_player() {
   update_chip_average_count();
 }
 function remove_player() {
-  players.pop(this);
+  let player_to_remove = this.parentNode.childNodes[0].id;
+  for (let index = 0; index < players.length; index++) {
+    if(players[index].player_name === player_to_remove)
+      players.splice(index, 1);
+  }
+
   player_count--;
   players_left--;
   this.parentNode.remove();
