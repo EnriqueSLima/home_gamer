@@ -1,0 +1,197 @@
+<header>
+    <button id="settings_button">Settings</button>
+    <button id="player_structure">Player structure</button>
+</header>
+<!-- MAIN CONTENT -->
+<div id="main">
+    <div id="left">
+        <div id="round_number"></div>
+        <div>Players</div>
+        <div id="player_count_display">0 / 0</div>
+        <div>Average</div>
+        <div id="average">0</div>
+    </div>
+    <div id="center">
+        <div id="clock"></div>
+        <div id="current_level"></div>
+        <div id="next_level"></div>
+        <button id="start_button">Start</button>
+        <button id="display_player_menu_button">Add player</button>
+    </div>
+    <div id="right">
+        <div id="time_elapsed">Time elapsed</div>
+        <div id="next_break">Next break</div>
+        <div>Chip count</div>
+        <div id="chip_count">0</div>
+    </div>
+</div>
+<div id="count_display">
+    <span class="general_display"></span>
+    <span class="general_display"></span>
+    <span class="general_display"></span>
+</div>
+<div id="main_footer">
+    <div>Pot total</div>
+    <span>R$ </span><span id="pot_total">0</span>
+</div>
+
+<!-- MENUS -->
+<div id="settings_menu">
+    <form autocomplete="off">
+        <div id="general_settings">
+            <label for=""></label>
+            <label for="">Money</label>
+            <label for="">Chips</label>
+            <label for="buyin">Buy-in</label>
+            <input type="number" value="100" id="buyin_money">
+            <input type="number" value="10000" id="buyin_chips">
+            <label for="rebuy">Rebuy</label>
+            <input type="number" value="100" id="rebuy_money">
+            <input type="number" value="10000" id="rebuy_chips">
+            <label for="addon">Add on</label>
+            <input type="number" value="100" id="addon_money">
+            <input type="number" value="10000" id="addon_chips">
+        </div>
+        <div id="blind_structure">
+            <label for=""></label>
+            <label for="">Duration (minutes)</label>
+            <label for="">Small blind</label>
+            <label for="">Big blind</label>
+            <label for="level1">Level 1</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="100" class="small_blind">
+            <input type="number" step="25" value="200" class="big_blind">
+            <label for="level2">Level 2</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="100" class="small_blind">
+            <input type="number" step="25" value="300" class="big_blind">
+            <label for="level3">Level 3</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="200" class="small_blind">
+            <input type="number" step="25" value="400" class="big_blind">
+            <label for="level4">Level 4</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="300" class="small_blind">
+            <input type="number" step="25" value="600" class="big_blind">
+            <label for="level5">Level 5</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="400" class="small_blind">
+            <input type="number" step="25" value="800" class="big_blind">
+            <label for="level6">Level 6</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="500" class="small_blind">
+            <input type="number" step="25" value="1000" class="big_blind">
+            <label for="break">break</label>
+            <input type="number" value="10" class="time">
+            <input type="number" step="25" value="600" class="small_blind">
+            <input type="number" step="25" value="1200" class="big_blind">
+            <label for="level7">Level 7</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="600" class="small_blind">
+            <input type="number" step="25" value="1200" class="big_blind">
+            <label for="level8">Level 8</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="800" class="small_blind">
+            <input type="number" step="25" value="1600" class="big_blind">
+            <label for="level9">Level 9</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="1000" class="small_blind">
+            <input type="number" step="25" value="2000" class="big_blind">
+            <label for="level10">Level 10</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="1500" class="small_blind">
+            <input type="number" step="25" value="3000" class="big_blind">
+            <label for="level11">Level 11</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="2000" class="small_blind">
+            <input type="number" step="25" value="4000" class="big_blind">
+            <label for="level12">Level 12</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="3000" class="small_blind">
+            <input type="number" step="25" value="6000" class="big_blind">
+            <label for="level13">Level 13</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="4000" class="small_blind">
+            <input type="number" step="25" value="8000" class="big_blind">
+            <label for="level14">Level 14</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="5000" class="small_blind">
+            <input type="number" step="25" value="10000" class="big_blind">
+            <label for="level15">Level 15</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="6000" class="small_blind">
+            <input type="number" step="25" value="12000" class="big_blind">
+            <label for="level16">Level 16</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="8000" class="small_blind">
+            <input type="number" step="25" value="16000" class="big_blind">
+            <label for="level17">Level 17</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="10000" class="small_blind">
+            <input type="number" step="25" value="20000" class="big_blind">
+            <label for="level18">Level 18</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="15000" class="small_blind">
+            <input type="number" step="25" value="30000" class="big_blind">
+            <label for="level19">Level 19</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="20000" class="small_blind">
+            <input type="number" step="25" value="40000" class="big_blind">
+            <label for="level20">Level 20</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="30000" class="small_blind">
+            <input type="number" step="25" value="60000" class="big_blind">
+            <label for="level21">Level 21</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="40000" class="small_blind">
+            <input type="number" step="25" value="80000" class="big_blind">
+            <label for="level22">Level 22</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="50000" class="small_blind">
+            <input type="number" step="25" value="100000" class="big_blind">
+            <label for="level23">Level 23</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="60000" class="small_blind">
+            <input type="number" step="25" value="120000" class="big_blind">
+            <label for="level24">Level 24</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="80000" class="small_blind">
+            <input type="number" step="25" value="160000" class="big_blind">
+            <label for="level25">Level 25</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="100000" class="small_blind">
+            <input type="number" step="25" value="200000" class="big_blind">
+            <label for="level26">Level 26</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="150000" class="small_blind">
+            <input type="number" step="25" value="300000" class="big_blind">
+            <label for="level27">Level 27</label>
+            <input type="number" value="15" class="time">
+            <input type="number" step="25" value="200000" class="small_blind">
+            <input type="number" step="25" value="400000" class="big_blind">
+        </div>
+    </form>
+</div>
+
+<div id="player_structure_menu">
+    <div id="players_in">Players in</div>
+    <div id="players_out">Players out</div>
+</div>
+<form autocomplete="off">
+    <div id="add_player_menu">
+        <div id="player_menu_content">
+            <span></span><span></span><span></span>
+            <span class="right">&times;</span>
+            <label for="">Name</label>
+            <input type="text" id="player_name">
+            <label for="buyin">Buy in</label>
+            <input type="checkbox" id="buyin" checked>
+            <label for="rebuy">Rebuy</label>
+            <input type="number" id="rebuy">
+            <label for="addon">Add on</label>
+            <input type="checkbox" id="addon">
+            <button type="button" id="add_player_button2">Add player</button>
+            <button type="reset">Reset</button>
+        </div>
+    </div>
+</form>
