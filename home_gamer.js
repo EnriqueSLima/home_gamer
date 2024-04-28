@@ -16,7 +16,18 @@ home_gamer.set('views', './views/');
 home_gamer.use(express.static('public'))
 
 home_gamer.get('/', (req, res) => {
-  res.render('index')
+  res.render('index', { css: 'index.css' })
+})
+
+home_gamer.get('/login', (req, res) => {
+  res.render('login', { css: 'login.css' })
+})
+
+home_gamer.get('/display', (req, res) => {
+  res.render('display', { css: 'display.css' })
+})
+home_gamer.get('/signup', (req, res) => {
+  res.render('signup', { css: 'signup.css' })
 })
 
 home_gamer.listen(port, () => {
