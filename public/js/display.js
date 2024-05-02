@@ -91,15 +91,44 @@ class Player_display {
   }
 }
 
+//document.addEventListener('DOMContentLoaded', function() {
+    // Fetch the tournament duration from the server
+    fetch('/tournament-settings')
+        .then(response => response.text())
+        .then(html => {
+            // Create a temporary container element to parse the HTML
+            var tempContainer = document.createElement('div');
+            tempContainer.innerHTML = html;
+
+            // Find the tournament duration input
+            var tournamentDurationInput = tempContainer.getElementsByClassName('time');
+
+            // Get the clock element
+            var clockElement = document.getElementById('clock');
+
+            // Set the initial clock value
+            clockElement.textContent = tournamentDurationInput[0].value;
+
+            // Listen for changes in the tournament duration input
+           // tournamentDurationInput.addEventListener('input', function() {
+                // Update the clock value whenever the input changes
+             //   clockElement.textContent = tournamentDurationInput.value;
+           // });
+        })
+        .catch(error => {
+            console.error('Error fetching tournament settings:', error);
+        });
+//});
+
 // DEFAULT SETTINGS MENU INITIAL VALUES
 for (let index = 0; index < duration.length; index++) {
   aux[index] = duration[index].value * 60;
 }
-settings_menu.style.display = "none";
-add_player_menu.style.display = "none";
 
 // DEFAULT MAIN CONTENT INITIAL VALUES
+
 round.innerHTML = "Round " + (rounds_counter + 1);
+/*
 clock.innerHTML = duration[0].value + ":00";
 current_level.innerHTML =
   small[rounds_counter].value + " / " + big[rounds_counter].value;
@@ -108,7 +137,7 @@ next_level.innerHTML =
 general_display[0].innerHTML = "Buy ins ";
 general_display[1].innerHTML = "Rebuys ";
 general_display[2].innerHTML = "Add ons ";
-
+*/
 // MAIN MENU FUNCTIONS
 function start_stop() {
   if (!bool) {
@@ -163,8 +192,8 @@ function update_chip_average_count() {
   }
   chip_count_calc =
     parseInt(buyin_chips.value * player_count) +
-    parseInt(rebuy_chips.value * rebuy_amount) +
-    parseInt(addon_chips.value * addon_amount);
+      parseInt(rebuy_chips.value * rebuy_amount) +
+      parseInt(addon_chips.value * addon_amount);
   chip_count.innerHTML = chip_count_calc;
   average_calc = parseInt(chip_count_calc / players_left);
 
@@ -185,8 +214,8 @@ function update_pot_total() {
   }
   pot_total_calc =
     player_count * parseInt(buyin_money.value) +
-    rebuy_calc * parseInt(rebuy_money.value) +
-    addon_calc * parseInt(addon_money.value);
+      rebuy_calc * parseInt(rebuy_money.value) +
+      addon_calc * parseInt(addon_money.value);
 
   pot_total.innerHTML = pot_total_calc;
   general_display[0].innerHTML = "Buy ins " + player_count;
@@ -273,12 +302,13 @@ function add_back_player() {
   player_count_display.innerHTML = players_left + " / " + player_count;
   update_chip_average_count();
 }
+
 function remove_player() {
   let player_to_remove = this.parentNode.childNodes[0].id;
 
   for (let index = 0; index < players.length; index++) {
     if(players[index].player_name === player_to_remove)
-        players.splice(index, 1);
+    players.splice(index, 1);
   }
 
   player_count--;
@@ -293,11 +323,12 @@ function close_add_player_menu() {
 }
 
 // PLAYER STRUCTURE FUNCTIONS
+/*
 let display_player_structure_button =
   document.getElementById("player_structure");
 player_structure_menu.style.display = "none";
 display_player_structure_button.onclick = display_player_structure;
-
+*/
 function display_player_structure() {
   if (player_structure_menu.style.display == "none") {
     main.style.display = "none";
@@ -310,8 +341,8 @@ function display_player_structure() {
 
 // MAIN MENU EVENT HANDLERS
 start_button.onclick = start_stop;
-settings_button.onclick = display_settings_menu;
-display_player_menu_button.onclick = display_add_player_menu;
+//settings_button.onclick = display_settings_menu;
+//display_player_menu_button.onclick = display_add_player_menu;
 
 // SETTINGS MENU EVENT HANDLERS
 for (let index = 0; index < aux.length; index++) {
@@ -344,5 +375,6 @@ for (let index = 0; index < big.length; index++) {
 }
 
 // ADD PLAYER MENU EVENT HANDLERS
-add_player_button2.onclick = add_player;
-close_add_player_button.onclick = close_add_player_menu;
+//add_player_button2.onclick = add_player;
+//close_add_player_button.onclick = close_add_player_menu;
+

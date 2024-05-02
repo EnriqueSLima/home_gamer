@@ -1,47 +1,59 @@
 /* GENERAL STYLES */
 * {
   box-sizing: border-box;
-  font-size: 1.1rem;
+  margin: 0;
+  padding: 0;
 }
 
 html {
   background: #366164;
   height: 100%;
   color: #53BBAD;
+}
 
-  /* SETTINGS MENU STYLES */
-  #settings_menu {
-    border: white solid 1px;
-  }
+/* MENU STYLES */
+nav {
+  margin-bottom: 40px;
+}
 
-  #general_settings {
-    display: grid;
-    grid-template-columns: auto auto auto;
-    place-items: center;
-  }
+nav ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+}
 
-  #blind_structure {
-    display: grid;
-    grid-template-columns: auto auto auto auto;
-    place-items: center;
-  }
+nav li a {
+  float: left;
+  display: block;
+  padding: 10px 20px;
+  text-decoration: none;
+  color: #333;
+}
 
-  #players_in>* {
-    display: grid;
-    grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
-    padding: 10px;
-  }
+nav li a:hover {
+  background-color: #f0f0f0;
+}
+/* SETTINGS MENU STYLES */
+#settings_menu {
+  border: white solid 1px;
+}
 
-  /* Hide number input arrows */
-  /* Chrome, Safari, Edge, Opera */
-  input::-webkit-outer-spin-button,
-  input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-  }
+#general_settings {
+  display: grid;
+  grid-template-columns: auto auto auto;
+  place-items: center;
+}
 
-  /* Firefox */
-  input[type="number"] {
-    -moz-appearance: textfield;
-    text-align: center;
-    border-radius: 20px;
-  }
+#blind_structure {
+  display: grid;
+  grid-template-columns: auto auto auto auto;
+  place-items: center;
+}
+
+#players_in>* {
+  display: grid;
+  grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+  padding: 10px;
+}
+
