@@ -34,26 +34,3 @@ nav li a {
 nav li a:hover {
   background-color: #f0f0f0;
 }
-/* SETTINGS MENU STYLES */
-#settings_menu {
-  border: white solid 1px;
-}
-
-#general_settings {
-  display: grid;
-  grid-template-columns: auto auto auto;
-  place-items: center;
-}
-
-#blind_structure {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  place-items: center;
-}
-
-#players_in>* {
-  display: grid;
-  grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
-  padding: 10px;
-}
-

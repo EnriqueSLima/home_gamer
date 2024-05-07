@@ -1,0 +1,5 @@
+#players_in>* {
+  display: grid;
+  grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+  padding: 10px;
+}

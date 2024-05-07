@@ -1,3 +1,20 @@
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css');
+
+/* Styles for the play button icon */
+#start_button {
+  background-color: transparent;
+  border: 1px white solid;
+  border-radius: 50%;
+  padding: 12px 24px;
+  margin-top: 10px;
+  cursor: pointer;
+  font-size: 24px;
+}
+
+#start_button i {
+  color: green;
+}
+
 /* MENU STYLES */
 nav {
   margin-bottom: 40px;
