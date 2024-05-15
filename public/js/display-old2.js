@@ -9,10 +9,8 @@ let clock_status = false; //tracks whether the clock is paused or not
 let minutes;
 let seconds;
 let rounds_counter = 0;
-let interval;
-const start_button = document.getElementById("start_button");
 
-// Create a promise that resolves when blindsDuration is available
+// Create a promise that resolves when tournament duration input is available
 const fetchTournamentSettings = new Promise((resolve, reject) => {
   console.log("DOM CONTENT LOADED");
   // Fetch the tournament duration from the server
@@ -36,32 +34,66 @@ const fetchTournamentSettings = new Promise((resolve, reject) => {
     });
 });
 
-fetchTournamentSettings.then(() => {
-  for (let index = 0; index < blindsDuration.length; index++) {
-    blindsDuration[index].value *= 60;
-  }
-  !localStorage.getItem('timerState') ? initializeClock() :
-    loadTimerState();
-}).catch(error => {
-  console.error('Error fetching tournament settings:', error);
-});
-
 // Function to initialize the clock and timer based on tournament settings
 function initializeClock() {
   if (blindsDuration && blindsDuration.length > 0) {
-    minutes = parseInt(blindsDuration[rounds_counter].value / 60, 10);
-    seconds = parseInt(blindsDuration[rounds_counter].value % 60, 10);
-    minutes = minutes < 10 ? "0" + minutes : minutes;
-    seconds = seconds < 10 ? "0" + seconds : seconds;
-    clock.innerHTML = minutes + ":" + seconds;
+    clock.innerHTML = blindsDuration[0].value + ":00";
     current_level.innerHTML = small[0].value + "/" + big[0].value;
     next_level.innerHTML = small[1].value + "/" + big[1].value;
 
+    for (let index = 0; index < blindsDuration.length; index++) {
+      blindsDuration[index].value *= 60;
+    }
+
+    const start_button = document.getElementById("start_button");
+    start_button.onclick = start_stop;
+
+    // Call saveTimerState() when navigating away using links/buttons
+    const links = document.querySelectorAll('a');
+    for (let link of links) {
+      link.addEventListener('click', saveTimerState);
+    }
   } else {
     console.warn("Tournament duration input not yet available");
   }
 }
 
+// Usage of blindsDuration after promise resolves
+fetchTournamentSettings.then(initializeClock)
+  .catch(error => {
+    console.error('Error fetching tournament settings:', error);
+  });
+
+// Function to save timer state to localStorage
+function saveTimerState() {
+  console.log("SAVE TIMER INVOKED")
+  localStorage.setItem('timerState', JSON.stringify({
+    minutes: minutes,
+    seconds: seconds,
+    roundsCounter: rounds_counter,
+    remainingTime: blindsDuration[rounds_counter].value,
+    clockStatus: clock_status
+  }));
+}
+
+function loadTimerState() {
+  console.log("LOAD TIMER INVOKED")
+  const timerState = JSON.parse(localStorage.getItem('timerState'));
+  if (timerState) {
+    clock.innerHTML = timerState.minutes + ':' + timerState.seconds;
+    minutes = timerState.minutes;
+    seconds = timerState.seconds;
+    rounds_counter = timerState.roundsCounter;
+    clock_status = timerState.clockStatus;
+    // Update button text based on clock status
+    start_button.innerHTML = clock_status ? "Stop" : "Start";
+    // If the clock was running, resume the interval
+    if (clock_status) {
+      interval = setInterval(update_timer, 1000);
+    }
+  }
+}
+let interval;
 function start_stop() {
   console.log("start stop invoked")
   if (!clock_status) {
@@ -85,12 +117,16 @@ function update_timer() {
   }
   minutes = parseInt(blindsDuration[rounds_counter].value / 60, 10);
   seconds = parseInt(blindsDuration[rounds_counter].value % 60, 10);
+  console.log(minutes);
+  console.log(seconds);
+  // console.log(rounds_counter);
+  // console.log(blindsDuration[0].value);
+  // console.log(blindsDuration[1]);
+  //console.log(blindsDuration[2].value);
   minutes = minutes < 10 ? "0" + minutes : minutes;
   seconds = seconds < 10 ? "0" + seconds : seconds;
   clock.innerHTML = minutes + ":" + seconds;
   blindsDuration[rounds_counter].value--;
-  console.log(minutes);
-  console.log(seconds);
   console.log(blindsDuration[rounds_counter].value);
 }
 
@@ -103,39 +139,8 @@ function update_blinds() {
     small[rounds_counter + 1].value + " / " + big[rounds_counter + 1].value;
 }
 
-// Function to save timer state to localStorage
-function saveTimerState() {
-  console.log("SAVE TIMER INVOKED");
-  localStorage.setItem('timerState', JSON.stringify({
-    minutes: minutes,
-    seconds: seconds,
-    roundsCounter: rounds_counter,
-    remainingTime: blindsDuration[rounds_counter].value,
-    clockStatus: clock_status
-  }));
-  console.log(localStorage.getItem('timerState'));
-}
+// Call loadTimerState() when the page loads
+window.addEventListener('load', loadTimerState);
 
-// Function to load timer state from localStorage
-function loadTimerState() {
-  console.log("LOAD TIMER INVOKED")
-  const timerState = JSON.parse(localStorage.getItem('timerState'));
-  if (timerState) {
-    rounds_counter = timerState.roundsCounter;
-    blindsDuration[rounds_counter].value = timerState.remainingTime;
-    minutes = parseInt(blindsDuration[rounds_counter].value / 60, 10);
-    seconds = parseInt(blindsDuration[rounds_counter].value % 60, 10);
-    clock_status = timerState.clockStatus;
-    clock.innerHTML = minutes + ":" + seconds;
-    if (clock_status) {
-      interval = setInterval(update_timer, 1000);
-      start_button.innerHTML = "Stop";
-    } else {
-      start_button.innerHTML = "Start";
-    }
-  }
-}
-start_button.onclick = start_stop;
+// Call saveTimerState() when changing views (beforeunload event fires before the page unloads)
 window.addEventListener('beforeunload', saveTimerState);
-
-//localStorage.removeItem('timerState');

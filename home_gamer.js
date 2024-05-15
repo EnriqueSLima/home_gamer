@@ -32,11 +32,19 @@ home_gamer.get('/signup', (req, res) => {
 })
 
 home_gamer.get('/tournament-settings', (req, res) => {
-  res.render('tournament-settings', { css: 'tournament-settings.css' })
+  res.render('tournament-settings',
+    {
+      css: 'tournament-settings.css',
+      js: 'tournament-settings.js'
+    })
 })
 
 home_gamer.get('/player-settings', (req, res) => {
-  res.render('player-settings', { css: 'player-settings.css', js: 'player-settings.js' })
+  res.render('player-settings',
+    {
+      css: 'player-settings.css',
+      js: 'player-settings.js'
+    })
 })
 
 home_gamer.listen(port, () => {
