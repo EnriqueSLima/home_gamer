@@ -1,0 +1,28 @@
+{
+  "name": "home_gamer",
+  "version": "1.0.0",
+  "description": "Home game poker tournaments manager ",
+  "main": "server.js",
+  "scripts": {
+    "start": "npx nodemon server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ldfracao/home_gamer.git"
+  },
+  "author": "Leandro Fração",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ldfracao/home_gamer/issues"
+  },
+  "homepage": "https://github.com/ldfracao/home_gamer#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "express": "^4.19.2",
+    "express-handlebars": "^7.1.2",
+    "mysql": "^2.18.1",
+    "sequelize": "^6.37.3",
+    "sqlite3": "^5.1.7"
+  }
+}

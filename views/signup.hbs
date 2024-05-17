@@ -1,0 +1,27 @@
+<!-- Background image -->
+<div class="background"></div>
+
+<!-- Semi-transparent overlay -->
+<div class="overlay"></div>
+
+<!-- Logo -->
+<img src="/img/default-monochrome.svg" alt="Home gamer logo" class="logo">
+
+<div class="container">
+    <h2>Register</h2>
+    <form action="/signup" method="post">
+        <label for="name">Name:</label><br>
+        <input type="text" id="name" name="name"><br>
+        <label for="email">Email:</label><br>
+        <input type="text" id="email" name="email"><br>
+        <label for="password">Password:</label><br>
+        <input type="password" id="password" name="password"><br><br>
+        <button type="submit">Sign Up</button>
+        <div class="error-message">
+            {{#if error}}
+            <p>{{error}}</p>
+            {{/if}}
+        </div>
+    </form>
+    <p>Already have an account? <a href="/login">Login</a></p>
+</div>
