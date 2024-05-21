@@ -1,5 +1,6 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const passport = require('passport');
 
 module.exports = {
   // index view
@@ -33,8 +34,10 @@ module.exports = {
   },
 
   loginUser: (req, res) => {
-    // TODO: complete
-    res.redirect('login');
+    passport.authenticate('local', {
+      successRedirect: '/display',
+      failureRedirect: '/login?error'
+    })(req, res);
   },
 
   logoutUser: (req, res) => {

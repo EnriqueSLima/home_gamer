@@ -3,6 +3,9 @@ const express = require('express')
 const handlebars = require('express-handlebars').engine
 const authRoutes = require('./routes/auth.js')
 const db = require('./models/db.js');
+const passport = require('passport');
+const { init: initAuth } = require('./auth');
+const session = require('express-session');
 
 const app = express()
 const PORT = 3000
@@ -18,6 +21,15 @@ app.set('views', './views/');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 
+initAuth();
+app.use(session({
+  secret: 'secret',
+  saveUninitialized: true,
+  resave: true
+}));
+
+app.use(passport.initialize());
+app.use(passport.session());
 // used to serve static files
 app.use(express.static('public'))
 
