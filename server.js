@@ -6,7 +6,7 @@ const db = require('./models/db.js');
 const passport = require('passport');
 const { init: initAuth } = require('./auth');
 const session = require('express-session');
-
+const cookieParser = require('cookie-parser');
 const app = express()
 const PORT = 3000
 
@@ -20,6 +20,7 @@ app.set('views', './views/');
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(cookieParser());
 
 initAuth();
 app.use(session({

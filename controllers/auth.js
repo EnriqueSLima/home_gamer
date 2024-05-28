@@ -1,6 +1,7 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const passport = require('passport');
+const { generateToken } = require('../auth.js');
 
 module.exports = {
   // index view
@@ -33,11 +34,15 @@ module.exports = {
     res.render('login', { css: 'login.css' })
   },
 
-  loginUser: (req, res) => {
-    passport.authenticate('local', {
-      successRedirect: '/display',
-      failureRedirect: '/login?error'
-    })(req, res);
+  loginUser: (req, res, next) => {
+    passport.authenticate('local', { session: false }, (err, user, info) => {
+      if (err || !user) {
+        return res.redirect('/login?error');
+      }
+      const token = generateToken(user);
+      res.cookie('jwtToken', token, { httpOnly: true }); // Set HttpOnly cookie
+      res.redirect('/display');
+    })(req, res, next);
   },
 
   logoutUser: (req, res) => {

@@ -1,10 +1,12 @@
 let players = [];
 let player_count = 0;
 let buyin_money;
+let rebuy_money;
+let addon_money;
 let add_player_button = document.getElementById("add_player_button");
 
 
-const fetchTournamentSettings = new Promise((resolve, reject) => {
+const fetchMoneySettings = new Promise((resolve, reject) => {
   document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch the tournament duration from the server
@@ -14,8 +16,10 @@ const fetchTournamentSettings = new Promise((resolve, reject) => {
         // Create a temporary container element to parse the HTML
         var tempContainer = document.createElement('div');
         tempContainer.innerHTML = html;
-        buyin_money = tempContainer.getElementById('buyin_money');
-        resolve(buyin_money);
+        buyin_money = tempContainer.querySelector('#buyin_money');
+        rebuy_money = tempContainer.querySelector('#rebuy_money');
+        addon_money = tempContainer.querySelector('#addon_money');
+        resolve({ buyin_money, rebuy_money, addon_money });
       })
       .catch(error => {
         // Reject the promise if there's an error

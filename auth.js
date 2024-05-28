@@ -2,6 +2,9 @@ const passport = require('passport');
 const LocalStrategy = require('passport-local');
 const bcrypt = require('bcryptjs');
 const User = require("./models/User");
+const jwt = require('jsonwebtoken');
+
+const SECRET_KEY = 'hello';
 
 module.exports = {
   init: () => {
@@ -25,10 +28,18 @@ module.exports = {
     });
 
   },
+  generateToken: (user) => {
+    const token = jwt.sign({ id: user.id }, SECRET_KEY, { expiresIn: '1h' });
+    return token;
+  },
   protectRoute: (req, res, next) => {
-    if (req.isAuthenticated()) {
-      return next();
-    }
-    res.redirect('/login?next=' + req.url);
+    const token = req.cookies.jwtToken; // Access token from cookie
+    if (!token) return res.status(401).json({ message: 'Unauthorized' });
+
+    jwt.verify(token, SECRET_KEY, (err, decoded) => {
+      if (err) return res.status(401).json({ message: 'Unauthorized' });
+      req.user = decoded;
+      next();
+    });
   }
-};
+}

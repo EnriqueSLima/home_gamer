@@ -3,3 +3,8 @@
   grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
   padding: 10px;
 }
+
+#player_structure_menu {
+  display: grid;
+  grid-template-columns: 50% 50%;
+}
