@@ -1,12 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Main Display</title>
+    <link rel="stylesheet" href="/css/display.css">
+</head>
+<body>
 <header>
 <nav>
     <ul>
-        <li><a><img src="/img/small-logo.png" alt="Home gamer logo" class="logo"></a></li>
-            <li><a href="/display"><span>Main Display</span></a></li>
-            <li><a href="/tournament-settings"><span>Tournament Settings</span></a></li>
-            <li><a href="/player-settings"><span>Player Settings</span></a></li>
-        </ul>
-    </nav>
+        <li><a href="/"><img src="/img/small-logo.png" alt="Home gamer logo" class="logo"></a></li>
+        <li><a href="/display"><span>Main Display</span></a></li>
+        <li><a href="/tournament-settings"><span>Tournament Settings</span></a></li>
+        <li><a href="/player-settings"><span>Player Settings</span></a></li>
+        {{#if (eq user.role 'admin')}}
+        <li><a href="/create-user"><span>Create User</span></a></li>
+        {{/if}}
+    </ul>
+</nav>
 </header>
 
 <!-- MAIN CONTENT -->
@@ -22,7 +33,7 @@
         <div id="clock"></div>
         <div id="current_level"></div>
         <div id="next_level"></div>
-<button id="start_button"><i class="fas fa-play"></i></button>
+        <button id="start_button"><i class="fas fa-play"></i></button>
     </div>
     <div id="right">
         <div id="time_elapsed">Time elapsed</div>
@@ -40,3 +51,7 @@
     <div>Pot total</div>
     <span>R$ </span><span id="pot_total">0</span>
 </div>
+
+<script src="/js/display.js"></script>
+</body>
+</html>

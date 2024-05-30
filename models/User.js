@@ -1,23 +1,31 @@
-const { Sequelize, DataTypes } = require('sequelize');
-const sequelize = require('./db'); // Assuming your config file is named db_config.js
+const { Model, DataTypes } = require('sequelize');
+const sequelize = require('./db');
 
-module.exports = sequelize.define(
-  'User',
-  {
-    id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    name: {
-      type: DataTypes.STRING,
-    },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-    },
-    password: {
-      type: DataTypes.STRING,
-    },
+class User extends Model { }
+
+User.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
+  name: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  email: {
+    type: DataTypes.STRING,
+    allowNull: false,
+    unique: true
+  },
+  password: {
+    type: DataTypes.STRING,
+    allowNull: false
+  },
+  role: {
+    type: DataTypes.ENUM('admin', 'manager', 'client'),
+    allowNull: false
   }
-);
+}, { sequelize, modelName: 'user' });
+
+module.exports = User;

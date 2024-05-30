@@ -4,7 +4,29 @@ let buyin_money;
 let rebuy_money;
 let addon_money;
 let add_player_button = document.getElementById("add_player_button");
+let players_left = 0;
+let players_count = 0;
 
+// Function to load and update players_left and players_count from sessionStorage
+function loadPlayersCount() {
+  const tournamentSettings = JSON.parse(sessionStorage.getItem('current_tournament_settings'));
+  if (tournamentSettings) {
+    players_left = tournamentSettings.playersLeft;
+    players_count = tournamentSettings.playersCount;
+  }
+}
+
+// Function to save updated players_left and players_count to sessionStorage
+function savePlayersCount() {
+  sessionStorage.setItem('current_tournament_settings', JSON.stringify({
+    // other settings...
+    playersLeft: players_left,
+    playersCount: players_count
+  }));
+}
+
+// When the page loads, load players count from sessionStorage
+loadPlayersCount();
 
 const fetchMoneySettings = new Promise((resolve, reject) => {
   document.addEventListener('DOMContentLoaded', function() {
@@ -89,7 +111,16 @@ class Player_display {
     };
   }
 }
+// Function to update the player div
+function updatePlayerDiv(player) {
+  let players_in = document.getElementById("players_in");
+  let player_display = new Player_display();
 
+  player_display = player_display.player_div();
+  players_in.appendChild(player_display);
+}
+
+// Function to add a player
 function add_player() {
   let player_name = document.getElementById("player_name").value;
   let buyin = document.getElementById("buyin");
@@ -99,24 +130,44 @@ function add_player() {
 
   if (buyin.checked) {
     players.push(new Player(player_name, buyin, rebuy, addon));
-    players[player_count].buyin = true;
-    if (addon.checked) {
-      players[player_count].addon = true;
-    }
-
-    let players_in = document.getElementById("players_in");
-    let player_display = new Player_display();
-
-    player_display = player_display.player_div();
-    players_in.appendChild(player_display);
-
-    player_count++;
     players_left++;
-    player_count_display.innerHTML = players_left + " / " + player_count;
-    update_chip_average_count();
-    update_pot_total();
+    players_count++;
+
+    // Update player div
+    updatePlayerDiv(players[players.length - 1]);
+
+    // Save updated players count to sessionStorage
+    savePlayersCount();
   }
 }
+//function add_player() {
+//  let player_name = document.getElementById("player_name").value;
+//  let buyin = document.getElementById("buyin");
+//  let rebuy = document.getElementById("rebuy").value;
+//  let addon = document.getElementById("addon");
+//  let add_player_button2 = document.getElementById("add_player_button2");
+//
+//  if (buyin.checked) {
+//    players.push(new Player(player_name, buyin, rebuy, addon));
+//    players[player_count].buyin = true;
+//    if (addon.checked) {
+//      players[player_count].addon = true;
+//    }
+//
+//    let players_in = document.getElementById("players_in");
+//    let player_display = new Player_display();
+//
+//    player_display = player_display.player_div();
+//    players_in.appendChild(player_display);
+//
+//    player_count++;
+//    players_left++;
+//    player_count_display.innerHTML = players_left + " / " + player_count;
+//    update_chip_average_count();
+//    update_pot_total();
+//  }
+//}
+
 function eliminate_player() {
   let players_out = document.getElementById("players_out");
   let player_node = this.parentNode.cloneNode(true);
@@ -167,5 +218,57 @@ function remove_player() {
   player_count_display.innerHTML = players_left + " / " + player_count;
   update_chip_average_count();
   update_pot_total();
+}
+
+function update_chip_average_count() {
+  let buyin_chips = document.getElementById("buyin_chips");
+  let rebuy_chips = document.getElementById("rebuy_chips");
+  let addon_chips = document.getElementById("addon_chips");
+  let rebuy_amount = 0;
+  let addon_amount = 0;
+  let average = document.getElementById("average");
+  let chip_count = document.getElementById("chip_count");
+  let average_calc = 0;
+  let chip_count_calc = 0;
+
+  for (let index = 0; index < player_count; index++) {
+    rebuy_amount += parseInt(players[index].rebuy);
+    if (players[index].addon === true) {
+      addon_amount++;
+    }
+  }
+  chip_count_calc =
+    parseInt(buyin_chips.value * player_count) +
+    parseInt(rebuy_chips.value * rebuy_amount) +
+    parseInt(addon_chips.value * addon_amount);
+  chip_count.innerHTML = chip_count_calc;
+  average_calc = parseInt(chip_count_calc / players_left);
+
+  isNaN(average_calc) ? (average_calc = 0) : "";
+  average.innerHTML = average_calc;
+}
+
+function update_pot_total() {
+  let pot_total = document.getElementById("pot_total");
+  let buyin_money = document.getElementById("buyin_money");
+  let rebuy_money = document.getElementById("rebuy_money");
+  let addon_money = document.getElementById("addon_money");
+  let rebuy_calc = 0;
+  let addon_calc = 0;
+
+  for (let index = 0; index < players.length; index++) {
+    rebuy_calc += parseInt(players[index].rebuy);
+    if (players[index].addon) addon_calc++;
+  }
+  pot_total_calc =
+    player_count * parseInt(buyin_money.value) +
+    rebuy_calc * parseInt(rebuy_money.value) +
+    addon_calc * parseInt(addon_money.value);
+
+  pot_total.innerHTML = pot_total_calc;
+  general_display[0].innerHTML = "Buy ins " + player_count;
+  general_display[1].innerHTML = "Rebuys " + rebuy_calc;
+  general_display[2].innerHTML = "Add ons " + addon_calc;
+
 }
 add_player_button.onclick = add_player;

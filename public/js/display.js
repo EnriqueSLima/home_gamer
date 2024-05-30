@@ -45,7 +45,7 @@ fetchTournamentSettings.then(() => {
   for (let index = 0; index < blindsDuration.length; index++) {
     blindsDuration[index].value *= 60;
   }
-  !sessionStorage.getItem('current_tournament_settings') ? initializeClock() : loadTournamentSettings();
+  !localStorage.getItem('current_tournament_settings') ? initializeClock() : loadTournamentSettings();
 }).catch(error => {
   console.error('Error fetching tournament settings:', error);
 });
@@ -104,7 +104,7 @@ function update_blinds() {
 
 function saveTournamentSettings() {
   console.log("SAVE TOURNAMENT SETTINGS INVOKED");
-  sessionStorage.setItem('current_tournament_settings', JSON.stringify({
+  localStorage.setItem('current_tournament_settings', JSON.stringify({
     minutes: minutes,
     seconds: seconds,
     roundsCounter: rounds_counter,
@@ -116,12 +116,12 @@ function saveTournamentSettings() {
     average: average,
     potTotal: pot_total
   }));
-  console.log(sessionStorage.getItem('current_tournament_settings'));
+  console.log(localStorage.getItem('current_tournament_settings'));
 }
 
 function loadTournamentSettings() {
   console.log("LOAD TOURNAMENT SETTINGS INVOKED");
-  const tournamentSettings = JSON.parse(sessionStorage.getItem('current_tournament_settings'));
+  const tournamentSettings = JSON.parse(localStorage.getItem('current_tournament_settings'));
   if (tournamentSettings) {
     rounds_counter = tournamentSettings.roundsCounter;
     blindsDuration[rounds_counter].value = tournamentSettings.remainingTime;
@@ -150,4 +150,4 @@ function loadTournamentSettings() {
 start_button.onclick = start_stop;
 window.addEventListener('beforeunload', saveTournamentSettings);
 
-//sessionStorage.removeItem('current_tournament_settings');
+//localStorage.removeItem('current_tournament_settings');
