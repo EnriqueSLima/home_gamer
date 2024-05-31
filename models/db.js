@@ -3,5 +3,5 @@ const { Sequelize } = require('sequelize');
 
 module.exports = new Sequelize({
   dialect: 'sqlite',
-  storage: path.join(__dirname, 'home-gamer-db.sqlite')
+  storage: path.join(__dirname, 'home-gamer-sqlite')
 });

@@ -1,7 +1,11 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('./db');
 
-class User extends Model { }
+class User extends Model {
+  toJSON() {
+    return { ...this.dataValues, password: undefined }; // Exclude password
+  }
+}
 
 User.init({
   id: {

@@ -14,9 +14,9 @@ router.post('/signup', protectRoute, authorizeRoles('admin', 'manager'), authCon
 // admin signup route
 router.post('/create-admin', protectRoute, authorizeRoles('admin'), authController.createAdminUser);
 
-// create user routes
-router.get('/create-user', protectRoute, authorizeRoles('admin'), authController.createUserView);
-router.post('/create-user', protectRoute, authorizeRoles('admin'), authController.createUser);
+// manage users routes
+router.get('/manage-users', protectRoute, authorizeRoles('admin'), authController.manageUsersView);
+router.post('/manage-users', protectRoute, authorizeRoles('admin'), authController.manageUsers);
 
 // login/out routes
 router.get('/login', authController.loginView);

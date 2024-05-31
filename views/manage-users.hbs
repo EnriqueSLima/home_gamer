@@ -1,0 +1,49 @@
+<div class="container">
+  <h2>Manage Users</h2>
+  
+  <div class="grid-container">
+    <div class="header">
+      <div>Name</div>
+      <div>Email</div>
+      <div>Role</div>
+      <div>Date Created</div>
+    </div>
+    {{#each users}}
+    <div class="row">
+      <div>{{this.name}}</div>
+      <div>{{this.email}}</div>
+      <div>{{this.role}}</div>
+      <div>{{formatDate this.createdAt}}</div>
+    </div>
+    {{/each}}
+  </div>
+
+  <div class="form-container">
+    <form action="/manage-users" method="post">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name">
+      
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email">
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
+      
+      <label for="role">Role:</label>
+      <select id="role" name="role">
+        {{#if (eq user.role 'admin')}}
+          <option value="admin">Admin</option>
+        {{/if}}
+        <option value="manager">Manager</option>
+        <option value="client">Client</option>
+      </select>
+      
+      <button type="submit">Manage Users</button>
+    </form>
+    {{#if error}}
+    <div class="error-message">
+      <p>{{error}}</p>
+    </div>
+    {{/if}}
+  </div>
+</div>

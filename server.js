@@ -6,6 +6,7 @@ const passport = require('passport');
 const { init: initAuth } = require('./auth');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
+
 const app = express();
 const PORT = 3000;
 
@@ -13,8 +14,23 @@ const PORT = 3000;
 const hbs = exphbs.create({
   defaultLayout: 'main',
   extname: 'hbs',
+  runtimeOptions: {
+    allowProtoPropertiesByDefault: true,
+    allowProtoMethodsByDefault: true
+  },
   helpers: {
     eq: (a, b) => a === b,
+    or: (a, b) => a || b,
+    formatDate: (date) => {
+      const d = new Date(date);
+      const year = d.getFullYear();
+      const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-11
+      const day = String(d.getDate()).padStart(2, '0');
+      const hours = String(d.getHours()).padStart(2, '0');
+      const minutes = String(d.getMinutes()).padStart(2, '0');
+      const seconds = String(d.getSeconds()).padStart(2, '0');
+      return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
   }
 });
 

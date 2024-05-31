@@ -1,0 +1,42 @@
+.container {
+  width: 100%;
+  padding: 20px;
+}
+
+.grid-container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+}
+
+.header,
+.row {
+  display: contents;
+}
+
+.header div,
+.row div {
+  padding: 8px;
+  border: 1px solid #ddd;
+}
+
+.header div {
+  background-color: #f2f2f2;
+  font-weight: bold;
+}
+
+.form-container {
+  margin-top: 20px;
+}
+
+.form-container label,
+.form-container input,
+.form-container select {
+  display: block;
+  margin-bottom: 10px;
+}
+
+.error-message {
+  color: red;
+  margin-top: 10px;
+}

@@ -52,31 +52,49 @@ module.exports = {
       res.status(500).json({ error: 'Error creating admin user' });
     }
   },
-
-  createUserView: (req, res) => {
-    res.render('create-user', { css: 'create-user.css' });
+  manageUsersView: async (req, res) => {
+    try {
+      const users = await User.findAll(); // Get users
+      res.render('manage-users', { css: 'manage-users.css', user: req.user, users });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error retrieving users');
+    }
   },
+  //  manageUsersView: async (req, res) => {
+  //    try {
+  //      const users = await User.findAll();
+  //      console.log(users);
+  //      console.log(users[0].name);
+  //      console.log(typeof (users));
+  //
+  //      res.render('manage-users', { css: 'manage-users.css', user: req.user, users: users });
+  //    } catch (error) {
+  //      console.log(error);
+  //      res.status(500).send('Error retrieving users');
+  //    }
+  //  },
 
-  createUser: async (req, res) => {
+  manageUsers: async (req, res) => {
     const { name, email, password, role } = req.body;
     if (!name || !email || !password || !role) {
-      return res.render('create-user', { css: 'create-user.css', error: 'Please fill all fields' });
+      return res.render('manage-users', { css: 'manage-users.css', error: 'Please fill all fields' });
     }
 
     const user = await User.findOne({ where: { email } });
     if (user) {
-      return res.render('create-user', { css: 'create-user.css', error: 'A user account already exists with this email' });
+      return res.render('manage-users', { css: 'manage-users.css', error: 'A user account already exists with this email' });
     }
 
     if (req.user.role !== 'admin') {
-      return res.render('create-user', { css: 'create-user.css', error: 'Only admins can create users' });
+      return res.render('manage-users', { css: 'manage-users.css', error: 'Only admins can manage users' });
     }
 
     try {
       await User.create({ name, email, password: bcrypt.hashSync(password, 8), role });
-      res.redirect('/create-user?created');
+      res.redirect('/manage-users?created');
     } catch (error) {
-      res.render('create-user', { css: 'create-user.css', error: 'Error creating user' });
+      res.render('manage-users', { css: 'manage-users.css', error: 'Error creating user' });
     }
   },
 
