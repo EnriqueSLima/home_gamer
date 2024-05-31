@@ -2,6 +2,7 @@ const express = require('express');
 const authController = require('../controllers/auth');
 const { protectRoute, authorizeRoles } = require('../auth');
 
+const User = require("../models/User");
 const router = express.Router();
 
 // index route
@@ -17,6 +18,17 @@ router.post('/create-admin', protectRoute, authorizeRoles('admin'), authControll
 // manage users routes
 router.get('/manage-users', protectRoute, authorizeRoles('admin'), authController.manageUsersView);
 router.post('/manage-users', protectRoute, authorizeRoles('admin'), authController.manageUsers);
+router.get('/manage-users/search', protectRoute, authorizeRoles('admin'), authController.searchUsers);
+router.post('/manage-users/delete', async (req, res) => {
+  const { userId } = req.body;
+  try {
+    await User.destroy({ where: { id: userId } });
+    res.redirect('/manage-users'); // Redirect back to the manage-users page
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Error deleting user');
+  }
+});
 
 // login/out routes
 router.get('/login', authController.loginView);

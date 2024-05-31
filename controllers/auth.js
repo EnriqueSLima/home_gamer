@@ -2,7 +2,7 @@ const bcrypt = require('bcryptjs');
 const User = require('../models/User');
 const passport = require('passport');
 const { generateToken } = require('../auth.js');
-
+const { Op } = require('sequelize');
 module.exports = {
   // index view
   indexView: (req, res) => {
@@ -55,25 +55,23 @@ module.exports = {
   manageUsersView: async (req, res) => {
     try {
       const users = await User.findAll(); // Get users
-      res.render('manage-users', { css: 'manage-users.css', user: req.user, users });
+
+      res.render('manage-users', {
+        css: 'manage-users.css',
+        //js: 'manage-users.js',
+        user: req.user
+      });
+      // res.render('manage-users', {
+      //   css: 'manage-users.css',
+      //   js: 'manage-users.js',
+      //   user: req.user,
+      //   users
+      // });
     } catch (error) {
       console.error(error);
       res.status(500).send('Error retrieving users');
     }
   },
-  //  manageUsersView: async (req, res) => {
-  //    try {
-  //      const users = await User.findAll();
-  //      console.log(users);
-  //      console.log(users[0].name);
-  //      console.log(typeof (users));
-  //
-  //      res.render('manage-users', { css: 'manage-users.css', user: req.user, users: users });
-  //    } catch (error) {
-  //      console.log(error);
-  //      res.status(500).send('Error retrieving users');
-  //    }
-  //  },
 
   manageUsers: async (req, res) => {
     const { name, email, password, role } = req.body;
@@ -97,7 +95,55 @@ module.exports = {
       res.render('manage-users', { css: 'manage-users.css', error: 'Error creating user' });
     }
   },
+  searchUsers: async (req, res) => {
+    const { query } = req.query;
 
+    try {
+      const users = await User.findAll({
+        where: {
+          // Search for users whose name or email contains the query string
+          [Op.or]: [
+            { name: { [Op.like]: `%${query}%` } },
+            { email: { [Op.like]: `%${query}%` } }
+          ]
+        }
+      });
+
+      res.render('manage-users', {
+        css: 'manage-users.css',
+        user: req.user,
+        users
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error searching users');
+    }
+  },
+  //  searchUsers: async (req, res) => {
+  //    try {
+  //      const searchTerm = req.query.term.toLowerCase();
+  //      const users = await User.findAll({
+  //        where: {
+  //          [Op.or]: [
+  //            { name: { [Op.like]: `%${searchTerm}%` } },
+  //            { email: { [Op.like]: `%${searchTerm}%` } },
+  //            { role: { [Op.like]: `%${searchTerm}%` } },
+  //            // You might want to adjust this according to your requirements
+  //          ]
+  //        }
+  //      });
+  //      res.json(users);
+  //      res.render('manage-users', {
+  //        css: 'manage-users.css',
+  //        js: 'manage-users.js',
+  //        user: req.user,
+  //        users
+  //      });
+  //    } catch (error) {
+  //      console.error(error);
+  //      res.status(500).json({ error: 'Error searching users' });
+  //    }
+  //  },
   // login view
   loginView: (req, res) => {
     res.render('login', { css: 'login.css' });
