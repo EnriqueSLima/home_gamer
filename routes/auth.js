@@ -16,9 +16,9 @@ router.post('/signup', protectRoute, authorizeRoles('admin', 'manager'), authCon
 router.post('/create-admin', protectRoute, authorizeRoles('admin'), authController.createAdminUser);
 
 // manage users routes
-router.get('/manage-users', protectRoute, authorizeRoles('admin'), authController.manageUsersView);
-router.post('/manage-users', protectRoute, authorizeRoles('admin'), authController.manageUsers);
-router.get('/manage-users/search', protectRoute, authorizeRoles('admin'), authController.searchUsers);
+router.get('/manage-users', protectRoute, authorizeRoles('admin', 'manager'), authController.manageUsersView);
+router.post('/manage-users', protectRoute, authorizeRoles('admin', 'manager'), authController.manageUsers);
+router.get('/manage-users/search', protectRoute, authorizeRoles('admin', 'manager'), authController.searchUsers);
 router.post('/manage-users/delete', async (req, res) => {
   const { userId } = req.body;
   try {

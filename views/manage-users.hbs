@@ -1,6 +1,28 @@
 <div class="container">
   <h2>Manage Users</h2>
 
+  <div class="form-container">
+    <form action="/manage-users" method="post">
+      <label for="name">Name:</label>
+      <input type="text" id="name" name="name">
+      
+      <label for="email">Email:</label>
+      <input type="email" id="email" name="email">
+      
+      <label for="password">Password:</label>
+      <input type="password" id="password" name="password">
+      
+      <label for="role">Role:</label>
+      <select id="role" name="role">
+        {{#if (eq user.role 'admin')}}
+          <option value="admin">Admin</option>
+        {{/if}}
+        <option value="manager">Manager</option>
+        <option value="client">Client</option>
+      </select>
+      
+      <button type="submit">Manage Users</button>
+    </form>
 <div class="search-container">
   <!-- Search form -->
   <form id="search-form" action="/manage-users/search" method="GET">
