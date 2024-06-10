@@ -1,7 +1,8 @@
 const express = require('express');
 const authController = require('../controllers/auth');
 const { protectRoute, authorizeRoles } = require('../auth');
-
+const Tournament = require('../models/Tournament');
+const Level = require('../models/Level');
 const User = require("../models/User");
 const router = express.Router();
 
@@ -43,4 +44,35 @@ router.get('/player-settings', protectRoute, authController.playerView);
 // admin routes
 router.get('/admin', protectRoute, authorizeRoles('admin'), authController.adminView);
 
+router.post('/tournament-settings', async (req, res) => {
+  const {
+    buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips,
+    levels // Assume levels is an array of objects with duration, small_blind, and big_blind
+  } = req.body;
+
+  try {
+    const tournament = await Tournament.create({
+      buyin_money,
+      buyin_chips,
+      rebuy_money,
+      rebuy_chips,
+      addon_money,
+      addon_chips
+    });
+
+    for (const level of levels) {
+      await Level.create({
+        duration: level.duration,
+        small_blind: level.small_blind,
+        big_blind: level.big_blind,
+        tournamentId: tournament.id
+      });
+    }
+
+    res.json({ message: 'Settings saved successfully' });
+  } catch (error) {
+    console.error('Failed to save settings:', error);
+    res.status(500).json({ error: 'Failed to save settings' });
+  }
+});
 module.exports = router;

@@ -1,7 +1,7 @@
 {{> header}}
 
 <div id="settings_menu">
-    <form autocomplete="off">
+    <form autocomplete="off" action="/tournament-settings" method="POST">
         <div id="general_settings">
             <label for=""></label>
             <label for="">Money</label>
@@ -149,5 +149,6 @@
             <input type="number" step="25" value="200000" class="small_blind">
             <input type="number" step="25" value="400000" class="big_blind">
         </div>
+<button type="submit">Save Settings</button>
     </form>
 </div>
