@@ -167,13 +167,25 @@ module.exports = {
 
   // display views
   displayView: (req, res) => {
-    res.render('display', { css: 'display.css', js: 'display.js', user: req.user });
+    res.render('display', {
+      css: 'display.css',
+      js: 'display.js',
+      user: req.user
+    });
   },
   tournamentView: (req, res) => {
-    res.render('tournament-settings', { css: 'tournament-settings.css', js: 'tournament-settings.js' });
+    res.render('tournament-settings', {
+      css: 'tournament-settings.css',
+      js: 'tournament-settings.js',
+      user: req.user
+    });
   },
   playerView: (req, res) => {
-    res.render('player-settings', { css: 'player-settings.css', js: 'player-settings.js' });
+    res.render('player-settings', {
+      css: 'player-settings.css',
+      js: 'player-settings.js',
+      user: req.user
+    });
   },
 
   // admin view

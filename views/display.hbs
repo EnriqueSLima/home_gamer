@@ -1,25 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Main Display</title>
-    <link rel="stylesheet" href="/css/display.css">
-</head>
-<body>
-<header>
-<nav>
-    <ul>
-        <li><a href="/"><img src="/img/small-logo.png" alt="Home gamer logo" class="logo"></a></li>
-        <li><a href="/display"><span>Main Display</span></a></li>
-        <li><a href="/tournament-settings"><span>Tournament Settings</span></a></li>
-        <li><a href="/player-settings"><span>Player Settings</span></a></li>
-        {{#if (or (eq user.role 'admin') (eq user.role 'manager'))}}
-        <li><a href="/manage-users"><span>Create User</span></a></li>
-        {{/if}}
-    </ul>
-</nav>
-</header>
-
+{{> header}}
 <!-- MAIN CONTENT -->
 <div id="main">
     <div id="left">
@@ -52,6 +31,3 @@
     <span>R$ </span><span id="pot_total">0</span>
 </div>
 
-<script src="/js/display.js"></script>
-</body>
-</html>

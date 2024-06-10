@@ -40,7 +40,6 @@ app.set('view engine', 'hbs');
 
 // Sets the views directory as default
 app.set('views', './views/');
-
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
 app.use(cookieParser());
