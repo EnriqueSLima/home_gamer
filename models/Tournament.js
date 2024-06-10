@@ -5,6 +5,11 @@ const Level = require('./Level');
 class Tournament extends Model { }
 
 Tournament.init({
+  id: {
+    type: DataTypes.INTEGER,
+    primaryKey: true,
+    autoIncrement: true
+  },
   buyin_money: {
     type: DataTypes.INTEGER,
     allowNull: false

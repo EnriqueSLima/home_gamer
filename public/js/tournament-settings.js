@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       levels
     };
 
-    fetch('/tournament-settings', {
+    fetch('/save-settings', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'

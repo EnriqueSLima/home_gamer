@@ -44,32 +44,66 @@ router.get('/player-settings', protectRoute, authController.playerView);
 // admin routes
 router.get('/admin', protectRoute, authorizeRoles('admin'), authController.adminView);
 
-router.post('/tournament-settings', async (req, res) => {
+router.post('/save-settings', async (req, res) => {
   const {
+    id, // Include the id in the request body
     buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips,
     levels // Assume levels is an array of objects with duration, small_blind, and big_blind
   } = req.body;
 
   try {
-    const tournament = await Tournament.create({
-      buyin_money,
-      buyin_chips,
-      rebuy_money,
-      rebuy_chips,
-      addon_money,
-      addon_chips
-    });
+    let tournament;
 
-    for (const level of levels) {
-      await Level.create({
-        duration: level.duration,
-        small_blind: level.small_blind,
-        big_blind: level.big_blind,
-        tournamentId: tournament.id
+    if (id) {
+      // If id is provided, update the existing tournament
+      tournament = await Tournament.findByPk(id);
+
+      if (!tournament) {
+        return res.status(404).json({ error: 'Tournament not found' });
+      }
+
+      tournament.buyin_money = buyin_money;
+      tournament.buyin_chips = buyin_chips;
+      tournament.rebuy_money = rebuy_money;
+      tournament.rebuy_chips = rebuy_chips;
+      tournament.addon_money = addon_money;
+      tournament.addon_chips = addon_chips;
+
+      await tournament.save();
+
+      // Delete existing levels and recreate them
+      await Level.destroy({ where: { tournamentId: tournament.id } });
+
+      for (const level of levels) {
+        await Level.create({
+          duration: level.duration,
+          small_blind: level.small_blind,
+          big_blind: level.big_blind,
+          tournamentId: tournament.id
+        });
+      }
+    } else {
+      // If id is not provided, create a new tournament
+      tournament = await Tournament.create({
+        buyin_money,
+        buyin_chips,
+        rebuy_money,
+        rebuy_chips,
+        addon_money,
+        addon_chips
       });
+
+      for (const level of levels) {
+        await Level.create({
+          duration: level.duration,
+          small_blind: level.small_blind,
+          big_blind: level.big_blind,
+          tournamentId: tournament.id
+        });
+      }
     }
 
-    res.json({ message: 'Settings saved successfully' });
+    res.json({ message: 'Settings saved successfully', tournamentId: tournament.id });
   } catch (error) {
     console.error('Failed to save settings:', error);
     res.status(500).json({ error: 'Failed to save settings' });
