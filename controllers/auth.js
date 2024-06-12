@@ -242,5 +242,40 @@ module.exports = {
       console.error('Failed to save settings:', error);
       res.status(500).json({ error: 'Failed to save settings' });
     }
+  },
+
+  loadTournament: async (req, res) => {
+    const { date } = req.query;
+
+    try {
+      const startDate = new Date(date);
+      const endDate = new Date(startDate);
+      endDate.setDate(startDate.getDate() + 1); // Ensure we cover the entire day
+
+      console.log('Query date range:', startDate, endDate); // Log the date range for debugging
+
+      const tournament = await Tournament.findOne({
+        where: {
+          createdAt: {
+            [Op.between]: [startDate, endDate]
+          }
+        },
+        include: [{
+          model: Level,
+          as: 'Levels'
+        }]
+      });
+
+      if (!tournament) {
+        console.log('Tournament not found for date:', date); // Log not found case
+        return res.status(404).json({ error: 'Tournament not found' });
+      }
+
+      console.log('Tournament found:', tournament); // Log found tournament
+      res.json(tournament);
+    } catch (error) {
+      console.error('Error loading tournament:', error);
+      res.status(500).json({ error: 'Error loading tournament' });
+    }
   }
 };

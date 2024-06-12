@@ -18,7 +18,7 @@ class Level extends Model {
       tournamentId: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'tournaments',  // This must match the model name in Tournament.js
+          model: 'tournaments',  // Ensure this matches the table name
           key: 'id'
         }
       }
@@ -26,7 +26,7 @@ class Level extends Model {
   }
 
   static associate(models) {
-    Level.belongsTo(models.Tournament, { foreignKey: 'tournamentId' });
+    Level.belongsTo(models.Tournament, { foreignKey: 'tournamentId', as: 'Tournament' });
   }
 }
 

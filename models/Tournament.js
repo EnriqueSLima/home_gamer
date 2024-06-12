@@ -36,7 +36,7 @@ class Tournament extends Model {
   }
 
   static associate(models) {
-    Tournament.hasMany(models.Level, { foreignKey: 'tournamentId' });
+    Tournament.hasMany(models.Level, { foreignKey: 'tournamentId', as: 'Levels' });
   }
 }
 
