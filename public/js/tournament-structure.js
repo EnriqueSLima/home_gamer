@@ -1,7 +1,9 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('form');
-
   const createButton = document.querySelector('#create_tournament');
+  const addLevelButton = document.querySelector('#add_level');
+  const blindStructure = document.querySelector('#blind_structure');
+
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
@@ -58,9 +60,27 @@ document.addEventListener('DOMContentLoaded', () => {
       }
     });
   };
+
+  const addLevel = () => {
+    const index = document.querySelectorAll('#blind_structure > .level').length + 1;
+    const newLevel = document.createElement('div');
+    newLevel.classList.add('level');
+    newLevel.setAttribute('data-index', index);
+    newLevel.innerHTML = `
+        <label for="level${index}" class="form-label">Level ${index}</label>
+          <input type="number" name="levels[${index}][duration]" class="form-input time" required>
+          <input type="number" step="25" name="levels[${index}][small_blind]" class="form-input small_blind" required>
+          <input type="number" step="25" name="levels[${index}][big_blind]" class="form-input big_blind" required>
+      `;
+    blindStructure.appendChild(newLevel);
+  };
   createButton.addEventListener('click', () => {
     clearForm();
     form.classList.remove('hidden');
+  });
+
+  addLevelButton.addEventListener('click', () => {
+    addLevel();
   });
 });
 
