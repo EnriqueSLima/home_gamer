@@ -1,42 +1,64 @@
-/* MENU STYLES */
-nav {
-  margin-bottom: 40px;
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
 }
 
-nav ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  overflow: hidden;
+.hidden {
+  display: none;
 }
 
-nav li a {
-  float: left;
-  display: block;
+.form-container {
+  padding: 20px;
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.structure-section {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.level {
+  display: contents;
+  /* Make .level a transparent container for grid layout */
+}
+
+.form-label {
+  font-weight: bold;
+  text-align: center;
+}
+
+.form-input {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.button-container {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+.btn {
   padding: 10px 20px;
-  text-decoration: none;
-  color: #333;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
 }
 
-nav li a:hover {
-  background-color: #f0f0f0;
-}
-
-/* SETTINGS MENU STYLES */
-#settings_menu {
-  border: white solid 1px;
-}
-
-#general_settings {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  place-items: center;
-}
-
-#blind_structure {
-  display: grid;
-  grid-template-columns: auto auto auto auto;
-  place-items: center;
+.btn:hover {
+  background-color: #0056b3;
 }
 
 /* Hide number input arrows */
@@ -50,8 +72,5 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield;
   text-align: center;
-  width: 40%;
   background-color: white;
-  border: none;
-  border-radius: 10px;
 }

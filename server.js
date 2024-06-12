@@ -21,6 +21,7 @@ const hbs = exphbs.create({
   helpers: {
     eq: (a, b) => a === b,
     or: (a, b) => a || b,
+    inc: function(value) { return parseInt(value) + 1; },
     formatDate: (date) => {
       const d = new Date(date);
       const year = d.getFullYear();
