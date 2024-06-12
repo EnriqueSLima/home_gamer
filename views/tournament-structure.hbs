@@ -1,0 +1,38 @@
+{{> header}}
+
+<div id="settings_menu">
+    <form autocomplete="off" action="/save-tournament" method="POST">
+        <div id="general_settings">
+            <label for=""></label>
+            <label for="">Money</label>
+            <label for="">Chips</label>
+            <label for="distribution">Distribution:</label>
+            <label for="buyin">Buy-in</label>
+            <input type="number" name="buyin_money" value="100" id="buyin_money">
+            <input type="number" name="buyin_chips" value="10000" id="buyin_chips">
+            <label></label>
+            <label for="rebuy">Rebuy</label>
+            <input type="number" name="rebuy_money" value="100" id="rebuy_money">
+            <input type="number" name="rebuy_chips" value="10000" id="rebuy_chips">
+            <label></label>
+            <label for="addon">Add on</label>
+            <input type="number" name="addon_money" value="100" id="addon_money">
+            <input type="number" name="addon_chips" value="10000" id="addon_chips">
+            <label></label>
+        </div>
+        <div id="blind_structure">
+            <label for=""></label>
+            <label for="">Duration (minutes)</label>
+            <label for="">Small blind</label>
+            <label for="">Big blind</label>
+
+            {{#each levels}}
+                <label for="level{{@index}}">Level {{@index}}</label>
+                <input type="number" name="levels[{{@index}}][duration]" value="{{this.duration}}" class="time">
+                <input type="number" step="25" name="levels[{{@index}}][small_blind]" value="{{this.small_blind}}" class="small_blind">
+                <input type="number" step="25" name="levels[{{@index}}][big_blind]" value="{{this.big_blind}}" class="big_blind">
+            {{/each}}
+        </div>
+        <button type="submit">Save Settings</button>
+    </form>
+</div>

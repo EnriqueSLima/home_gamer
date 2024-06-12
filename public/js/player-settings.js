@@ -32,7 +32,7 @@ const fetchMoneySettings = new Promise((resolve, reject) => {
   document.addEventListener('DOMContentLoaded', function() {
 
     // Fetch the tournament duration from the server
-    fetch('/tournament-settings')
+    fetch('/tournament-structure')
       .then(response => response.text())
       .then(html => {
         // Create a temporary container element to parse the HTML

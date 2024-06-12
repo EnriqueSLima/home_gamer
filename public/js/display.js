@@ -24,7 +24,7 @@ let pot_total = 0;
 
 const fetchTournamentSettings = new Promise((resolve, reject) => {
   console.log("DOM CONTENT LOADED");
-  fetch('/tournament-settings')
+  fetch('/tournament-structure')
     .then(response => response.text())
     .then(html => {
       var tempContainer = document.createElement('div');

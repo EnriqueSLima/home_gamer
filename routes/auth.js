@@ -26,7 +26,7 @@ router.post('/login', authController.loginUser);
 
 // display routes
 router.get('/display', protectRoute, authController.displayView);
-router.get('/tournament-settings', protectRoute, authController.tournamentView);
+router.get('/tournament-structure', protectRoute, authController.tournamentView);
 router.get('/player-settings', protectRoute, authController.playerView);
 
 // admin routes

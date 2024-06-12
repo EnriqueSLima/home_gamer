@@ -158,10 +158,41 @@ module.exports = {
   },
 
   tournamentView: (req, res) => {
-    res.render('tournament-settings', {
-      css: 'tournament-settings.css',
-      js: 'tournament-settings.js',
-      user: req.user
+    const levels = [
+      { duration: 15, small_blind: 100, big_blind: 200 },
+      { duration: 15, small_blind: 100, big_blind: 300 },
+      { duration: 15, small_blind: 200, big_blind: 400 },
+      { duration: 15, small_blind: 300, big_blind: 600 },
+      { duration: 15, small_blind: 400, big_blind: 800 },
+      { duration: 15, small_blind: 500, big_blind: 1000 },
+      { duration: 15, small_blind: 600, big_blind: 1200 },
+      { duration: 15, small_blind: 800, big_blind: 1600 },
+      { duration: 15, small_blind: 1000, big_blind: 2000 },
+      { duration: 15, small_blind: 1500, big_blind: 3000 },
+      { duration: 15, small_blind: 2000, big_blind: 4000 },
+      { duration: 15, small_blind: 3000, big_blind: 6000 },
+      { duration: 15, small_blind: 4000, big_blind: 8000 },
+      { duration: 15, small_blind: 5000, big_blind: 10000 },
+      { duration: 15, small_blind: 6000, big_blind: 12000 },
+      { duration: 15, small_blind: 8000, big_blind: 16000 },
+      { duration: 15, small_blind: 10000, big_blind: 20000 },
+      { duration: 15, small_blind: 15000, big_blind: 30000 },
+      { duration: 15, small_blind: 20000, big_blind: 40000 },
+      { duration: 15, small_blind: 30000, big_blind: 60000 },
+      { duration: 15, small_blind: 40000, big_blind: 80000 },
+      { duration: 15, small_blind: 50000, big_blind: 100000 },
+      { duration: 15, small_blind: 60000, big_blind: 120000 },
+      { duration: 15, small_blind: 80000, big_blind: 160000 },
+      { duration: 15, small_blind: 100000, big_blind: 200000 },
+      { duration: 15, small_blind: 150000, big_blind: 300000 },
+      { duration: 15, small_blind: 200000, big_blind: 400000 }
+    ];
+
+    res.render('tournament-structure', {
+      css: 'tournament-structure.css',
+      js: 'tournament-structure.js',
+      user: req.user,
+      levels
     });
   },
 
