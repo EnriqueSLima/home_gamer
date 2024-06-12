@@ -1,8 +1,11 @@
 const bcrypt = require('bcryptjs');
 const User = require('../models/User');
+const Tournament = require('../models/Tournament');
+const Level = require('../models/Level');
 const passport = require('passport');
 const { generateToken } = require('../auth.js');
 const { Op } = require('sequelize');
+
 module.exports = {
   // index view
   indexView: (req, res) => {
@@ -52,21 +55,15 @@ module.exports = {
       res.status(500).json({ error: 'Error creating admin user' });
     }
   },
+
   manageUsersView: async (req, res) => {
     try {
       const users = await User.findAll(); // Get users
 
       res.render('manage-users', {
         css: 'manage-users.css',
-        //js: 'manage-users.js',
         user: req.user
       });
-      // res.render('manage-users', {
-      //   css: 'manage-users.css',
-      //   js: 'manage-users.js',
-      //   user: req.user,
-      //   users
-      // });
     } catch (error) {
       console.error(error);
       res.status(500).send('Error retrieving users');
@@ -95,6 +92,7 @@ module.exports = {
       res.render('manage-users', { css: 'manage-users.css', error: 'Error creating user' });
     }
   },
+
   searchUsers: async (req, res) => {
     const { query } = req.query;
 
@@ -119,32 +117,18 @@ module.exports = {
       res.status(500).send('Error searching users');
     }
   },
-  //  searchUsers: async (req, res) => {
-  //    try {
-  //      const searchTerm = req.query.term.toLowerCase();
-  //      const users = await User.findAll({
-  //        where: {
-  //          [Op.or]: [
-  //            { name: { [Op.like]: `%${searchTerm}%` } },
-  //            { email: { [Op.like]: `%${searchTerm}%` } },
-  //            { role: { [Op.like]: `%${searchTerm}%` } },
-  //            // You might want to adjust this according to your requirements
-  //          ]
-  //        }
-  //      });
-  //      res.json(users);
-  //      res.render('manage-users', {
-  //        css: 'manage-users.css',
-  //        js: 'manage-users.js',
-  //        user: req.user,
-  //        users
-  //      });
-  //    } catch (error) {
-  //      console.error(error);
-  //      res.status(500).json({ error: 'Error searching users' });
-  //    }
-  //  },
-  // login view
+
+  deleteUser: async (req, res) => {
+    const { userId } = req.body;
+    try {
+      await User.destroy({ where: { id: userId } });
+      res.redirect('/manage-users'); // Redirect back to the manage-users page
+    } catch (error) {
+      console.error(error);
+      res.status(500).send('Error deleting user');
+    }
+  },
+
   loginView: (req, res) => {
     res.render('login', { css: 'login.css' });
   },
@@ -165,7 +149,6 @@ module.exports = {
     res.redirect('login');
   },
 
-  // display views
   displayView: (req, res) => {
     res.render('display', {
       css: 'display.css',
@@ -173,6 +156,7 @@ module.exports = {
       user: req.user
     });
   },
+
   tournamentView: (req, res) => {
     res.render('tournament-settings', {
       css: 'tournament-settings.css',
@@ -180,6 +164,7 @@ module.exports = {
       user: req.user
     });
   },
+
   playerView: (req, res) => {
     res.render('player-settings', {
       css: 'player-settings.css',
@@ -188,11 +173,42 @@ module.exports = {
     });
   },
 
-  // admin view
   adminView: (req, res) => {
     if (req.user.role !== 'admin') {
       return res.status(403).send('Forbidden');
     }
     res.render('admin', { css: 'admin.css' });
+  },
+
+  saveTournament: async (req, res) => {
+    const {
+      buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips,
+      levels // Assume levels is an array of objects with duration, small_blind, and big_blind
+    } = req.body;
+
+    try {
+      const tournament = await Tournament.create({
+        buyin_money,
+        buyin_chips,
+        rebuy_money,
+        rebuy_chips,
+        addon_money,
+        addon_chips
+      });
+
+      for (const level of levels) {
+        await Level.create({
+          duration: level.duration,
+          small_blind: level.small_blind,
+          big_blind: level.big_blind,
+          tournamentId: tournament.id
+        });
+      }
+
+      res.json({ message: 'Tournament saved successfully', tournamentId: tournament.id });
+    } catch (error) {
+      console.error('Failed to save tournament:', error);
+      res.status(500).json({ error: 'Failed to save tournament' });
+    }
   }
 };

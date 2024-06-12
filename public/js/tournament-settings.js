@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
       const big_blind = div.querySelector('.big_blind').value;
       levels.push({ duration, small_blind, big_blind });
     });
-
+    console.log(levels);
     const formData = {
       buyin_money: form.querySelector('#buyin_money').value,
       buyin_chips: form.querySelector('#buyin_chips').value,
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', () => {
       levels
     };
 
-    fetch('/save-settings', {
+    fetch('/save-tournament', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
