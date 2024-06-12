@@ -25,7 +25,7 @@ const hbs = exphbs.create({
     formatDate: (date) => {
       const d = new Date(date);
       const year = d.getFullYear();
-      const month = String(d.getMonth() + 1).padStart(2, '0'); // Months are 0-11
+      const month = String(d.getMonth() + 1).padStart(2, '0');
       const day = String(d.getDate()).padStart(2, '0');
       const hours = String(d.getHours()).padStart(2, '0');
       const minutes = String(d.getMinutes()).padStart(2, '0');
@@ -35,11 +35,11 @@ const hbs = exphbs.create({
   }
 });
 
-// Sets handlebars as default viewing engine and default layout to main.hbs
+// Set handlebars as the default view engine and default layout to main.hbs
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
 
-// Sets the views directory as default
+// Set the views directory as the default
 app.set('views', './views/');
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -55,7 +55,7 @@ app.use(session({
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Used to serve static files
+// Serve static files
 app.use(express.static('public'));
 
 app.use('/', authRoutes);

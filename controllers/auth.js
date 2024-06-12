@@ -213,11 +213,12 @@ module.exports = {
 
   saveTournament: async (req, res) => {
     const {
-      buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips,
-      levels // Assume levels is an array of objects with duration, small_blind, and big_blind
+      buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips, levels
     } = req.body;
 
+    console.log('Received data:', { buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips, levels });
     try {
+      // Create a new tournament
       const tournament = await Tournament.create({
         buyin_money,
         buyin_chips,
@@ -236,10 +237,10 @@ module.exports = {
         });
       }
 
-      res.json({ message: 'Tournament saved successfully', tournamentId: tournament.id });
+      res.json({ message: 'Settings saved successfully', tournamentId: tournament.id });
     } catch (error) {
-      console.error('Failed to save tournament:', error);
-      res.status(500).json({ error: 'Failed to save tournament' });
+      console.error('Failed to save settings:', error);
+      res.status(500).json({ error: 'Failed to save settings' });
     }
   }
 };

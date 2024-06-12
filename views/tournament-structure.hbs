@@ -9,18 +9,18 @@
             <label for="distribution" class="form-label">distribution:</label>
 
             <label for="buyin" class="form-label">buy-in</label>
-            <input type="number" name="buyin_money" class="form-input" id="buyin_money">
-            <input type="number" name="buyin_chips" class="form-input" id="buyin_chips">
+            <input type="number" name="buyin_money" class="form-input" id="buyin_money" required>
+            <input type="number" name="buyin_chips" class="form-input" id="buyin_chips" required>
             <label></label>
 
             <label for="rebuy" class="form-label">rebuy</label>
-            <input type="number" name="rebuy_money" class="form-input" id="rebuy_money">
-            <input type="number" name="rebuy_chips" class="form-input" id="rebuy_chips">
+            <input type="number" name="rebuy_money" class="form-input" id="rebuy_money" required>
+            <input type="number" name="rebuy_chips" class="form-input" id="rebuy_chips" required>
             <label></label>
 
             <label for="addon" class="form-label">add on</label>
-            <input type="number" name="addon_money" class="form-input" id="addon_money">
-            <input type="number" name="addon_chips" class="form-input" id="addon_chips">
+            <input type="number" name="addon_money" class="form-input" id="addon_money" required>
+            <input type="number" name="addon_chips" class="form-input" id="addon_chips" required>
             <label></label>
         </div>
         <div id="blind_structure" class="structure-section">
@@ -31,12 +31,13 @@
 
             <div class="level" data-index="1">
                 <label for="level1" class="form-label">level 1</label>
-                <input type="number" name="levels[1][duration]" class="form-input time">
-                <input type="number" step="25" name="levels[1][small_blind]" class="form-input small_blind">
-                <input type="number" step="25" name="levels[1][big_blind]" class="form-input big_blind">
+                <input type="number" name="levels[1][duration]" class="form-input time" required>
+                <input type="number" step="25" name="levels[1][small_blind]" class="form-input small_blind" required>
+                <input type="number" step="25" name="levels[1][big_blind]" class="form-input big_blind" required>
             </div>
         </div>
-        <button type="button" id="add_level" class="btn">add level</button>
+        <button type="button" id="add_level" class="btn">Add level</button>
+        <button type="submit" id="save_tournament" class="btn">Save tournament</button>
     </form>
     <div id="tournament_buttons" class="button-container">
         <button id="create_tournament" class="btn">create tournament</button>
