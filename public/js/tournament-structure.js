@@ -12,6 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.classList.remove('hidden');
     saveTournamentBtn.classList.remove('hidden');
     updateTournamentBtn.classList.add('hidden');
+    saveTournamentBtn.disabled = false;
     updateTournamentBtn.disabled = true;
   });
 
@@ -63,7 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
         form.classList.remove('hidden');
         saveTournamentBtn.classList.add('hidden');
         updateTournamentBtn.classList.remove('hidden');
-        saveTournamentBtn.disabled = true;
+        saveTournamentBtn.disabled = false;
+        updateTournamentBtn.disabled = true;
       })
       .catch(error => {
         console.error('Error loading tournament:', error);
