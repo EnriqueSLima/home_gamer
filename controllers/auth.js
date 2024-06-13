@@ -187,7 +187,6 @@ module.exports = {
       { duration: 15, small_blind: 150000, big_blind: 300000 },
       { duration: 15, small_blind: 200000, big_blind: 400000 }
     ];
-
     res.render('tournament-structure', {
       css: 'tournament-structure.css',
       js: 'tournament-structure.js',
@@ -216,7 +215,6 @@ module.exports = {
       buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips, levels
     } = req.body;
 
-    console.log('Received data:', { buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips, levels });
     try {
       // Create a new tournament
       const tournament = await Tournament.create({
@@ -228,6 +226,7 @@ module.exports = {
         addon_chips
       });
 
+      // Create levels for the tournament
       for (const level of levels) {
         await Level.create({
           duration: level.duration,
@@ -237,7 +236,9 @@ module.exports = {
         });
       }
 
-      res.json({ message: 'Settings saved successfully', tournamentId: tournament.id });
+      // Respond with the ID of the saved tournament
+      res.json({ tournamentId: tournament.id });
+
     } catch (error) {
       console.error('Failed to save settings:', error);
       res.status(500).json({ error: 'Failed to save settings' });

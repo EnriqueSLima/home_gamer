@@ -1,18 +1,119 @@
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.querySelector('form');
+  const createTournamentBtn = document.querySelector('#create_tournament');
+  const loadTournamentBtn = document.querySelector('#load_tournament');
+  const addLevelBtn = document.querySelector('#add_level');
+  const saveTournamentBtn = document.querySelector('#save_tournament');
+  const updateTournamentBtn = document.querySelector('#update_tournament');
 
-  const createButton = document.querySelector('#create_tournament');
-  const loadButton = document.querySelector('#load_tournament');
-  const addLevelButton = document.querySelector('#add_level');
+  // Event listener for Create tournament button
+  createTournamentBtn.addEventListener('click', () => {
+    clearForm();
+    form.classList.remove('hidden');
+    saveTournamentBtn.classList.remove('hidden');
+    updateTournamentBtn.classList.add('hidden');
+    updateTournamentBtn.disabled = true;
+  });
 
+  // Event listener for Load tournament button
+  loadTournamentBtn.addEventListener('click', () => {
+    clearForm();
+    const tournamentId = prompt("Enter the ID of the tournament:");
+    if (!tournamentId) {
+      alert("Tournament ID is required");
+      return;
+    }
+
+    fetch(`/tournament/${tournamentId}`)
+      .then(response => response.json())
+      .then(data => {
+        if (data.error) {
+          alert(data.error);
+          return;
+        }
+
+        const tournament = data.tournament;
+        const levels = data.levels;
+
+        // Populate form with the loaded tournament data
+        form.querySelector('#buyin_money').value = tournament.buyin_money;
+        form.querySelector('#buyin_chips').value = tournament.buyin_chips;
+        form.querySelector('#rebuy_money').value = tournament.rebuy_money;
+        form.querySelector('#rebuy_chips').value = tournament.rebuy_chips;
+        form.querySelector('#addon_money').value = tournament.addon_money;
+        form.querySelector('#addon_chips').value = tournament.addon_chips;
+
+        // Clear existing levels
+        document.querySelectorAll('#blind_structure > tbody > .level').forEach(tr => tr.remove());
+
+        // Add levels
+        levels.forEach((level, index) => {
+          const newLevel = document.createElement('tr');
+          newLevel.classList.add('level');
+          newLevel.setAttribute('data-index', index + 1);
+          newLevel.innerHTML = `
+            <td>Level ${index + 1}</td>
+            <td><input type="number" name="levels[${index + 1}][duration]" class="form-input time" value="${level.duration}" required></td>
+            <td><input type="number" step="25" name="levels[${index + 1}][small_blind]" class="form-input small_blind" value="${level.small_blind}" required></td>
+            <td><input type="number" step="25" name="levels[${index + 1}][big_blind]" class="form-input big_blind" value="${level.big_blind}" required></td>
+          `;
+          document.querySelector('#blind_structure > tbody').appendChild(newLevel);
+        });
+
+        form.classList.remove('hidden');
+        saveTournamentBtn.classList.add('hidden');
+        updateTournamentBtn.classList.remove('hidden');
+        saveTournamentBtn.disabled = true;
+      })
+      .catch(error => {
+        console.error('Error loading tournament:', error);
+        alert('Error loading tournament');
+      });
+  });
+
+  // Function to clear the form inputs
+  const clearForm = () => {
+    form.querySelector('#buyin_money').value = '';
+    form.querySelector('#buyin_chips').value = '';
+    form.querySelector('#rebuy_money').value = '';
+    form.querySelector('#rebuy_chips').value = '';
+    form.querySelector('#addon_money').value = '';
+    form.querySelector('#addon_chips').value = '';
+
+    document.querySelectorAll('#blind_structure > tbody > .level').forEach((tr, index) => {
+      tr.remove();
+    });
+  };
+
+  // Function to add a new level
+  const addLevel = () => {
+    const index = document.querySelectorAll('#blind_structure > tbody > .level').length + 1;
+    const newLevel = document.createElement('tr');
+    newLevel.classList.add('level');
+    newLevel.setAttribute('data-index', index);
+    newLevel.innerHTML = `
+      <td>Level ${index}</td>
+      <td><input type="number" name="levels[${index}][duration]" class="form-input time" required></td>
+      <td><input type="number" step="25" name="levels[${index}][small_blind]" class="form-input small_blind" required></td>
+      <td><input type="number" step="25" name="levels[${index}][big_blind]" class="form-input big_blind" required></td>
+    `;
+    document.querySelector('#blind_structure > tbody').appendChild(newLevel);
+  };
+
+  // Event listener for Add level button
+  addLevelBtn.addEventListener('click', () => {
+    addLevel();
+  });
+
+  // Event listener for form submission (Save tournament)
   form.addEventListener('submit', (event) => {
     event.preventDefault();
 
     const levels = [];
-    document.querySelectorAll('#blind_structure > .level').forEach((div, index) => {
-      const duration = div.querySelector('.time').value;
-      const small_blind = div.querySelector('.small_blind').value;
-      const big_blind = div.querySelector('.big_blind').value;
+    document.querySelectorAll('#blind_structure > tbody > .level').forEach((tr, index) => {
+      const duration = tr.querySelector('.time').value;
+      const small_blind = tr.querySelector('.small_blind').value;
+      const big_blind = tr.querySelector('.big_blind').value;
       levels.push({ duration, small_blind, big_blind });
     });
 
@@ -41,103 +142,5 @@ document.addEventListener('DOMContentLoaded', () => {
       .catch(error => {
         console.error('Error:', error);
       });
-  });
-
-  const clearForm = () => {
-    form.querySelector('#buyin_money').value = '';
-    form.querySelector('#buyin_chips').value = '';
-    form.querySelector('#rebuy_money').value = '';
-    form.querySelector('#rebuy_chips').value = '';
-    form.querySelector('#addon_money').value = '';
-    form.querySelector('#addon_chips').value = '';
-
-    document.querySelectorAll('#blind_structure > .level').forEach((div, index) => {
-      if (index === 0) {
-        div.querySelector('.time').value = '';
-        div.querySelector('.small_blind').value = '';
-        div.querySelector('.big_blind').value = '';
-      } else {
-        div.remove();
-      }
-    });
-  };
-
-  const addLevel = () => {
-    const index = document.querySelectorAll('#blind_structure > .level').length + 1;
-    const newLevel = document.createElement('div');
-    newLevel.classList.add('level');
-    newLevel.setAttribute('data-index', index);
-    newLevel.innerHTML = `
-      <label for="level${index}" class="form-label">Level ${index}</label>
-      <input type="number" name="levels[${index}][duration]" class="form-input time" required>
-      <input type="number" step="25" name="levels[${index}][small_blind]" class="form-input small_blind" required>
-      <input type="number" step="25" name="levels[${index}][big_blind]" class="form-input big_blind" required>
-    `;
-    document.querySelector('#blind_structure').appendChild(newLevel);
-  };
-
-  createButton.addEventListener('click', () => {
-    clearForm();
-    form.classList.remove('hidden');
-  });
-
-  loadButton.addEventListener('click', () => {
-    const tournamentId = prompt("Enter the ID of the tournament:");
-    if (!tournamentId) {
-      alert("Tournament ID is required");
-      return;
-    }
-
-    fetch(`/tournament/${tournamentId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          alert(data.error);
-          return;
-        }
-
-        const tournament = data.tournament;
-        const levels = data.levels;
-
-        // Populate form with the loaded tournament data
-        //form.querySelector('#tournament_id').value = tournament.id;
-        form.querySelector('#buyin_money').value = tournament.buyin_money;
-        form.querySelector('#buyin_chips').value = tournament.buyin_chips;
-        form.querySelector('#rebuy_money').value = tournament.rebuy_money;
-        form.querySelector('#rebuy_chips').value = tournament.rebuy_chips;
-        form.querySelector('#addon_money').value = tournament.addon_money;
-        form.querySelector('#addon_chips').value = tournament.addon_chips;
-
-        // Clear existing levels
-        document.querySelectorAll('#blind_structure > .level').forEach((div, index) => {
-          if (index === 0) {
-            div.remove();
-          }
-        });
-
-        // Add levels
-        levels.forEach((level, index) => {
-          const newLevel = document.createElement('div');
-          newLevel.classList.add('level');
-          newLevel.setAttribute('data-index', index + 1);
-          newLevel.innerHTML = `
-            <label for="level${index + 1}" class="form-label">Level ${index + 1}</label>
-            <input type="number" name="levels[${index + 1}][duration]" class="form-input time" value="${level.duration}" required>
-            <input type="number" step="25" name="levels[${index + 1}][small_blind]" class="form-input small_blind" value="${level.small_blind}" required>
-            <input type="number" step="25" name="levels[${index + 1}][big_blind]" class="form-input big_blind" value="${level.big_blind}" required>
-          `;
-          document.querySelector('#blind_structure').appendChild(newLevel);
-        });
-
-        form.classList.remove('hidden');
-      })
-      .catch(error => {
-        console.error('Error loading tournament:', error);
-        alert('Error loading tournament');
-      });
-  });
-
-  addLevelButton.addEventListener('click', () => {
-    addLevel();
   });
 });
