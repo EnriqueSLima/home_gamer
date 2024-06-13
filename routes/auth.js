@@ -32,8 +32,10 @@ router.get('/player-settings', protectRoute, authController.playerView);
 // Admin routes
 router.get('/admin', protectRoute, authorizeRoles('admin'), authController.adminView);
 
-// Tournament routes
+// Save tournament settings route
 router.post('/save-tournament', protectRoute, authController.saveTournament);
 
-router.get('/load-tournament', protectRoute, authController.loadTournament);
+// Load tournament by ID
+router.get('/tournament/:id', protectRoute, authController.getTournamentById);
+
 module.exports = router;

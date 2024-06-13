@@ -244,22 +244,12 @@ module.exports = {
     }
   },
 
-  loadTournament: async (req, res) => {
-    const { date } = req.query;
+  getTournamentById: async (req, res) => {
+    const { id } = req.params;
 
     try {
-      const startDate = new Date(date);
-      const endDate = new Date(startDate);
-      endDate.setDate(startDate.getDate() + 1); // Ensure we cover the entire day
-
-      console.log('Query date range:', startDate, endDate); // Log the date range for debugging
-
       const tournament = await Tournament.findOne({
-        where: {
-          createdAt: {
-            [Op.between]: [startDate, endDate]
-          }
-        },
+        where: { id },
         include: [{
           model: Level,
           as: 'Levels'
@@ -267,15 +257,13 @@ module.exports = {
       });
 
       if (!tournament) {
-        console.log('Tournament not found for date:', date); // Log not found case
         return res.status(404).json({ error: 'Tournament not found' });
       }
 
-      console.log('Tournament found:', tournament); // Log found tournament
-      res.json(tournament);
+      res.json({ tournament, levels: tournament.Levels });
     } catch (error) {
-      console.error('Error loading tournament:', error);
-      res.status(500).json({ error: 'Error loading tournament' });
+      console.error('Error fetching tournament by ID:', error);
+      res.status(500).json({ error: 'Error fetching tournament' });
     }
   }
 };

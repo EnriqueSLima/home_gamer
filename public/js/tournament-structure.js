@@ -82,15 +82,13 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   loadButton.addEventListener('click', () => {
-    const date = prompt("Enter the creation date of the tournament (YYYY-MM-DD):");
-    if (!date) {
-      alert("Date is required");
+    const tournamentId = prompt("Enter the ID of the tournament:");
+    if (!tournamentId) {
+      alert("Tournament ID is required");
       return;
     }
 
-    const formattedDate = new Date(date).toISOString().split('T')[0]; // Ensure date is formatted as YYYY-MM-DD
-
-    fetch(`/load-tournament?date=${encodeURIComponent(formattedDate)}`)
+    fetch(`/tournament/${tournamentId}`)
       .then(response => response.json())
       .then(data => {
         if (data.error) {
@@ -98,20 +96,17 @@ document.addEventListener('DOMContentLoaded', () => {
           return;
         }
 
-        // Check if Levels are included in the response
-        if (!data.Levels) {
-          console.error('Error: Levels not found in the response data');
-          alert('Error loading levels');
-          return;
-        }
+        const tournament = data.tournament;
+        const levels = data.levels;
 
         // Populate form with the loaded tournament data
-        form.querySelector('#buyin_money').value = data.buyin_money;
-        form.querySelector('#buyin_chips').value = data.buyin_chips;
-        form.querySelector('#rebuy_money').value = data.rebuy_money;
-        form.querySelector('#rebuy_chips').value = data.rebuy_chips;
-        form.querySelector('#addon_money').value = data.addon_money;
-        form.querySelector('#addon_chips').value = data.addon_chips;
+        //form.querySelector('#tournament_id').value = tournament.id;
+        form.querySelector('#buyin_money').value = tournament.buyin_money;
+        form.querySelector('#buyin_chips').value = tournament.buyin_chips;
+        form.querySelector('#rebuy_money').value = tournament.rebuy_money;
+        form.querySelector('#rebuy_chips').value = tournament.rebuy_chips;
+        form.querySelector('#addon_money').value = tournament.addon_money;
+        form.querySelector('#addon_chips').value = tournament.addon_chips;
 
         // Clear existing levels
         document.querySelectorAll('#blind_structure > .level').forEach((div, index) => {
@@ -121,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Add levels
-        data.Levels.forEach((level, index) => {
+        levels.forEach((level, index) => {
           const newLevel = document.createElement('div');
           newLevel.classList.add('level');
           newLevel.setAttribute('data-index', index + 1);
