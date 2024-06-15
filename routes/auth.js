@@ -7,8 +7,8 @@ const router = express.Router();
 router.get('/', authController.indexView);
 
 // Signup routes
-router.get('/signup', protectRoute, authorizeRoles('admin', 'manager'), authController.registerView);
-router.post('/signup', protectRoute, authorizeRoles('admin', 'manager'), authController.registerUser);
+router.get('/signup', authController.registerView);
+router.post('/signup', authController.registerUser);
 
 // Admin signup route
 router.post('/create-admin', protectRoute, authorizeRoles('admin'), authController.createAdminUser);

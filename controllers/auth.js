@@ -18,8 +18,10 @@ module.exports = {
   },
 
   registerUser: async (req, res) => {
-    const { name, email, password, role } = req.body;
-    if (!name || !email || !password || !role) {
+    const { name, email, password } = req.body;
+    const role = 'client';
+
+    if (!name || !email || !password) {
       return res.render('signup', { css: 'signup.css', error: 'Please fill all fields' });
     }
 
@@ -28,12 +30,11 @@ module.exports = {
       return res.render('signup', { css: 'signup.css', error: 'A user account already exists with this email' });
     }
 
-    // Allow only admins to register managers and managers to register clients
-    if ((req.user.role === 'admin' && role === 'manager') || (req.user.role === 'manager' && role === 'client')) {
+    try {
       await User.create({ name, email, password: bcrypt.hashSync(password, 8), role });
       return res.redirect('login?registrationdone');
-    } else {
-      return res.render('signup', { css: 'signup.css', error: 'Unauthorized role assignment' });
+    } catch (error) {
+      return res.render('signup', { css: 'signup.css', error: 'Error creating user' });
     }
   },
 
