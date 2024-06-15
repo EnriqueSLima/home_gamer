@@ -301,5 +301,29 @@ module.exports = {
       console.error('Failed to update tournament:', error);
       res.status(500).json({ error: 'Failed to update tournament' });
     }
+  },
+
+  deleteTournament: async (req, res) => {
+    const { id } = req.params;
+
+    try {
+      // Find the tournament
+      const tournament = await Tournament.findByPk(id);
+      if (!tournament) {
+        return res.status(404).json({ error: 'Tournament not found' });
+      }
+
+      // Delete associated levels
+      await Level.destroy({ where: { tournamentId: id } });
+
+      // Delete the tournament
+      await tournament.destroy();
+
+      // Respond with success message
+      res.json({ message: 'Tournament deleted successfully' });
+    } catch (error) {
+      console.error('Failed to delete tournament:', error);
+      res.status(500).json({ error: 'Failed to delete tournament' });
+    }
   }
 };

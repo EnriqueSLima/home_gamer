@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const addLevelBtn = document.querySelector('#add_level');
   const saveTournamentBtn = document.querySelector('#save_tournament');
   const updateTournamentBtn = document.querySelector('#update_tournament');
+  const deleteTournamentBtn = document.querySelector('#delete_tournament'); // Reference to delete button
 
   let currentTournamentId = null;
 
@@ -13,8 +14,10 @@ document.addEventListener('DOMContentLoaded', () => {
     form.classList.remove('hidden');
     saveTournamentBtn.classList.remove('hidden');
     updateTournamentBtn.classList.add('hidden');
+    deleteTournamentBtn.classList.add('hidden');
     saveTournamentBtn.disabled = false;
     updateTournamentBtn.disabled = true;
+    deleteTournamentBtn.disabled = true;
   });
 
   loadTournamentBtn.addEventListener('click', () => {
@@ -63,8 +66,10 @@ document.addEventListener('DOMContentLoaded', () => {
         form.classList.remove('hidden');
         saveTournamentBtn.classList.add('hidden');
         updateTournamentBtn.classList.remove('hidden');
+        deleteTournamentBtn.classList.remove('hidden'); // Show delete button
         saveTournamentBtn.disabled = true;
         updateTournamentBtn.disabled = false;
+        deleteTournamentBtn.disabled = false; // Enable delete button
       })
       .catch(error => {
         console.error('Error loading tournament:', error);
@@ -84,6 +89,11 @@ document.addEventListener('DOMContentLoaded', () => {
   updateTournamentBtn.addEventListener('click', (event) => {
     event.preventDefault();
     updateTournament();
+  });
+
+  deleteTournamentBtn.addEventListener('click', (event) => {
+    event.preventDefault();
+    deleteTournament();
   });
 
   const saveTournament = () => {
@@ -151,6 +161,34 @@ document.addEventListener('DOMContentLoaded', () => {
         console.error('Error:', error);
         alert('Error updating tournament');
       });
+  };
+
+  const deleteTournament = () => {
+    if (!currentTournamentId) {
+      alert('No tournament loaded for deletion');
+      return;
+    }
+
+    if (confirm('Are you sure you want to delete this tournament?')) {
+      fetch(`/delete-tournament/${currentTournamentId}`, {
+        method: 'DELETE'
+      })
+        .then(response => response.json())
+        .then(data => {
+          console.log('Success:', data);
+          alert('Tournament deleted successfully!');
+          clearForm();
+          form.classList.add('hidden');
+          saveTournamentBtn.classList.add('hidden');
+          updateTournamentBtn.classList.add('hidden');
+          deleteTournamentBtn.classList.add('hidden');
+          currentTournamentId = null;
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          alert('Error deleting tournament');
+        });
+    }
   };
 
   const collectLevels = () => {

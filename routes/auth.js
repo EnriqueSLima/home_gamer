@@ -36,5 +36,6 @@ router.get('/admin', protectRoute, authorizeRoles('admin'), authController.admin
 router.post('/save-tournament', protectRoute, authController.saveTournament);
 router.get('/tournament/:id', protectRoute, authController.getTournamentById);
 router.post('/update-tournament/:id', protectRoute, authController.updateTournament);
+router.delete('/delete-tournament/:id', protectRoute, authController.deleteTournament);
 
 module.exports = router;
