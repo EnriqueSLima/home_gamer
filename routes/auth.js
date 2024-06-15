@@ -32,7 +32,7 @@ router.get('/player-settings', protectRoute, authController.playerView);
 // Admin routes
 router.get('/admin', protectRoute, authorizeRoles('admin'), authController.adminView);
 
-// Tournaments route
+// Tournament routes
 router.post('/save-tournament', protectRoute, authController.saveTournament);
 router.get('/tournament/:id', protectRoute, authController.getTournamentById);
 router.post('/update-tournament/:id', protectRoute, authController.updateTournament);
