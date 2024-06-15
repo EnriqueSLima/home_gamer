@@ -1,7 +1,7 @@
 {{> header}}
 
 <div id="structure_menu">
-    <form id="tournament_form" class="hidden form-container" autocomplete="off" action="/save-tournament" method="post">
+    <form id="tournament_form" class="hidden form-container" autocomplete="off">
         <table>
             <thead>
                 <tr>
@@ -51,11 +51,11 @@
             </tbody>
         </table>
         <button type="button" id="add_level" class="btn">Add level</button>
-        <button type="submit" id="save_tournament" class="btn hidden" disabled>Save tournament</button>
-        <button id="update_tournament" class="btn hidden" disabled>Update tournament</button>
+        <button type="button" id="save_tournament" class="btn hidden" disabled>Save tournament</button>
+        <button type="button" id="update_tournament" class="btn hidden" disabled>Update tournament</button>
     </form>
     <div id="tournament_buttons" class="button-container">
-        <button id="create_tournament" class="btn">Create tournament</button>
-        <button id="load_tournament" class="btn">Load tournament</button>
+        <button type="button" id="create_tournament" class="btn">Create tournament</button>
+        <button type="button" id="load_tournament" class="btn">Load tournament</button>
     </div>
 </div>

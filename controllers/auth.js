@@ -216,7 +216,6 @@ module.exports = {
     } = req.body;
 
     try {
-      // Create a new tournament
       const tournament = await Tournament.create({
         buyin_money,
         buyin_chips,
@@ -226,7 +225,6 @@ module.exports = {
         addon_chips
       });
 
-      // Create levels for the tournament
       for (const level of levels) {
         await Level.create({
           duration: level.duration,
@@ -236,12 +234,10 @@ module.exports = {
         });
       }
 
-      // Respond with the ID of the saved tournament
       res.json({ tournamentId: tournament.id });
-
     } catch (error) {
-      console.error('Failed to save settings:', error);
-      res.status(500).json({ error: 'Failed to save settings' });
+      console.error('Failed to save tournament:', error);
+      res.status(500).json({ error: 'Failed to save tournament' });
     }
   },
 
@@ -265,6 +261,45 @@ module.exports = {
     } catch (error) {
       console.error('Error fetching tournament by ID:', error);
       res.status(500).json({ error: 'Error fetching tournament' });
+    }
+  },
+
+  updateTournament: async (req, res) => {
+    const { id } = req.params;
+    const {
+      buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips, levels
+    } = req.body;
+
+    try {
+      const tournament = await Tournament.findByPk(id);
+      if (!tournament) {
+        return res.status(404).json({ error: 'Tournament not found' });
+      }
+
+      await tournament.update({
+        buyin_money,
+        buyin_chips,
+        rebuy_money,
+        rebuy_chips,
+        addon_money,
+        addon_chips
+      });
+
+      await Level.destroy({ where: { tournamentId: id } });
+
+      for (const level of levels) {
+        await Level.create({
+          duration: level.duration,
+          small_blind: level.small_blind,
+          big_blind: level.big_blind,
+          tournamentId: id
+        });
+      }
+
+      res.json({ message: 'Tournament updated successfully' });
+    } catch (error) {
+      console.error('Failed to update tournament:', error);
+      res.status(500).json({ error: 'Failed to update tournament' });
     }
   }
 };
