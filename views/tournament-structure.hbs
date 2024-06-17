@@ -1,7 +1,7 @@
 {{> header}}
 
 <div id="structure_menu">
-    <form id="tournament_form" class="hidden form-container" autocomplete="off">
+    <form id="tournament_form" class="form-container {{#if formHidden}}hidden{{/if}}" autocomplete="off">
         <table>
             <thead>
                 <tr>
@@ -14,20 +14,20 @@
             <tbody id="general_structure" class="structure-section">
                 <tr>
                     <td>Buy-in</td>
-                    <td><input type="number" name="buyin_money" class="form-input" id="buyin_money" required></td>
-                    <td><input type="number" name="buyin_chips" class="form-input" id="buyin_chips" required></td>
+                    <td><input type="number" name="buyin_money" class="form-input" id="buyin_money" value="{{tournament.buyin_money}}" required></td>
+                    <td><input type="number" name="buyin_chips" class="form-input" id="buyin_chips" value="{{tournament.buyin_chips}}" required></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Rebuy</td>
-                    <td><input type="number" name="rebuy_money" class="form-input" id="rebuy_money" required></td>
-                    <td><input type="number" name="rebuy_chips" class="form-input" id="rebuy_chips" required></td>
+                    <td><input type="number" name="rebuy_money" class="form-input" id="rebuy_money" value="{{tournament.rebuy_money}}" required></td>
+                    <td><input type="number" name="rebuy_chips" class="form-input" id="rebuy_chips" value="{{tournament.rebuy_chips}}" required></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Add on</td>
-                    <td><input type="number" name="addon_money" class="form-input" id="addon_money" required></td>
-                    <td><input type="number" name="addon_chips" class="form-input" id="addon_chips" required></td>
+                    <td><input type="number" name="addon_money" class="form-input" id="addon_money" value="{{tournament.addon_money}}" required></td>
+                    <td><input type="number" name="addon_chips" class="form-input" id="addon_chips" value="{{tournament.addon_chips}}" required></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -42,18 +42,20 @@
                 </tr>
             </thead>
             <tbody>
-                <tr class="level" data-index="1">
-                    <td>Level 1</td>
-                    <td><input type="number" name="levels[1][duration]" class="form-input time" required></td>
-                    <td><input type="number" step="25" name="levels[1][small_blind]" class="form-input small_blind" required></td>
-                    <td><input type="number" step="25" name="levels[1][big_blind]" class="form-input big_blind" required></td>
+                {{#each levels}}
+                <tr class="level" data-index="{{@index}}">
+                    <td>Level {{inc @index}}</td>
+                    <td><input type="number" name="levels[{{@index}}][duration]" class="form-input time" value="{{this.duration}}" required></td>
+                    <td><input type="number" step="25" name="levels[{{@index}}][small_blind]" class="form-input small_blind" value="{{this.small_blind}}" required></td>
+                    <td><input type="number" step="25" name="levels[{{@index}}][big_blind]" class="form-input big_blind" value="{{this.big_blind}}" required></td>
                 </tr>
+                {{/each}}
             </tbody>
         </table>
         <button type="button" id="add_level" class="btn">Add level</button>
-        <button type="button" id="save_tournament" class="btn hidden" disabled>Save tournament</button>
-        <button type="button" id="update_tournament" class="btn hidden" disabled>Update tournament</button>
-<button type="button" id="delete_tournament" class="btn hidden" disabled>Delete tournament</button>
+        <button type="button" id="save_tournament" class="btn hidden" >Save tournament</button>
+        <button type="button" id="update_tournament" class="btn" >Update tournament</button>
+        <button type="button" id="delete_tournament" class="btn" >Delete tournament</button>
     </form>
     <div id="tournament_buttons" class="button-container">
         <button type="button" id="create_tournament" class="btn">Create tournament</button>

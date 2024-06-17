@@ -1,6 +1,6 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
-const authRoutes = require('./routes/auth.js');
+const authRoutes = require('./routes');
 const db = require('./models/db.js');
 const passport = require('passport');
 const { init: initAuth } = require('./auth');

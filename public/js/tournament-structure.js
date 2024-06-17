@@ -5,9 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
   const addLevelBtn = document.querySelector('#add_level');
   const saveTournamentBtn = document.querySelector('#save_tournament');
   const updateTournamentBtn = document.querySelector('#update_tournament');
-  const deleteTournamentBtn = document.querySelector('#delete_tournament'); // Reference to delete button
-
-  let currentTournamentId = null;
+  const deleteTournamentBtn = document.querySelector('#delete_tournament');
 
   createTournamentBtn.addEventListener('click', () => {
     clearForm();
@@ -27,52 +25,15 @@ document.addEventListener('DOMContentLoaded', () => {
       alert("Tournament ID is required");
       return;
     }
-
     fetch(`/tournament/${tournamentId}`)
-      .then(response => response.json())
-      .then(data => {
-        if (data.error) {
-          alert(data.error);
-          return;
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
         }
-
-        const tournament = data.tournament;
-        const levels = data.levels;
-
-        currentTournamentId = tournamentId;
-
-        form.querySelector('#buyin_money').value = tournament.buyin_money;
-        form.querySelector('#buyin_chips').value = tournament.buyin_chips;
-        form.querySelector('#rebuy_money').value = tournament.rebuy_money;
-        form.querySelector('#rebuy_chips').value = tournament.rebuy_chips;
-        form.querySelector('#addon_money').value = tournament.addon_money;
-        form.querySelector('#addon_chips').value = tournament.addon_chips;
-
-        document.querySelectorAll('#blind_structure > tbody > .level').forEach(tr => tr.remove());
-
-        levels.forEach((level, index) => {
-          const newLevel = document.createElement('tr');
-          newLevel.classList.add('level');
-          newLevel.setAttribute('data-index', index + 1);
-          newLevel.innerHTML = `
-            <td>Level ${index + 1}</td>
-            <td><input type="number" name="levels[${index + 1}][duration]" class="form-input time" value="${level.duration}" required></td>
-            <td><input type="number" step="25" name="levels[${index + 1}][small_blind]" class="form-input small_blind" value="${level.small_blind}" required></td>
-            <td><input type="number" step="25" name="levels[${index + 1}][big_blind]" class="form-input big_blind" value="${level.big_blind}" required></td>
-          `;
-          document.querySelector('#blind_structure > tbody').appendChild(newLevel);
-        });
-
-        form.classList.remove('hidden');
-        saveTournamentBtn.classList.add('hidden');
-        updateTournamentBtn.classList.remove('hidden');
-        deleteTournamentBtn.classList.remove('hidden'); // Show delete button
-        saveTournamentBtn.disabled = true;
-        updateTournamentBtn.disabled = false;
-        deleteTournamentBtn.disabled = false; // Enable delete button
+        window.location.href = `/tournament/${tournamentId}`; // Redirect to the getTournamentById route
       })
       .catch(error => {
-        console.error('Error loading tournament:', error);
+        console.error('Error:', error);
         alert('Error loading tournament');
       });
   });
@@ -82,12 +43,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   saveTournamentBtn.addEventListener('click', (event) => {
-    event.preventDefault();
     saveTournament();
   });
 
   updateTournamentBtn.addEventListener('click', (event) => {
-    event.preventDefault();
     updateTournament();
   });
 
@@ -116,10 +75,11 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       body: JSON.stringify(formData)
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        alert('Tournament saved successfully!');
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        alert('Tournament saved successfully')
       })
       .catch(error => {
         console.error('Error:', error);
@@ -128,11 +88,6 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const updateTournament = () => {
-    if (!currentTournamentId) {
-      alert('No tournament loaded for updating');
-      return;
-    }
-
     const levels = collectLevels();
 
     const formData = {
@@ -145,17 +100,18 @@ document.addEventListener('DOMContentLoaded', () => {
       levels
     };
 
-    fetch(`/update-tournament/${currentTournamentId}`, {
-      method: 'POST',
+    fetch(`/update-tournament`, {
+      method: 'post',
       headers: {
-        'Content-Type': 'application/json'
+        'content-type': 'application/json'
       },
       body: JSON.stringify(formData)
     })
-      .then(response => response.json())
-      .then(data => {
-        console.log('Success:', data);
-        alert('Tournament updated successfully!');
+      .then(response => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+        alert('Tournament updated successfully')
       })
       .catch(error => {
         console.error('Error:', error);
@@ -164,26 +120,14 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   const deleteTournament = () => {
-    if (!currentTournamentId) {
-      alert('No tournament loaded for deletion');
-      return;
-    }
-
     if (confirm('Are you sure you want to delete this tournament?')) {
-      fetch(`/delete-tournament/${currentTournamentId}`, {
-        method: 'DELETE'
+
+      fetch('/delete-tournament', {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json'
+        },
       })
-        .then(response => response.json())
-        .then(data => {
-          console.log('Success:', data);
-          alert('Tournament deleted successfully!');
-          clearForm();
-          form.classList.add('hidden');
-          saveTournamentBtn.classList.add('hidden');
-          updateTournamentBtn.classList.add('hidden');
-          deleteTournamentBtn.classList.add('hidden');
-          currentTournamentId = null;
-        })
         .catch(error => {
           console.error('Error:', error);
           alert('Error deleting tournament');

@@ -34,28 +34,13 @@ class Tournament extends Model {
       },
       is_active: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false
+        defaultValue: false  // Set new tournaments as inactive by default
       }
     }, {
       sequelize,
-      modelName: 'tournament',
+      modelName: 'Tournament',
       hooks: {
-        beforeSave: setActiveTournament,
-        beforeUpdate: setActiveTournament,
-        afterFind: async (tournament) => {
-          // Set all other tournaments to not active
-          await Tournament.update({ is_active: false }, {
-            where: {
-              id: {
-                [Op.not]: tournament.id
-              }
-            }
-          });
-
-          // Set the current tournament to active
-          tournament.is_active = true;
-          await tournament.save();
-        }
+        afterFind: setActiveTournament
       }
     });
   }
@@ -64,14 +49,17 @@ class Tournament extends Model {
     Tournament.hasMany(models.Level, { foreignKey: 'tournamentId', as: 'Levels' });
   }
 }
-async function setActiveTournament(tournament) {
-  tournament.is_active = true;
 
-  await Tournament.update({ is_active: false }, {
-    where: {
-      id: { [Op.not]: tournament.id }
-    }
-  });
+async function setActiveTournament(tournament) {
+  if (tournament) {
+    await Tournament.update({ is_active: false }, {
+      where: {
+        id: { [Op.not]: tournament.id }
+      },
+    });
+    tournament.is_active = true;
+    await tournament.save();
+  }
 }
 
 module.exports = Tournament;

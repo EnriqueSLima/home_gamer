@@ -3,6 +3,11 @@ const { Model, DataTypes } = require('sequelize');
 class Level extends Model {
   static initModel(sequelize) {
     Level.init({
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
       duration: {
         type: DataTypes.INTEGER,
         allowNull: false
@@ -18,11 +23,14 @@ class Level extends Model {
       tournamentId: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'tournaments',  // Ensure this matches the table name
+          model: 'Tournaments',
           key: 'id'
         }
       }
-    }, { sequelize, modelName: 'level' });
+    }, {
+      sequelize,
+      modelName: 'Level'
+    });
   }
 
   static associate(models) {
