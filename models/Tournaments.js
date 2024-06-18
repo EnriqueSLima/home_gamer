@@ -36,13 +36,6 @@ class Tournaments extends Model {
         type: DataTypes.BOOLEAN,
         defaultValue: false  // Set new tournaments as inactive by default
       },
-      players: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        references: {
-          model: 'Players',
-          key: 'id'
-        }
-      }
     }, {
       sequelize,
       modelName: 'Tournaments',

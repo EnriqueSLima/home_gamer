@@ -1,4 +1,4 @@
-const tournamentService = require('../services/tournamentService');
+const tournamentService = require('../services/tournamentsService');
 
 module.exports = {
   tournamentView: async (req, res) => {

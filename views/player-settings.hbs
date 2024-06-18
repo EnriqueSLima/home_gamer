@@ -1,25 +1,50 @@
 {{> header}}
+
+{{#if error}}
+<p>{{error}}</p>
+{{/if}}
+
 <!-- Form for searching and adding players -->
-<form autocomplete="off">
-    <div id="add_player_menu">
-        <div id="player_menu_content">
-            <label for="search_player_name">Search Player by Name</label>
-            <input type="text" id="search_player_name">
-            <button type="button" id="search_player_button">Search Player</button>
-            <div id="search_results"></div>
-            
-            <label for="rebuy">Rebuy</label>
-            <input type="number" id="rebuy">
-            <label for="addon">Add on</label>
-            <input type="checkbox" id="addon">
-            <button type="button" id="add_player_button">Add Player</button>
-            <button type="reset">Reset</button>
-        </div>
+<form autocomplete="off" method="post" action="/search-player">
+  <div id="add_player_menu">
+    <div id="player_menu_content">
+      <label for="search_player_name">Search Player by Name</label>
+      <input type="text" id="search_player_name" name="playerName">
+      <button type="submit" id="search_player_button">Search Player</button>
+      <div id="search_results">
+        {{#if players}}
+          <ul>
+            {{#each players}}
+              <li data-player-id="{{id}}">{{name}} (ID: {{id}})</li>
+            {{/each}}
+          </ul>
+        {{/if}}
+        {{#if error}}
+          <p>{{error}}</p>
+        {{/if}}
+      </div>
+      <button type="button" id="add_player_button">Add Player</button>
+      <button type="reset">Reset</button>
     </div>
+  </div>
 </form>
 
 <!-- Player structure menu -->
 <div id="player_structure_menu">
-    <div id="players_in">Players in</div>
-    <div id="players_out">Players out</div>
+  <div id="players_in">
+    <h2>Players In</h2>
+    <ul>
+      {{#each players_in}}
+        <li>{{name}}</li>
+      {{/each}}
+    </ul>
+  </div>
+  <div id="players_out">
+    <h2>Players Out</h2>
+    <ul>
+      {{#each players_out}}
+        <li>{{name}}</li>
+      {{/each}}
+    </ul>
+  </div>
 </div>
