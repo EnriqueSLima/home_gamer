@@ -1,8 +1,8 @@
 const { Model, DataTypes } = require('sequelize');
 
-class Level extends Model {
+class Levels extends Model {
   static initModel(sequelize) {
-    Level.init({
+    Levels.init({
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -29,13 +29,14 @@ class Level extends Model {
       }
     }, {
       sequelize,
-      modelName: 'Level'
+      modelName: 'Levels',
+      tableName: 'Levels'
     });
   }
 
   static associate(models) {
-    Level.belongsTo(models.Tournament, { foreignKey: 'tournamentId', as: 'Tournament' });
+    Levels.belongsTo(models.Tournaments, { foreignKey: 'tournamentId', as: 'Tournaments' });
   }
 }
 
-module.exports = Level;
+module.exports = Levels;

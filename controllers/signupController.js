@@ -1,4 +1,5 @@
-const User = require('../models/User');
+const Users = require('../models/Users');
+const bcrypt = require('bcryptjs');
 
 module.exports = {
 
@@ -11,19 +12,32 @@ module.exports = {
     const role = 'client';
 
     if (!name || !email || !password) {
-      return res.render('signup', { css: 'signup.css', error: 'Please fill all fields' });
+      return res.render('signup', {
+        css: 'signup.css',
+        error: 'Please fill all fields'
+      });
     }
 
-    const user = await User.findOne({ where: { email } });
+    const user = await Users.findOne({ where: { email } });
     if (user) {
-      return res.render('signup', { css: 'signup.css', error: 'A user account already exists with this email' });
+      return res.render('signup', {
+        css: 'signup.css',
+        error: 'A user account already exists with this email'
+      });
     }
 
     try {
-      await User.create({ name, email, password: bcrypt.hashSync(password, 8), role });
+      const hashedPassword = bcrypt.hashSync(password, 8);
+      const userData = { name, email, password: hashedPassword, role };
+      const user = await Users.create(userData);
+      console.log(`User created: ${user.id}`);
       return res.redirect('login?registrationdone');
     } catch (error) {
-      return res.render('signup', { css: 'signup.css', error: 'Error creating user' });
+      console.error(`Error creating user: ${error}`);
+      return res.render('signup', {
+        css: 'signup.css',
+        error: 'Error creating user'
+      });
     }
   },
 };

@@ -1,19 +1,18 @@
 {{> header}}
-<!-- Form for adding players -->
+<!-- Form for searching and adding players -->
 <form autocomplete="off">
     <div id="add_player_menu">
         <div id="player_menu_content">
-            <span></span><span></span><span></span>
-            <span class="right">&times;</span>
-            <label for="">Name</label>
-            <input type="text" id="player_name">
-            <label for="buyin">Buy in</label>
-            <input type="checkbox" id="buyin" checked>
+            <label for="search_player_name">Search Player by Name</label>
+            <input type="text" id="search_player_name">
+            <button type="button" id="search_player_button">Search Player</button>
+            <div id="search_results"></div>
+            
             <label for="rebuy">Rebuy</label>
             <input type="number" id="rebuy">
             <label for="addon">Add on</label>
             <input type="checkbox" id="addon">
-            <button type="button" id="add_player_button">Add player</button>
+            <button type="button" id="add_player_button">Add Player</button>
             <button type="reset">Reset</button>
         </div>
     </div>

@@ -1,11 +1,12 @@
 const bcrypt = require('bcryptjs');
-const User = require('../models/User');
+const Users = require('../models/Users');
+const { Op } = require('sequelize');
 
 module.exports = {
 
   manageUsersView: async (req, res) => {
     try {
-      const users = await User.findAll(); // Get users
+      const users = await Users.findAll(); // Get users
 
       res.render('manage-users', {
         css: 'manage-users.css',
@@ -23,7 +24,7 @@ module.exports = {
       return res.render('manage-users', { css: 'manage-users.css', error: 'Please fill all fields' });
     }
 
-    const user = await User.findOne({ where: { email } });
+    const user = await Users.findOne({ where: { email } });
     if (user) {
       return res.render('manage-users', { css: 'manage-users.css', error: 'A user account already exists with this email' });
     }
@@ -33,7 +34,7 @@ module.exports = {
     }
 
     try {
-      await User.create({ name, email, password: bcrypt.hashSync(password, 8), role });
+      await Users.create({ name, email, password: bcrypt.hashSync(password, 8), role });
       res.redirect('/manage-users?created');
     } catch (error) {
       res.render('manage-users', { css: 'manage-users.css', error: 'Error creating user' });
@@ -44,7 +45,7 @@ module.exports = {
     const { query } = req.query;
 
     try {
-      const users = await User.findAll({
+      const users = await Users.findAll({
         where: {
           // Search for users whose name or email contains the query string
           [Op.or]: [
@@ -68,7 +69,7 @@ module.exports = {
   deleteUser: async (req, res) => {
     const { userId } = req.body;
     try {
-      await User.destroy({ where: { id: userId } });
+      await Users.destroy({ where: { id: userId } });
       res.redirect('/manage-users'); // Redirect back to the manage-users page
     } catch (error) {
       console.error(error);

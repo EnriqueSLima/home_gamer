@@ -1,8 +1,8 @@
 const { Model, DataTypes, Op } = require('sequelize');
 
-class Tournament extends Model {
+class Tournaments extends Model {
   static initModel(sequelize) {
-    Tournament.init({
+    Tournaments.init({
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -35,24 +35,36 @@ class Tournament extends Model {
       is_active: {
         type: DataTypes.BOOLEAN,
         defaultValue: false  // Set new tournaments as inactive by default
+      },
+      players: {
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        references: {
+          model: 'Players',
+          key: 'id'
+        }
       }
     }, {
       sequelize,
-      modelName: 'Tournament',
+      modelName: 'Tournaments',
+      tableName: 'Tournaments',
       hooks: {
         afterFind: setActiveTournament
       }
     });
   }
-
   static associate(models) {
-    Tournament.hasMany(models.Level, { foreignKey: 'tournamentId', as: 'Levels' });
+    Tournaments.hasMany(models.Levels, { foreignKey: 'tournamentId', as: 'Levels' });
+    Tournaments.belongsToMany(models.Players, {
+      through: 'PlayersTournaments',
+      foreignKey: 'tournamentId',
+      otherKey: 'playerId'
+    });
   }
 }
 
 async function setActiveTournament(tournament) {
   if (tournament) {
-    await Tournament.update({ is_active: false }, {
+    await Tournaments.update({ is_active: false }, {
       where: {
         id: { [Op.not]: tournament.id }
       },
@@ -62,4 +74,4 @@ async function setActiveTournament(tournament) {
   }
 }
 
-module.exports = Tournament;
+module.exports = Tournaments;

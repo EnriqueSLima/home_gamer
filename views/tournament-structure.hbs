@@ -1,5 +1,8 @@
 {{> header}}
 
+{{#if error}}
+<p>{{error}}</p>
+{{/if}}
 <div id="structure_menu">
     <form id="tournament_form" class="form-container {{#if formHidden}}hidden{{/if}}" autocomplete="off">
         <table>
@@ -52,13 +55,18 @@
                 {{/each}}
             </tbody>
         </table>
+      {{#if (or (eq user.role 'admin') (eq user.role 'manager'))}}
         <button type="button" id="add_level" class="btn">Add level</button>
         <button type="button" id="save_tournament" class="btn hidden" >Save tournament</button>
         <button type="button" id="update_tournament" class="btn" >Update tournament</button>
         <button type="button" id="delete_tournament" class="btn" >Delete tournament</button>
+{{/if}}
     </form>
     <div id="tournament_buttons" class="button-container">
+
+      {{#if (or (eq user.role 'admin') (eq user.role 'manager'))}}
         <button type="button" id="create_tournament" class="btn">Create tournament</button>
+{{/if}}
         <button type="button" id="load_tournament" class="btn">Load tournament</button>
     </div>
 </div>

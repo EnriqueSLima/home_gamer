@@ -1,12 +1,12 @@
-const Tournament = require('../models/Tournament');
-const Level = require('../models/Level');
+const Tournaments = require('../models/Tournaments');
+const Levels = require('../models/Levels');
 const { Op } = require('sequelize');
 
 // Function to create a new tournament
 async function createTournament(data) {
   const { buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips, levels } = data;
 
-  const tournament = await Tournament.create({
+  const tournament = await Tournaments.create({
     buyin_money,
     buyin_chips,
     rebuy_money,
@@ -16,7 +16,7 @@ async function createTournament(data) {
   });
 
   for (const level of levels) {
-    await Level.create({
+    await Levels.create({
       duration: level.duration,
       small_blind: level.small_blind,
       big_blind: level.big_blind,
@@ -32,13 +32,11 @@ async function createTournament(data) {
 
 // Function to get a tournament by ID
 async function getTournamentById(id) {
-  const tournament = await Tournament.findByPk(id, {
-    include: [{ model: Level, as: 'Levels' }]
+  const tournament = await Tournaments.findByPk(id, {
+    include: [{ model: Levels, as: 'Levels' }]
   });
 
-  if (tournament) {
-    await setActiveTournament(tournament);
-  }
+  await setActiveTournament(tournament);
 
   return tournament;
 }
@@ -47,7 +45,7 @@ async function getTournamentById(id) {
 async function updateTournament(id, data) {
   const { buyin_money, buyin_chips, rebuy_money, rebuy_chips, addon_money, addon_chips, levels } = data;
 
-  const tournament = await Tournament.findByPk(id);
+  const tournament = await Tournaments.findByPk(id);
   if (!tournament) {
     throw new Error('Tournament not found');
   }
@@ -61,10 +59,10 @@ async function updateTournament(id, data) {
     addon_chips,
   });
 
-  await Level.destroy({ where: { tournamentId: id } });
+  await Levels.destroy({ where: { tournamentId: id } });
 
   for (const level of levels) {
-    await Level.create({
+    await Levels.create({
       duration: level.duration,
       small_blind: level.small_blind,
       big_blind: level.big_blind,
@@ -79,12 +77,12 @@ async function updateTournament(id, data) {
 
 // Function to delete a tournament
 async function deleteTournament(id) {
-  const tournament = await Tournament.findByPk(id);
+  const tournament = await Tournaments.findByPk(id);
   if (!tournament) {
     throw new Error('Tournament not found');
   }
 
-  await Level.destroy({ where: { tournamentId: id } });
+  await Levels.destroy({ where: { tournamentId: id } });
   await tournament.destroy();
 
   return { message: 'Tournament deleted successfully' };
@@ -92,17 +90,16 @@ async function deleteTournament(id) {
 
 // Function to get the active tournament
 async function getActiveTournament() {
-  const tournament = await Tournament.findOne({
+  const tournament = await Tournaments.findOne({
     where: { is_active: true },
-    include: [{ model: Level, as: 'Levels' }]
+    include: [{ model: Levels, as: 'Levels' }]
   });
-
   return tournament;
 }
 
 // Helper function to set the active tournament
 async function setActiveTournament(tournament) {
-  await Tournament.update({ is_active: false }, {
+  await Tournaments.update({ is_active: false }, {
     where: {
       id: { [Op.not]: tournament.id }
     },

@@ -1,7 +1,10 @@
 const path = require('path');
 const { Sequelize } = require('sequelize');
-const Tournament = require('./Tournament');
-const Level = require('./Level');
+const Users = require('./Users');
+const Tournaments = require('./Tournaments');
+const Levels = require('./Levels');
+const Players = require('./Players');
+const PlayersTournaments = require('./PlayersTournaments');
 
 const sequelize = new Sequelize({
   dialect: 'sqlite',
@@ -9,11 +12,15 @@ const sequelize = new Sequelize({
 });
 
 // Initialize models
-Tournament.initModel(sequelize);
-Level.initModel(sequelize);
+Users.initModel(sequelize);
+Players.initModel(sequelize);
+Tournaments.initModel(sequelize);
+PlayersTournaments.initModel(sequelize);
+Levels.initModel(sequelize);
 
 // Establish associations
-Tournament.associate({ Level });
-Level.associate({ Tournament });
+Users.associate({ Players });
+Players.associate({ Users, Tournaments });
+Tournaments.associate({ Levels, Players });
 
 module.exports = sequelize;
