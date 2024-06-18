@@ -1,4 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
+const Users = require('../models/Users');
 
 class PlayersTournaments extends Model {
   static initModel(sequelize) {
@@ -11,14 +12,14 @@ class PlayersTournaments extends Model {
       playerId: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'Player',
+          model: 'Players',
           key: 'id'
         }
       },
       tournamentId: {
         type: DataTypes.INTEGER,
         references: {
-          model: 'Tournament',
+          model: 'Tournaments',
           key: 'id'
         }
       },
@@ -43,6 +44,19 @@ class PlayersTournaments extends Model {
       modelName: 'PlayersTournaments',
       tableName: 'PlayersTournaments'
     });
+  }
+  static associate(models) {
+    PlayersTournaments.belongsTo(models.Players, {
+      foreignKey: 'playerId',
+      as: 'Player',
+      include: [
+        {
+          model: Users,
+          attributes: ['name']
+        }
+      ]
+    });
+    PlayersTournaments.belongsTo(models.Tournaments, { foreignKey: 'tournamentId' });
   }
 }
 

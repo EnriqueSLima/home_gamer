@@ -50,7 +50,8 @@ class Tournaments extends Model {
     Tournaments.belongsToMany(models.Players, {
       through: 'PlayersTournaments',
       foreignKey: 'tournamentId',
-      otherKey: 'playerId'
+      otherKey: 'playerId',
+      as: 'Participants'
     });
   }
 }

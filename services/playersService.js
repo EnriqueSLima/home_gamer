@@ -85,7 +85,6 @@ async function registerPlayer(playerId) {
   if (!player) {
     throw new Error('Player not found');
   }
-
   await PlayersTournaments.create({
     playerId: player.id,
     tournamentId: activeTournament.id

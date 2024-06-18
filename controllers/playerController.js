@@ -1,16 +1,52 @@
 const playerService = require('../services/playersService')
 const tournamentService = require('../services/tournamentsService');
+const Players = require('../models/Players');
+const PlayersTournaments = require('../models/PlayersTournaments');
+const Users = require('../models/Users');
 
 module.exports = {
 
   playerView: async (req, res) => {
-
     const activeTournament = await tournamentService.getActiveTournament();
+    if (!activeTournament) {
+      res.render('player-settings', {
+        css: 'player-settings.css',
+        js: 'player-settings.js',
+        user: req.user,
+        error: 'No active tournament found'
+      });
+      return;
+    }
+
+    const playersIn = await PlayersTournaments.findAll({
+      where: {
+        tournamentId: activeTournament.id,
+        player_status: 'in'
+      },
+      include: [{
+        model: Players,
+        as: 'Player',
+        include: [{
+          model: Users,
+          as: 'User'
+        }]
+      }]
+    });
+
+    const playersOut = await PlayersTournaments.findAll({
+      where: {
+        tournamentId: activeTournament.id,
+        player_status: 'out'
+      },
+      include: [{ model: Players, as: 'Player' }]
+    });
 
     res.render('player-settings', {
       css: 'player-settings.css',
       js: 'player-settings.js',
-      user: req.user
+      user: req.user,
+      players_in: playersIn,
+      players_out: playersOut
     });
   },
 

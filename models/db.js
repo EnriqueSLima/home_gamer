@@ -19,8 +19,14 @@ PlayersTournaments.initModel(sequelize);
 Levels.initModel(sequelize);
 
 // Establish associations
-Users.associate({ Players });
-Players.associate({ Users, Tournaments });
-Tournaments.associate({ Levels, Players });
+const models = { Users, Players, Tournaments, PlayersTournaments, Levels };
 
+Users.associate(models);
+Players.associate(models);
+Tournaments.associate(models);
+PlayersTournaments.associate(models);
+Levels.associate(models);
+
+console.log(Players.associations);
+console.log(PlayersTournaments.associations);
 module.exports = sequelize;
