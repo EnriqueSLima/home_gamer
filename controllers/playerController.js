@@ -15,8 +15,15 @@ module.exports = {
   },
 
   addPlayer: async (req, res) => {
-    const activeTournament = await tournamentService.getActiveTournament();
+    const { playerId } = req.body;
 
+    try {
+      const result = await playerService.registerPlayer(playerId);
+      res.json(result);
+    } catch (error) {
+      console.error('Failed to register player:', error);
+      res.status(500).json({ error: 'Failed to register player' });
+    }
   },
 
   searchPlayer: async (req, res) => {

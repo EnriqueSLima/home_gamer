@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!response.ok) {
           throw new Error(`HTTP error! Status: ${response.status}`);
         }
-        // window.location.href = `/tournament/${tournamentId}`; // Redirect to the getTournamentById route
+        window.location.href = `/tournament/${tournamentId}`; // Redirect to the getTournamentById route
       })
       .catch(error => {
         console.error('Error:', error);

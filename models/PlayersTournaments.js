@@ -36,7 +36,7 @@ class PlayersTournaments extends Model {
       },
       player_status: {
         type: DataTypes.ENUM('in', 'out'),
-        defaultValue: true
+        defaultValue: 'in'
       }
     }, {
       sequelize,

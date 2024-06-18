@@ -15,7 +15,10 @@
         {{#if players}}
           <ul>
             {{#each players}}
-              <li data-player-id="{{id}}">{{name}} (ID: {{id}})</li>
+              <li data-player-id="{{id}}">
+                {{name}} (ID: {{id}})
+                <button type="button" class="register_player_button" data-player-id="{{id}}">Register</button>
+              </li>
             {{/each}}
           </ul>
         {{/if}}
@@ -23,7 +26,6 @@
           <p>{{error}}</p>
         {{/if}}
       </div>
-      <button type="button" id="add_player_button">Add Player</button>
       <button type="reset">Reset</button>
     </div>
   </div>
