@@ -48,7 +48,8 @@ form {
   padding: 20px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  background-color: #f9f9f9;
+  border-color: rgb(62, 68, 70);
+  background-color: rgb(27, 30, 31);
 }
 
 label {
@@ -63,6 +64,9 @@ input[type="password"] {
   margin-bottom: 10px;
   border: 1px solid #ccc;
   border-radius: 5px;
+  border-color: rgb(62, 68, 70);
+  background-color: #202324;
+  color: #ccc;
 }
 
 button[type="submit"] {

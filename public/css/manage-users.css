@@ -7,9 +7,12 @@
 
 .header {
   font-weight: bold;
-  background-color: #f2f2f2;
+  background-color: #2a3e41;
+  /* Dark green background color */
   padding: 10px;
   display: contents;
+  color: #e0e0e0;
+  /* Light gray text color */
 }
 
 .row {
@@ -17,8 +20,13 @@
 }
 
 .grid-container>div {
-  border: 1px solid #ddd;
+  border: 1px solid #4b757b;
+  /* Dark green border color */
   padding: 10px;
+  background-color: #1b2e32;
+  /* Darker dark green background color */
+  color: #e0e0e0;
+  /* Light gray text color */
 }
 
 .search-container {
@@ -32,10 +40,52 @@
 
 #search-input {
   margin-right: 10px;
+  padding: 10px;
+  border: 1px solid #4b757b;
+  /* Dark green border color */
+  border-radius: 5px;
+  background-color: #1b2e32;
+  /* Darker dark green background color */
+  color: #e0e0e0;
+  /* Light gray text color */
+}
+
+form label {
+  color: #e0e0e0;
+  /* Light gray text color */
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #4b757b;
+  /* Dark green border color */
+  border-radius: 5px;
+  background-color: #1b2e32;
+  /* Darker dark green background color */
+  color: #e0e0e0;
+  /* Light gray text color */
+}
+
+form select {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #4b757b;
+  /* Dark green border color */
+  border-radius: 5px;
+  background-color: #1b2e32;
+  /* Darker dark green background color */
+  color: #e0e0e0;
+  /* Light gray text color */
 }
 
 button {
-  background-color: #366164;
+  background-color: #007bff;
+  /* Blue button background color */
   color: white;
   padding: 10px 20px;
   border: none;
@@ -45,7 +95,8 @@ button {
 }
 
 button:hover {
-  background-color: #2a4d52;
+  background-color: #0056b3;
+  /* Darker blue button color on hover */
 }
 
 .hidden {

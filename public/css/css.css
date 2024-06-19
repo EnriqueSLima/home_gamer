@@ -10,6 +10,8 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
+
+  background-color: rgb(27, 30, 31);
 }
 
 /* Navigation Styles */
@@ -143,7 +145,6 @@ textarea {
   margin-bottom: 10px;
   border: 1px solid #ddd;
   border-radius: 4px;
-  box-sizing: border-box;
 }
 
 label {

@@ -1,10 +1,16 @@
 .form-container {
   padding: 20px;
-  background-color: #f9f9f9;
+  background-color: rgb(27, 30, 31);
   border: 1px solid #ccc;
   border-radius: 10px;
+  border-color: rgb(58, 62, 65);
   max-width: 800px;
   margin: 0 auto;
+  color: #d8d4cf;
+}
+
+#structure_menu {
+  background-color: #131516;
 }
 
 table {
@@ -18,14 +24,25 @@ table td {
   border: 1px solid #ccc;
   padding: 10px;
   text-align: center;
+  border-color: rgb(62, 68, 70);
 }
 
 table th {
-  background-color: #f1f1f1;
+  background-color: rgb(32, 35, 36);
+}
+
+table td {
+  background-color: #131516;
 }
 
 .structure-section {
   margin-bottom: 20px;
+}
+
+input[type=number] {
+  background-color: rgb(15, 17, 17);
+  border-color: rgb(62, 68, 70);
+  color: #d8d4cf;
 }
 
 .button-container {
