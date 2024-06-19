@@ -4,6 +4,7 @@ const searchPlayerButton = document.getElementById('search_player_button');
 const rebuyInput = document.getElementById('rebuy');
 const addonCheckbox = document.getElementById('addon');
 const registerButtons = document.querySelectorAll('.register_player_button');
+const eliminateButtons = document.querySelectorAll('.eliminate_player_button');
 
 // Search player functionality
 searchPlayerButton.addEventListener('click', async () => {
@@ -26,7 +27,7 @@ registerButtons.forEach(button => {
   button.addEventListener('click', async (event) => {
     const playerId = event.target.getAttribute('data-player-id');
     try {
-      const response = await fetch('/add-player', {
+      const response = await fetch('/register-player', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ playerId }),
@@ -39,6 +40,25 @@ registerButtons.forEach(button => {
   });
 });
 
+eliminateButtons.forEach(button => {
+  button.addEventListener('click', async (event) => {
+    const playerId = event.target.getAttribute('data-player-id');
+    try {
+      const response = await fetch('/eliminate-player', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ playerId }),
+      });
+      if (response.ok) {
+        window.location.reload(); // Reload to update the player structure menu
+      } else {
+        console.error('Error eliminating player:', response.statusText);
+      }
+    } catch (error) {
+      console.error('Error eliminating player:', error);
+    }
+  });
+});
 // Add player functionality
 //addPlayerButton.addEventListener('click', async () => {
 //  const playerId = parseInt(document.querySelector('#search_results p:selected').dataset.playerId, 10);

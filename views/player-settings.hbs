@@ -26,7 +26,6 @@
           <p>{{error}}</p>
         {{/if}}
       </div>
-      <button type="reset">Reset</button>
     </div>
   </div>
 </form>
@@ -37,7 +36,10 @@
     <h2>Players In</h2>
     <ul>
       {{#each players_in}}
-        <li>{{Player.User.name}}</li>
+        <li data-player-id="{{Player.id}}">
+          {{Player.User.name}}
+          <button type="button" class="eliminate_player_button" data-player-id="{{Player.id}}">Eliminate</button>
+        </li>
       {{/each}}
     </ul>
   </div>
@@ -45,7 +47,7 @@
     <h2>Players Out</h2>
     <ul>
       {{#each players_out}}
-        <li>{{name}}</li>
+        <li data-player-id="{{Player.id}}">{{Player.User.name}}</li>
       {{/each}}
     </ul>
   </div>

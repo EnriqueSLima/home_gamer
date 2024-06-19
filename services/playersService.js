@@ -74,24 +74,6 @@ async function deletePlayer(id) {
   return { message: 'Player deleted successfully' };
 }
 
-// Function to register a player to a tournament
-async function registerPlayer(playerId) {
-  const activeTournament = await tournamentService.getActiveTournament();
-  if (!activeTournament) {
-    throw new Error('No active tournament found');
-  }
-
-  const player = await Players.findByPk(playerId);
-  if (!player) {
-    throw new Error('Player not found');
-  }
-  await PlayersTournaments.create({
-    playerId: player.id,
-    tournamentId: activeTournament.id
-  });
-
-  return { message: 'Player registered to tournament successfully' };
-}
 
 module.exports = {
   createPlayer,
@@ -100,5 +82,4 @@ module.exports = {
   updatePlayer,
   deletePlayer,
   searchPlayers,
-  registerPlayer
 };
