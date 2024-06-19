@@ -34,10 +34,10 @@ module.exports = {
     const { playerId, rebuys, addon } = req.body;
     try {
       const result = await playersTournamentsService.registerPlayer(playerId, rebuys, addon);
-      res.json(result);
+      res.json({ success: true, message: 'Player registered successfully', redirectUrl: '/player-settings' });
     } catch (error) {
       console.error('Failed to register player:', error);
-      res.status(500).json({ error: 'Failed to register player' });
+      res.status(500).json({ success: false, error: 'Failed to register player' });
     }
   },
 
@@ -69,6 +69,17 @@ module.exports = {
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal Server Error' });
+    }
+  },
+
+  updatePlayer: async (req, res) => {
+    const { playerId, rebuys, addon } = req.body;
+    try {
+      const result = await playersTournamentsService.updatePlayer(playerId, rebuys, addon);
+      res.json({ success: true, message: 'Player updated successfully', redirectUrl: '/player-settings' });
+    } catch (error) {
+      console.error('Failed to update player:', error);
+      res.status(500).json({ success: false, error: 'Failed to update player' });
     }
   },
 

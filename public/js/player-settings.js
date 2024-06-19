@@ -2,6 +2,7 @@
 const searchPlayerInput = document.getElementById('search_player_name');
 const searchPlayerButton = document.getElementById('search_player_button');
 const registerButtons = document.querySelectorAll('.register_player_button');
+const updateButtons = document.querySelectorAll('.update_player_button');
 const eliminateButtons = document.querySelectorAll('.eliminate_player_button');
 
 // Create the modal element
@@ -35,36 +36,79 @@ const addonCheckbox = document.createElement('input');
 addonCheckbox.type = 'checkbox';
 modalContent.appendChild(addonCheckbox);
 
-const registerButton = document.createElement('button');
-registerButton.textContent = 'Register';
-modalContent.appendChild(registerButton);
-
-// Add an event listener to the register button
-registerButton.addEventListener('click', async () => {
-  const playerId = modal.playerId;
-  const rebuyValue = rebuyInput.value;
-  const addonValue = addonCheckbox.checked;
-
-  try {
-    const response = await fetch('/register-player', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ playerId, rebuys: rebuyValue, addon: addonValue }),
-    });
-    const result = await response.json();
-    alert(result.message);
-    // Clear input fields after successful registration
-    rebuyInput.value = ''; // Clear rebuy input
-    addonCheckbox.checked = false; // Uncheck addon checkbox
-    modal.remove(); // Remove the modal
-  } catch (error) {
-    console.error('Error:', error);
-  }
-});
+const modalButton = document.createElement('button');
+modalContent.appendChild(modalButton);
 
 // Add an event listener to the modal background to close the modal when clicked
 modalBackground.addEventListener('click', () => {
   modal.remove(); // Remove the modal
+});
+
+// Add an event listener to the register and update buttons
+function handleModalButtonClick(event, isRegister) {
+  const playerId = event.target.getAttribute('data-player-id');
+  document.body.appendChild(modal); // Add the modal to the body
+  modal.style.display = 'block'; // Show the modal
+
+  // Set the playerId as a variable on the modal
+  modal.playerId = playerId;
+  modalButton.textContent = isRegister ? 'Register' : 'Update';
+
+  modalButton.addEventListener('click', async () => {
+    const rebuyValue = rebuyInput.value;
+    const addonValue = addonCheckbox.checked;
+
+    const url = isRegister ? '/register-player' : '/update-player';
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ playerId, rebuys: rebuyValue, addon: addonValue }),
+      });
+      const result = await response.json();
+      alert(result.message);
+      // Clear input fields after successful action
+      rebuyInput.value = ''; // Clear rebuy input
+      addonCheckbox.checked = false; // Uncheck addon checkbox
+      modal.remove(); // Remove the modal
+      if (result.success) {
+        window.location.href = result.redirectUrl; // Redirect to player settings
+      }
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }, { once: true }); // Ensure the event listener is only added once
+}
+
+registerButtons.forEach(button => {
+  button.addEventListener('click', (event) => handleModalButtonClick(event, true));
+});
+
+updateButtons.forEach(button => {
+  button.addEventListener('click', (event) => handleModalButtonClick(event, false));
+});
+
+eliminateButtons.forEach(button => {
+  button.addEventListener('click', async (event) => {
+    const playerId = event.target.getAttribute('data-player-id');
+    const confirmation = confirm('Are you sure you want to eliminate this player?');
+    if (confirmation) {
+      try {
+        const response = await fetch('/eliminate-player', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ playerId }),
+        });
+        if (response.ok) {
+          window.location.reload(); // Reload to update the player structure menu
+        } else {
+          console.error('Error eliminating player:', response.statusText);
+        }
+      } catch (error) {
+        console.error('Error eliminating player:', error);
+      }
+    }
+  });
 });
 
 // Search player functionality
@@ -83,73 +127,3 @@ searchPlayerButton.addEventListener('click', async () => {
     }
   }
 });
-
-registerButtons.forEach(button => {
-  button.addEventListener('click', async (event) => {
-    const playerId = event.target.getAttribute('data-player-id');
-    document.body.appendChild(modal); // Add the modal to the body
-    modal.style.display = 'block'; // Show the modal
-
-    // Set the playerId as a variable on the modal
-    modal.playerId = playerId;
-  });
-});
-
-eliminateButtons.forEach(button => {
-  button.addEventListener('click', async (event) => {
-    const playerId = event.target.getAttribute('data-player-id');
-    try {
-      const response = await fetch('/eliminate-player', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playerId }),
-      });
-      if (response.ok) {
-        window.location.reload(); // Reload to update the player structure menu
-      } else {
-        console.error('Error eliminating player:', response.statusText);
-      }
-    } catch (error) {
-      console.error('Error eliminating player:', error);
-    }
-  });
-});
-// Add player functionality
-//addPlayerButton.addEventListener('click', async () => {
-//  const playerId = parseInt(document.querySelector('#search_results p:selected').dataset.playerId, 10);
-//  const rebuy = parseInt(rebuyInput.value, 10);
-//  const addon = addonCheckbox.checked;
-//
-//  if (playerId && activeTournamentId) {
-//    try {
-//      const response = await fetch(`/api/tournaments/${activeTournamentId}/players`, {
-//        method: 'POST',
-//        headers: { 'Content-Type': 'application/json' },
-//        body: JSON.stringify({ playerId, rebuy, addon }),
-//      });
-//      const result = await response.json();
-//      if (result.success) {
-//        // Update the player structure menu
-//        updatePlayerStructureMenu();
-//      } else {
-//        console.error(result.error);
-//      }
-//    } catch (error) {
-//      console.error(error);
-//    }
-//  }
-//});
-//
-//// Update the player structure menu
-//function updatePlayerStructureMenu() {
-//  // Make an AJAX request to get the updated player list for the active tournament
-//  fetch(`/api/tournaments/${activeTournamentId}/players`)
-//    .then(response => response.json())
-//    .then(players => {
-//      const playersInHtml = players.filter(player => player.inTournament).map(player => `<p>${player.name}</p>`).join('');
-//      const playersOutHtml = players.filter(player => !player.inTournament).map(player => `<p>${player.name}</p>`).join('');
-//      document.getElementById('players_in').innerHTML = playersInHtml;
-//      document.getElementById('players_out').innerHTML = playersOutHtml;
-//    })
-//    .catch(error => console.error(error));
-//}
