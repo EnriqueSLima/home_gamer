@@ -44,6 +44,36 @@ async function eliminatePlayer(playerId, tournamentId) {
   }
 }
 
+async function updatePlayer(playerId, rebuy, addon) {
+  try {
+    const activeTournament = await tournamentService.getActiveTournament();
+    if (!activeTournament) {
+      throw new Error('No active tournament found');
+    }
+
+    const playerTournament = await PlayersTournaments.findOne({
+      where: {
+        playerId,
+        tournamentId: activeTournament.id,
+      }
+    });
+
+    if (!playerTournament) {
+      throw new Error('Player registration not found in tournament');
+    }
+
+    // Update rebuy and addon values
+    playerTournament.rebuys = rebuy;
+    playerTournament.addon = addon;
+    await playerTournament.save();
+
+    return { message: 'Player information updated successfully' };
+  } catch (error) {
+    console.error('Error updating player:', error);
+    throw error;
+  }
+}
+
 async function getPlayersIn(tournamentId) {
   const playersIn = await PlayersTournaments.findAll({
     where: {
@@ -84,6 +114,7 @@ async function getPlayersOut(tournamentId) {
 module.exports = {
   registerPlayer,
   eliminatePlayer,
+  updatePlayer,
   getPlayersIn,
   getPlayersOut
 };
