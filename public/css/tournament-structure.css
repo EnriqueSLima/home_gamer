@@ -1,19 +1,9 @@
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-}
-
-.hidden {
-  display: none;
-}
-
 .form-container {
   padding: 20px;
   background-color: #f9f9f9;
   border: 1px solid #ccc;
   border-radius: 10px;
   max-width: 800px;
-  /* Increased max-width for better table display */
   margin: 0 auto;
 }
 
@@ -32,61 +22,14 @@ table td {
 
 table th {
   background-color: #f1f1f1;
-  font-weight: bold;
-}
-
-table td input {
-  width: 100%;
-  box-sizing: border-box;
 }
 
 .structure-section {
   margin-bottom: 20px;
 }
 
-.form-label {
-  font-weight: bold;
-  text-align: center;
-}
-
-.form-input {
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  width: 100%;
-  box-sizing: border-box;
-}
-
 .button-container {
   display: flex;
   justify-content: center;
   gap: 10px;
-}
-
-.btn {
-  padding: 10px 20px;
-  background-color: #007bff;
-  color: white;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-  transition: background-color 0.3s;
-}
-
-.btn:hover {
-  background-color: #0056b3;
-}
-
-/* Hide number input arrows */
-/* Chrome, Safari, Edge, Opera */
-input::-webkit-outer-spin-button,
-input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-}
-
-/* Firefox */
-input[type="number"] {
-  -moz-appearance: textfield;
-  text-align: center;
-  background-color: white;
 }

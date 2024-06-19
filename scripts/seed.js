@@ -43,22 +43,71 @@ const tournamentsData = [
     addon_money: 50,
     addon_chips: 500,
     is_active: false
+  },
+  {
+    buyin_money: 300,
+    buyin_chips: 3000,
+    rebuy_money: 150,
+    rebuy_chips: 1500,
+    addon_money: 75,
+    addon_chips: 750,
+    is_active: true
+  },
+  {
+    buyin_money: 400,
+    buyin_chips: 4000,
+    rebuy_money: 200,
+    rebuy_chips: 2000,
+    addon_money: 100,
+    addon_chips: 1000,
+    is_active: false
+  },
+  {
+    buyin_money: 500,
+    buyin_chips: 5000,
+    rebuy_money: 250,
+    rebuy_chips: 2500,
+    addon_money: 125,
+    addon_chips: 1250,
+    is_active: true
   }
 ];
 
 const levelsData = [
-  {
-    duration: 30,
-    small_blind: 10,
-    big_blind: 20,
-    tournamentId: 1 // Adjust with the correct tournamentId from tournamentsData
-  },
-  {
-    duration: 20,
-    small_blind: 15,
-    big_blind: 30,
-    tournamentId: 2 // Adjust with the correct tournamentId from tournamentsData
-  }
+  // Levels for Tournament 1
+  { duration: 30, small_blind: 10, big_blind: 20, tournamentId: 1 },
+  { duration: 40, small_blind: 15, big_blind: 30, tournamentId: 1 },
+  { duration: 50, small_blind: 20, big_blind: 40, tournamentId: 1 },
+  { duration: 60, small_blind: 25, big_blind: 50, tournamentId: 1 },
+  { duration: 70, small_blind: 30, big_blind: 60, tournamentId: 1 },
+
+  // Levels for Tournament 2
+  { duration: 20, small_blind: 5, big_blind: 10, tournamentId: 2 },
+  { duration: 30, small_blind: 10, big_blind: 20, tournamentId: 2 },
+  { duration: 40, small_blind: 15, big_blind: 30, tournamentId: 2 },
+  { duration: 50, small_blind: 20, big_blind: 40, tournamentId: 2 },
+  { duration: 60, small_blind: 25, big_blind: 50, tournamentId: 2 },
+
+  // Levels for Tournament 3
+  { duration: 25, small_blind: 10, big_blind: 20, tournamentId: 3 },
+  { duration: 35, small_blind: 15, big_blind: 30, tournamentId: 3 },
+  { duration: 45, small_blind: 20, big_blind: 40, tournamentId: 3 },
+  { duration: 55, small_blind: 25, big_blind: 50, tournamentId: 3 },
+  { duration: 65, small_blind: 30, big_blind: 60, tournamentId: 3 },
+
+  // Levels for Tournament 4
+  { duration: 20, small_blind: 10, big_blind: 20, tournamentId: 4 },
+  { duration: 30, small_blind: 15, big_blind: 30, tournamentId: 4 },
+  { duration: 40, small_blind: 20, big_blind: 40, tournamentId: 4 },
+  { duration: 50, small_blind: 25, big_blind: 50, tournamentId: 4 },
+  { duration: 60, small_blind: 30, big_blind: 60, tournamentId: 4 },
+
+  // Levels for Tournament 5
+  { duration: 35, small_blind: 10, big_blind: 20, tournamentId: 5 },
+  { duration: 45, small_blind: 15, big_blind: 30, tournamentId: 5 },
+  { duration: 55, small_blind: 20, big_blind: 40, tournamentId: 5 },
+  { duration: 65, small_blind: 25, big_blind: 50, tournamentId: 5 },
+  { duration: 75, small_blind: 30, big_blind: 60, tournamentId: 5 }
 ];
 
 // Function to seed the database

@@ -1,10 +1,63 @@
-#players_in>* {
-  display: grid;
-  grid-template-columns: 14% 14% 14% 14% 14% 14% 14%;
+#players_in,
+#players_out,
+#search_player_section {
+  padding: 20px;
+}
+
+#players_in ul,
+#players_out ul,
+#search_results ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+#players_in ul li,
+#players_out ul li,
+#search_results ul li {
+  margin: 5px 0;
   padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.eliminate_player_button,
+.register_player_button {
+  background-color: #d9534f;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.eliminate_player_button:hover,
+.register_player_button:hover {
+  background-color: #c9302c;
 }
 
 #player_structure_menu {
-  display: grid;
-  grid-template-columns: 50% 50%;
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+}
+
+#search_player_section {
+  margin-top: 40px;
+}
+
+#search_player_input,
+#search_player_button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+#search_results {
+  margin-top: 20px;
 }
