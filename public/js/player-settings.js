@@ -25,7 +25,6 @@ modalContent.appendChild(rebuyLabel);
 
 const rebuyInput = document.createElement('input');
 rebuyInput.type = 'number';
-rebuyInput.value = 0;
 modalContent.appendChild(rebuyInput);
 
 const addonLabel = document.createElement('label');
@@ -43,17 +42,20 @@ modalContent.appendChild(registerButton);
 // Add an event listener to the register button
 registerButton.addEventListener('click', async () => {
   const playerId = modal.playerId;
-  const rebuyValue = modal.rebuyValue;
-  const addonValue = modal.addonValue;
+  const rebuyValue = rebuyInput.value;
+  const addonValue = addonCheckbox.checked;
 
   try {
     const response = await fetch('/register-player', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ playerId, rebuy: rebuyValue, addon: addonValue }),
+      body: JSON.stringify({ playerId, rebuys: rebuyValue, addon: addonValue }),
     });
     const result = await response.json();
     alert(result.message);
+    // Clear input fields after successful registration
+    rebuyInput.value = ''; // Clear rebuy input
+    addonCheckbox.checked = false; // Uncheck addon checkbox
     modal.remove(); // Remove the modal
   } catch (error) {
     console.error('Error:', error);
@@ -64,6 +66,7 @@ registerButton.addEventListener('click', async () => {
 modalBackground.addEventListener('click', () => {
   modal.remove(); // Remove the modal
 });
+
 // Search player functionality
 searchPlayerButton.addEventListener('click', async () => {
   const playerName = searchPlayerInput.value.trim();

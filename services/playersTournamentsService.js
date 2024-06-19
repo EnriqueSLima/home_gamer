@@ -4,19 +4,17 @@ const PlayersTournaments = require('../models/PlayersTournaments');
 const Users = require('../models/Users');
 
 // Function to register a player to a tournament
-async function registerPlayer(playerId) {
+async function registerPlayer(playerId, rebuys, addon) {
   const activeTournament = await tournamentService.getActiveTournament();
   if (!activeTournament) {
     throw new Error('No active tournament found');
   }
 
-  const player = await Players.findByPk(playerId);
-  if (!player) {
-    throw new Error('Player not found');
-  }
   await PlayersTournaments.create({
-    playerId: player.id,
-    tournamentId: activeTournament.id
+    playerId: playerId,
+    tournamentId: activeTournament.id,
+    rebuys: rebuys,
+    addon: addon,
   });
 
   return { message: 'Player registered to tournament successfully' };
@@ -61,9 +59,6 @@ async function getPlayersIn(tournamentId) {
       }]
     }]
   });
-  console.log('Players In:', JSON.stringify(playersIn, null, 2));
-  console.log(`GET PLAYERS IN ======  ${playersIn}`)
-  console.log(`IN TOURNAMENT ID ${tournamentId}`)
   return playersIn;
 }
 
@@ -83,9 +78,6 @@ async function getPlayersOut(tournamentId) {
       }]
     }]
   });
-  console.log('Players Out:', JSON.stringify(playersOut, null, 2));
-  console.log(`GET PLAYERS OUT ======  ${playersOut}`)
-  console.log(`OUT TOURNAMENT ID ${tournamentId}`)
   return playersOut;
 }
 

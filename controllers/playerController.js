@@ -21,9 +21,6 @@ module.exports = {
     const playersIn = await playersTournamentsService.getPlayersIn(activeTournament.id);
     const playersOut = await playersTournamentsService.getPlayersOut(activeTournament.id);
 
-    console.log(`PLAYERS IN ${playersIn}`);
-    console.log(`PLAYERS OUT ${playersOut}`);
-    console.log('Rendering player-settings with players_in and players_out');
     res.render('player-settings', {
       css: 'player-settings.css',
       js: 'player-settings.js',
@@ -34,10 +31,9 @@ module.exports = {
   },
 
   registerPlayer: async (req, res) => {
-    const { playerId, rebuy, addon } = req.body;
-
+    const { playerId, rebuys, addon } = req.body;
     try {
-      const result = await playersTournamentsService.registerPlayer(playerId, rebuy, addon);
+      const result = await playersTournamentsService.registerPlayer(playerId, rebuys, addon);
       res.json(result);
     } catch (error) {
       console.error('Failed to register player:', error);
@@ -52,7 +48,6 @@ module.exports = {
       const activeTournament = await tournamentService.getActiveTournament();
       const playersIn = await playersTournamentsService.getPlayersIn(activeTournament.id);
       const playersOut = await playersTournamentsService.getPlayersOut(activeTournament.id);
-      console.log(`Players before render ${players}`)
       if (!players) {
         res.render('player-settings', {
           css: 'player-settings.css',
