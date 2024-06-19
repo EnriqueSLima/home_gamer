@@ -1,11 +1,69 @@
 // Get the form elements
 const searchPlayerInput = document.getElementById('search_player_name');
 const searchPlayerButton = document.getElementById('search_player_button');
-const rebuyInput = document.getElementById('rebuy');
-const addonCheckbox = document.getElementById('addon');
 const registerButtons = document.querySelectorAll('.register_player_button');
 const eliminateButtons = document.querySelectorAll('.eliminate_player_button');
 
+// Create the modal element
+const modal = document.createElement('div');
+modal.classList.add('modal');
+
+// Create the modal background
+const modalBackground = document.createElement('div');
+modalBackground.classList.add('modal-background');
+modal.appendChild(modalBackground);
+
+// Create the modal content
+const modalContent = document.createElement('div');
+modalContent.classList.add('modal-content');
+modal.appendChild(modalContent);
+
+// Add the modal content
+const rebuyLabel = document.createElement('label');
+rebuyLabel.textContent = 'Rebuy:';
+modalContent.appendChild(rebuyLabel);
+
+const rebuyInput = document.createElement('input');
+rebuyInput.type = 'number';
+rebuyInput.value = 0;
+modalContent.appendChild(rebuyInput);
+
+const addonLabel = document.createElement('label');
+addonLabel.textContent = 'Addon:';
+modalContent.appendChild(addonLabel);
+
+const addonCheckbox = document.createElement('input');
+addonCheckbox.type = 'checkbox';
+modalContent.appendChild(addonCheckbox);
+
+const registerButton = document.createElement('button');
+registerButton.textContent = 'Register';
+modalContent.appendChild(registerButton);
+
+// Add an event listener to the register button
+registerButton.addEventListener('click', async () => {
+  const playerId = modal.playerId;
+  const rebuyValue = modal.rebuyValue;
+  const addonValue = modal.addonValue;
+
+  try {
+    const response = await fetch('/register-player', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ playerId, rebuy: rebuyValue, addon: addonValue }),
+    });
+    const result = await response.json();
+    alert(result.message);
+    modal.remove(); // Remove the modal
+  } catch (error) {
+    console.error('Error:', error);
+  }
+});
+
+// Add an event listener to the modal background to close the modal when clicked
+modalBackground.addEventListener('click', () => {
+  modal.remove(); // Remove the modal
+});
 // Search player functionality
 searchPlayerButton.addEventListener('click', async () => {
   const playerName = searchPlayerInput.value.trim();
@@ -26,17 +84,11 @@ searchPlayerButton.addEventListener('click', async () => {
 registerButtons.forEach(button => {
   button.addEventListener('click', async (event) => {
     const playerId = event.target.getAttribute('data-player-id');
-    try {
-      const response = await fetch('/register-player', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ playerId }),
-      });
-      const result = await response.json();
-      alert(result.message);
-    } catch (error) {
-      console.error('Error:', error);
-    }
+    document.body.appendChild(modal); // Add the modal to the body
+    modal.style.display = 'block'; // Show the modal
+
+    // Set the playerId as a variable on the modal
+    modal.playerId = playerId;
   });
 });
 
