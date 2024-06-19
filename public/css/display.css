@@ -27,7 +27,7 @@
 
 #start_button {
   background-color: transparent;
-  border: 1px white solid;
+  border: 1px solid white;
   border-radius: 50%;
   padding: 12px 24px;
   margin-top: 10px;
@@ -36,7 +36,7 @@
 }
 
 #start_button i {
-  color: green;
+  color: #366164;
 }
 
 #count_display {
@@ -45,4 +45,24 @@
 
 .general_display {
   margin: 10px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  #main {
+    grid-template-columns: 1fr;
+  }
+
+  #round_number,
+  #current_level {
+    font-size: 8vw;
+  }
+
+  #clock {
+    font-size: 20vw;
+  }
+
+  #count_display {
+    text-align: center;
+  }
 }

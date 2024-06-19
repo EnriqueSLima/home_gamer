@@ -33,3 +33,42 @@
 #search-input {
   margin-right: 10px;
 }
+
+button {
+  background-color: #366164;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #2a4d52;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .grid-container {
+    grid-template-columns: 1fr;
+  }
+
+  .search-container {
+    flex-direction: column;
+  }
+
+  #search-form {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  #search-input {
+    margin-right: 0;
+    margin-bottom: 10px;
+  }
+}

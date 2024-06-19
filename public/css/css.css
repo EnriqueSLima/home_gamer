@@ -12,19 +12,34 @@ body {
   padding: 0;
 }
 
+/* Navigation Styles */
 nav {
   background-color: #333;
   overflow: hidden;
+}
+
+nav .container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  /* Adjust padding as needed */
 }
 
 nav ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
+  display: flex;
 }
 
 nav ul li {
-  float: left;
+  margin-left: 10px;
+  /* Adjust spacing between items */
+}
+
+nav ul li:first-child {
+  margin-left: 0;
 }
 
 nav ul li a {
@@ -39,9 +54,58 @@ nav ul li a:hover {
   background-color: #575757;
 }
 
-nav ul li a .logo {
+nav .logo {
   height: 40px;
   width: auto;
+}
+
+/* Responsive Navigation */
+@media (max-width: 768px) {
+  nav ul {
+    display: none;
+    /* Hide the navigation list by default */
+    position: absolute;
+    top: 60px;
+    /* Adjust based on your header height */
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    padding: 10px 0;
+    /* Adjust padding as needed */
+    flex-direction: column;
+  }
+
+  nav ul.active {
+    display: flex;
+    /* Show the navigation list when active */
+  }
+
+  nav ul li {
+    width: 100%;
+    text-align: center;
+    margin: 0;
+    /* Remove left margin for list items */
+  }
+
+  nav ul li a {
+    padding: 10px;
+    /* Adjust padding for compactness */
+  }
+
+  .menu-toggle {
+    display: block;
+    /* Display the menu toggle button */
+    position: absolute;
+    top: 20px;
+    /* Adjust position as needed */
+    right: 20px;
+    /* Adjust position as needed */
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 999;
+    /* Ensure it's above other content */
+  }
 }
 
 .header {
