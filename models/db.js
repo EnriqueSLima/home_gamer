@@ -29,4 +29,4 @@ Levels.associate(models);
 
 console.log(Players.associations);
 console.log(PlayersTournaments.associations);
-module.exports = sequelize;
+module.exports = { sequelize, models };

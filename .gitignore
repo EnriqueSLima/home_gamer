@@ -10,7 +10,7 @@ npm-debug.log*
 .env
 
 # Scripts
-scripts/
+scripts/createAdmin.js
 
 # Vim session files
 sessions/

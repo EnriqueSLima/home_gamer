@@ -1,7 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const authRoutes = require('./routes');
-const db = require('./models/db.js');
+const { sequelize } = require('./models/db'); // Import Sequelize instance (sequelize)
 const passport = require('passport');
 const { init: initAuth } = require('./auth');
 const session = require('express-session');
@@ -64,7 +64,7 @@ app.use(express.static('public'));
 app.use('/', authRoutes);
 
 // Sync database and then start the server
-db.sync({ force: false })
+sequelize.sync({ force: false })
   .then(() => {
     app.listen(PORT, () => console.log(`Home gamer app listening on port ${PORT}`));
   })
