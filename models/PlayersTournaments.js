@@ -47,6 +47,9 @@ class PlayersTournaments extends Model {
       hooks: {
         afterCreate: async (instance) => {
           await setPlayerTotal(instance);
+        },
+        afterUpdate: async (instance) => {
+          await setPlayerTotal(instance);
         }
       }
     });
