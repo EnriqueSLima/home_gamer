@@ -1,23 +1,25 @@
-const tournamentService = require('./tournamentsService')
-const Players = require('../models/Players');
 const PlayersTournaments = require('../models/PlayersTournaments');
-const Users = require('../models/Users');
+const { getActiveTournament } = require('../services/tournamentsService');
+const Players = require('../models/Players')
+const Users = require('../models/Users')
+const tournamentService = require('./tournamentsService')
 
-// Function to register a player to a tournament
 async function registerPlayer(playerId, rebuys, addon) {
-  const activeTournament = await tournamentService.getActiveTournament();
+  const activeTournament = await getActiveTournament();
   if (!activeTournament) {
     throw new Error('No active tournament found');
   }
 
-  await PlayersTournaments.create({
-    playerId: playerId,
+  const playerTournament = await PlayersTournaments.create({
+    playerId,
     tournamentId: activeTournament.id,
-    rebuys: rebuys,
-    addon: addon,
+    rebuys,
+    addon,
+    total: 0, // Initial total, will be set in the hook
+    player_status: 'in' // Initial status
   });
 
-  return { message: 'Player registered to tournament successfully' };
+  return playerTournament;
 }
 
 // Function to eliminate a player from a tournament

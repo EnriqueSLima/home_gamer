@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const Users = require('../models/Users');
+const { getActiveTournament } = require('../services/tournamentsService');
 
 class PlayersTournaments extends Model {
   static initModel(sequelize) {
@@ -42,9 +43,18 @@ class PlayersTournaments extends Model {
     }, {
       sequelize,
       modelName: 'PlayersTournaments',
-      tableName: 'PlayersTournaments'
+      tableName: 'PlayersTournaments',
+      hooks: {
+        afterCreate: async (instance) => {
+          await setPlayerTotal(instance);
+        },
+        afterUpdate: async (instance) => {
+          await setPlayerTotal(instance);
+        }
+      }
     });
   }
+
   static associate(models) {
     PlayersTournaments.belongsTo(models.Players, {
       foreignKey: 'playerId',
@@ -58,6 +68,26 @@ class PlayersTournaments extends Model {
     });
     PlayersTournaments.belongsTo(models.Tournaments, { foreignKey: 'tournamentId' });
   }
+}
+
+async function setPlayerTotal(instance) {
+  const { playerId, tournamentId } = instance;
+
+  const tournament = await getActiveTournament();
+  if (!tournament) {
+    throw new Error('Active tournament not found');
+  }
+
+  const playerTournament = await PlayersTournaments.findOne({
+    where: { playerId, tournamentId }
+  });
+
+  if (!playerTournament) {
+    throw new Error('PlayerTournament record not found');
+  }
+
+  playerTournament.total = playerTournament.rebuys * tournament.rebuy_money;
+  await playerTournament.save();
 }
 
 module.exports = PlayersTournaments;

@@ -33,7 +33,7 @@ module.exports = {
   registerPlayer: async (req, res) => {
     const { playerId, rebuys, addon } = req.body;
     try {
-      const result = await playersTournamentsService.registerPlayer(playerId, rebuys, addon);
+      await playersTournamentsService.registerPlayer(playerId, rebuys, addon);
       res.json({ success: true, message: 'Player registered successfully', redirectUrl: '/player-settings' });
     } catch (error) {
       console.error('Failed to register player:', error);
