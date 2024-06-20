@@ -47,9 +47,6 @@ class PlayersTournaments extends Model {
       hooks: {
         afterCreate: async (instance) => {
           await setPlayerTotal(instance);
-        },
-        afterUpdate: async (instance) => {
-          await setPlayerTotal(instance);
         }
       }
     });
@@ -86,7 +83,10 @@ async function setPlayerTotal(instance) {
     throw new Error('PlayerTournament record not found');
   }
 
-  playerTournament.total = playerTournament.rebuys * tournament.rebuy_money;
+  playerTournament.total = tournament.buyin_money + (playerTournament.rebuys * tournament.rebuy_money);
+  if (playerTournament.addon) {
+    playerTournament.total += tournament.addon_money;
+  }
   await playerTournament.save();
 }
 
