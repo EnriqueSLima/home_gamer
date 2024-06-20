@@ -77,7 +77,7 @@ function handleModalButtonClick(event, isRegister) {
     } catch (error) {
       console.error('Error:', error);
     }
-  }, { once: true }); // Ensure the event listener is only added once
+  });
 }
 
 registerButtons.forEach(button => {
