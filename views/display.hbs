@@ -5,8 +5,6 @@
         <div id="round_number"></div>
         <div>Players</div>
         <div id="player_count_display">{{playersInCount}}/{{playerCount}}</div>
-        <div>Average</div>
-        <div id="average">0</div>
     </div>
     <div id="center">
         <div id="clock"></div>
@@ -15,16 +13,16 @@
         <button id="start_button"><i class="fas fa-play"></i></button>
     </div>
     <div id="right">
-        <div id="time_elapsed">Time elapsed</div>
-        <div id="next_break">Next break</div>
         <div>Chip count</div>
         <div id="chip_count">0</div>
+<div>Average</div>
+        <div id="average">0</div>
     </div>
 </div>
 <div id="count_display">
-    <span class="general_display">Buy-in</span>
-    <span class="general_display">Rebuy</span>
-    <span class="general_display">Addon</span>
+<span class="buyin_count">Buy-in: {{playerCount}}</span> 
+<span class="rebuy_count">Rebuy: {{rebuyCount}}</span>
+    <span class="addon_count">Addon: {{addonCount}}</span>
 </div>
 <div id="main_footer">
     <div>Pot total</div>

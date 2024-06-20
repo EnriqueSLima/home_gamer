@@ -3,6 +3,7 @@ const { getActiveTournament } = require('../services/tournamentsService');
 const Players = require('../models/Players')
 const Users = require('../models/Users')
 const tournamentService = require('./tournamentsService')
+const Sequelize = require('sequelize');
 
 async function registerPlayer(playerId, rebuys, addon) {
   const activeTournament = await getActiveTournament();
@@ -128,6 +129,28 @@ async function getPlayersOut(tournamentId) {
   return playersOut;
 }
 
+async function getRebuyCount(tournamentId) {
+  const rebuyCount = await PlayersTournaments.count({
+    where: {
+      tournamentId,
+      rebuys: {
+        [Sequelize.Op.gt]: 0 // Only count entries where rebuys > 0
+      }
+    }
+  });
+  return rebuyCount;
+}
+
+async function getAddonCount(tournamentId) {
+  const addonCount = await PlayersTournaments.count({
+    where: {
+      tournamentId,
+      addon: true
+    }
+  });
+  return addonCount;
+}
+
 module.exports = {
   registerPlayer,
   eliminatePlayer,
@@ -135,5 +158,7 @@ module.exports = {
   getPlayerCount,
   getPlayersIn,
   getPlayersInCount,
-  getPlayersOut
+  getPlayersOut,
+  getRebuyCount,
+  getAddonCount
 };

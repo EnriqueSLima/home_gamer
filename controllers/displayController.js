@@ -16,13 +16,16 @@ module.exports = {
 
       const playerCount = await playersTournamentsService.getPlayerCount(activeTournament.id);
       const playersInCount = await playersTournamentsService.getPlayersInCount(activeTournament.id);
-
+      const rebuyCount = await playersTournamentsService.getRebuyCount(activeTournament.id);
+      const addonCount = await playersTournamentsService.getAddonCount(activeTournament.id);
       res.render('display', {
         css: 'display.css',
         js: 'display.js',
         user: req.user,
         playerCount,
-        playersInCount
+        playersInCount,
+        rebuyCount,
+        addonCount
       });
     } catch (error) {
       console.error('Failed to fetch player count:', error);
