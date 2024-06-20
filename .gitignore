@@ -17,3 +17,6 @@ sessions/
 
 # DB Files
 models/home-gamer-sqlite
+
+# Any file with an old extension
+**/*.old

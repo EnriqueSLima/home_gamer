@@ -75,6 +75,12 @@ async function updatePlayer(playerId, rebuy, addon) {
     throw error;
   }
 }
+async function getPlayerCount(tournamentId) {
+  const playerCount = await PlayersTournaments.count({
+    where: { tournamentId }
+  });
+  return playerCount;
+}
 
 async function getPlayersIn(tournamentId) {
   const playersIn = await PlayersTournaments.findAll({
@@ -94,6 +100,15 @@ async function getPlayersIn(tournamentId) {
   return playersIn;
 }
 
+async function getPlayersInCount(tournamentId) {
+  const playersInCount = await PlayersTournaments.count({
+    where: {
+      tournamentId,
+      player_status: 'in'
+    }
+  });
+  return playersInCount;
+}
 
 async function getPlayersOut(tournamentId) {
   const playersOut = await PlayersTournaments.findAll({
@@ -117,6 +132,8 @@ module.exports = {
   registerPlayer,
   eliminatePlayer,
   updatePlayer,
+  getPlayerCount,
   getPlayersIn,
+  getPlayersInCount,
   getPlayersOut
 };
