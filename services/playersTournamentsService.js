@@ -132,7 +132,8 @@ async function getPlayersOut(tournamentId) {
         model: Users,
         as: 'User'
       }]
-    }]
+    }],
+    attributes: ['Player.id', 'Player.User.name', 'position'] // Include position attribute
   });
   return playersOut;
 }
