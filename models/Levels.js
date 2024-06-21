@@ -6,31 +6,31 @@ class Levels extends Model {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       duration: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       small_blind: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       big_blind: {
         type: DataTypes.INTEGER,
-        allowNull: false
+        allowNull: false,
       },
       tournamentId: {
         type: DataTypes.INTEGER,
         references: {
           model: 'Tournaments',
-          key: 'id'
-        }
-      }
+          key: 'id',
+        },
+      },
     }, {
       sequelize,
       modelName: 'Levels',
-      tableName: 'Levels'
+      tableName: 'Levels',
     });
   }
 

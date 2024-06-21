@@ -1,5 +1,4 @@
 const { Model, DataTypes, Op } = require('sequelize');
-const PlayersTournaments = require('./PlayersTournaments');
 
 class Tournaments extends Model {
   static initModel(sequelize) {

@@ -48,6 +48,7 @@ async function eliminatePlayer(playerId, tournamentId) {
 
 async function updatePlayer(playerId, rebuy, addon) {
   try {
+    const { getActiveTournament } = require('../services/tournamentsService');
     const activeTournament = await getActiveTournament();
     if (!activeTournament) {
       throw new Error('No active tournament found');

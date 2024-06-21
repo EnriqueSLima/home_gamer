@@ -27,6 +27,4 @@ Tournaments.associate(models);
 PlayersTournaments.associate(models);
 Levels.associate(models);
 
-console.log(Players.associations);
-console.log(PlayersTournaments.associations);
 module.exports = { sequelize, models };
