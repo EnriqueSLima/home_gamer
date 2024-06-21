@@ -2,25 +2,26 @@ const { sequelize, models } = require('../models/db'); // Import Sequelize insta
 const Users = models.Users; // Import Users model
 const Tournaments = models.Tournaments; // Import Tournaments model
 const Levels = models.Levels; // Import Levels model
+const bcrypt = require('bcryptjs');
 
 // Sample data for users, tournaments, and levels
 const usersData = [
   {
     name: 'Admin User',
     email: 'admin@example.com',
-    password: 'admin123',
+    password: bcrypt.hashSync('admin123', 8),
     role: 'admin'
   },
   {
     name: 'Manager User',
     email: 'manager@example.com',
-    password: 'manager123',
+    password: bcrypt.hashSync('manager123', 8),
     role: 'manager'
   },
   {
     name: 'Client User',
     email: 'client@example.com',
-    password: 'client123',
+    password: bcrypt.hashSync('client123', 8),
     role: 'client'
   }
 ];
@@ -75,7 +76,7 @@ const tournamentsData = [
 
 const levelsData = [
   // Levels for Tournament 1
-  { duration: 30, small_blind: 10, big_blind: 20, tournamentId: 1 },
+  { duration: 1, small_blind: 10, big_blind: 20, tournamentId: 1 },
   { duration: 40, small_blind: 15, big_blind: 30, tournamentId: 1 },
   { duration: 50, small_blind: 20, big_blind: 40, tournamentId: 1 },
   { duration: 60, small_blind: 25, big_blind: 50, tournamentId: 1 },

@@ -131,12 +131,9 @@ async function getPlayersOut(tournamentId) {
 }
 
 async function getRebuyCount(tournamentId) {
-  const rebuyCount = await PlayersTournaments.count({
+  const rebuyCount = await PlayersTournaments.sum('rebuys', {
     where: {
-      tournamentId,
-      rebuys: {
-        [Sequelize.Op.gt]: 0 // Only count entries where rebuys > 0
-      }
+      tournamentId
     }
   });
   return rebuyCount;

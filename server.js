@@ -1,7 +1,7 @@
 const express = require('express');
 const exphbs = require('express-handlebars');
 const authRoutes = require('./routes');
-const { sequelize, models } = require('./models/db'); // Import models from db.js
+const { sequelize, models } = require('./models/db');
 const passport = require('passport');
 const { init: initAuth } = require('./auth');
 const session = require('express-session');
@@ -21,7 +21,7 @@ const hbs = exphbs.create({
   extname: 'hbs',
   runtimeOptions: {
     allowProtoPropertiesByDefault: true,
-    allowProtoMethodsByDefault: true,
+    allowProtoMethodsByDefault: true
   },
   helpers: {
     eq: (a, b) => a === b,
@@ -39,8 +39,8 @@ const hbs = exphbs.create({
     },
     log: function(context) {
       console.log(context);
-    },
-  },
+    }
+  }
 });
 
 // Set handlebars as the default view engine and default layout to main.hbs
@@ -57,7 +57,7 @@ initAuth();
 app.use(session({
   secret: 'secret',
   saveUninitialized: true,
-  resave: true,
+  resave: true
 }));
 
 app.use(passport.initialize());
@@ -75,7 +75,7 @@ wss.on('connection', async (ws) => {
   try {
     const activeTournament = await models.Tournaments.findOne({
       where: { is_active: true },
-      include: [{ model: models.Levels, as: 'Levels' }],
+      include: [{ model: models.Levels, as: 'Levels' }]
     });
 
     if (activeTournament) {
@@ -83,16 +83,50 @@ wss.on('connection', async (ws) => {
       const smallBlinds = activeTournament.Levels.map(level => level.small_blind);
       const bigBlinds = activeTournament.Levels.map(level => level.big_blind);
 
-      // Send tournament data to the client
+      // Send initial tournament data and clock state to the client
       ws.send(JSON.stringify({
         blindsDuration,
         smallBlinds,
         bigBlinds,
+        clockStatus: activeTournament.clockStatus,
+        clockValue: activeTournament.clockValue
       }));
     }
   } catch (error) {
     console.error('Error fetching active tournament:', error);
   }
+
+  ws.on('message', async (message) => {
+    const data = JSON.parse(message);
+    const { action } = data;
+
+    if (action === 'start') {
+      try {
+        await models.Tournaments.update({ clockStatus: true }, {
+          where: { is_active: true }
+        });
+      } catch (error) {
+        console.error('Error updating clock status:', error);
+      }
+    } else if (action === 'stop') {
+      try {
+        await models.Tournaments.update({ clockStatus: false }, {
+          where: { is_active: true }
+        });
+      } catch (error) {
+        console.error('Error updating clock status:', error);
+      }
+    } else if (action === 'update_value') {
+      const { newValue } = data;
+      try {
+        await models.Tournaments.update({ clockValue: newValue }, {
+          where: { is_active: true }
+        });
+      } catch (error) {
+        console.error('Error updating clock value:', error);
+      }
+    }
+  });
 
   ws.on('close', () => {
     console.log('Client disconnected');

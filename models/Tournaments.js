@@ -44,6 +44,14 @@ class Tournaments extends Model {
         type: DataTypes.BOOLEAN,
         defaultValue: true
       },
+      clockStatus: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false // Initially paused
+      },
+      clockValue: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0
+      }
     }, {
       sequelize,
       modelName: 'Tournaments',
