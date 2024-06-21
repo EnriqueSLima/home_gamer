@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 const Users = require('../models/Users');
-const { getActiveTournament } = require('../services/tournamentsService');
 
 class PlayersTournaments extends Model {
   static initModel(sequelize) {
@@ -47,9 +46,15 @@ class PlayersTournaments extends Model {
       hooks: {
         afterCreate: async (instance) => {
           await setPlayerTotal(instance);
+          const { updatePotTotal, updateChipCount } = require('../services/tournamentsService');
+          await updatePotTotal(instance.tournamentId); // Update pot total after create
+          await updateChipCount(instance.tournamentId); // Update chip count after create
         },
         afterUpdate: async (instance) => {
           await setPlayerTotal(instance);
+          const { updatePotTotal, updateChipCount } = require('../services/tournamentsService');
+          await updatePotTotal(instance.tournamentId); // Update pot total after update
+          await updateChipCount(instance.tournamentId); // Update chip count after update
         }
       }
     });
@@ -73,12 +78,14 @@ class PlayersTournaments extends Model {
 async function setPlayerTotal(instance) {
   const { playerId, tournamentId } = instance;
 
+  // Use dynamic import to avoid circular dependency
+  const { getActiveTournament } = await import('../services/tournamentsService.js');
   const tournament = await getActiveTournament();
   if (!tournament) {
     throw new Error('Active tournament not found');
   }
 
-  const playerTournament = await PlayersTournaments.findOne({
+  let playerTournament = await PlayersTournaments.findOne({
     where: { playerId, tournamentId }
   });
 
@@ -86,11 +93,16 @@ async function setPlayerTotal(instance) {
     throw new Error('PlayerTournament record not found');
   }
 
-  playerTournament.total = tournament.buyin_money + (playerTournament.rebuys * tournament.rebuy_money);
+  let newTotal = tournament.buyin_money + (playerTournament.rebuys * tournament.rebuy_money);
   if (playerTournament.addon) {
-    playerTournament.total += tournament.addon_money;
+    newTotal += tournament.addon_money;
   }
-  await playerTournament.save();
+
+  if (playerTournament.total !== newTotal) {
+    await playerTournament.update({
+      total: newTotal
+    });
+  }
 }
 
 module.exports = PlayersTournaments;

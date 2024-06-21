@@ -1,8 +1,7 @@
 const PlayersTournaments = require('../models/PlayersTournaments');
 const { getActiveTournament } = require('../services/tournamentsService');
-const Players = require('../models/Players')
-const Users = require('../models/Users')
-const tournamentService = require('./tournamentsService')
+const Players = require('../models/Players');
+const Users = require('../models/Users');
 const Sequelize = require('sequelize');
 
 async function registerPlayer(playerId, rebuys, addon) {
@@ -49,12 +48,12 @@ async function eliminatePlayer(playerId, tournamentId) {
 
 async function updatePlayer(playerId, rebuy, addon) {
   try {
-    const activeTournament = await tournamentService.getActiveTournament();
+    const activeTournament = await getActiveTournament();
     if (!activeTournament) {
       throw new Error('No active tournament found');
     }
 
-    const playerTournament = await PlayersTournaments.findOne({
+    let playerTournament = await PlayersTournaments.findOne({
       where: {
         playerId,
         tournamentId: activeTournament.id,
@@ -76,6 +75,7 @@ async function updatePlayer(playerId, rebuy, addon) {
     throw error;
   }
 }
+
 async function getPlayerCount(tournamentId) {
   const playerCount = await PlayersTournaments.count({
     where: { tournamentId }

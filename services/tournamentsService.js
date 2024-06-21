@@ -1,4 +1,5 @@
 const Tournaments = require('../models/Tournaments');
+const PlayersTournaments = require('../models/PlayersTournaments');
 const Levels = require('../models/Levels');
 const { Op } = require('sequelize');
 
@@ -107,10 +108,45 @@ async function setActiveTournament(tournament) {
   tournament.is_active = true;
 }
 
+async function updatePotTotal(tournamentId) {
+  const tournament = await Tournaments.findByPk(tournamentId);
+
+  if (!tournament) {
+    throw new Error('Tournament not found');
+  }
+
+  const totalPot = await PlayersTournaments.sum('total', {
+    where: {
+      tournamentId
+    }
+  });
+
+  tournament.pot_total = totalPot;
+  await tournament.save();
+}
+
+async function updateChipCount(tournamentId) {
+  const tournament = await Tournaments.findByPk(tournamentId);
+
+  if (!tournament) {
+    throw new Error('Tournament not found');
+  }
+
+  const playerCount = await PlayersTournaments.count({
+    where: {
+      tournamentId
+    }
+  });
+
+  tournament.chip_count = playerCount * tournament.buyin_chips;
+  await tournament.save();
+}
 module.exports = {
   createTournament,
   getTournamentById,
   updateTournament,
   deleteTournament,
-  getActiveTournament
+  getActiveTournament,
+  updatePotTotal,
+  updateChipCount
 };

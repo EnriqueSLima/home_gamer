@@ -1,4 +1,5 @@
 const { Model, DataTypes, Op } = require('sequelize');
+const PlayersTournaments = require('./PlayersTournaments');
 
 class Tournaments extends Model {
   static initModel(sequelize) {
@@ -32,9 +33,17 @@ class Tournaments extends Model {
         type: DataTypes.INTEGER,
         allowNull: false
       },
+      chip_count: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
+      pot_total: {
+        type: DataTypes.INTEGER,
+        allowNull: true
+      },
       is_active: {
         type: DataTypes.BOOLEAN,
-        defaultValue: false  // Set new tournaments as inactive by default
+        defaultValue: true
       },
     }, {
       sequelize,
@@ -45,6 +54,7 @@ class Tournaments extends Model {
       }
     });
   }
+
   static associate(models) {
     Tournaments.hasMany(models.Levels, { foreignKey: 'tournamentId', as: 'Levels' });
     Tournaments.belongsToMany(models.Players, {
