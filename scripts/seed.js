@@ -1,7 +1,9 @@
-const { sequelize, models } = require('../models/db'); // Import Sequelize instance and models
-const Users = models.Users; // Import Users model
-const Tournaments = models.Tournaments; // Import Tournaments model
-const Levels = models.Levels; // Import Levels model
+const { sequelize, models } = require('../models/db');
+const Users = models.Users;
+const Tournaments = models.Tournaments;
+const Levels = models.Levels;
+const Players = models.Players;
+const PlayersTournaments = models.PlayersTournaments;
 const bcrypt = require('bcryptjs');
 
 // Sample data for users, tournaments, and levels
@@ -111,19 +113,43 @@ const levelsData = [
   { duration: 75, small_blind: 30, big_blind: 60, tournamentId: 5 }
 ];
 
+const playersTournamentsData = [
+  { playerId: 1, tournamentId: 1 },
+  { playerId: 2, tournamentId: 1 },
+  { playerId: 3, tournamentId: 1 },
+  { playerId: 1, tournamentId: 2 },
+  { playerId: 2, tournamentId: 2 },
+  { playerId: 3, tournamentId: 3 },
+  { playerId: 1, tournamentId: 3 },
+  { playerId: 2, tournamentId: 4 },
+  { playerId: 3, tournamentId: 4 },
+  { playerId: 1, tournamentId: 5 },
+  { playerId: 2, tournamentId: 5 },
+  { playerId: 3, tournamentId: 5 }
+];
+
 // Function to seed the database
 async function seed() {
   try {
     await sequelize.sync({ force: false }); // Sync models and recreate tables (force: true for development purposes)
 
     // Seed users
-    await Users.bulkCreate(usersData, { individualHooks: true }); // Use individualHooks for afterCreate hook
+    const users = await Users.bulkCreate(usersData, { individualHooks: true }); // Use individualHooks for afterCreate hook
+
+    // Seed players
+    const players = await Promise.all(users.map(async (user) => {
+      const player = await Players.create({ userId: user.id });
+      return player;
+    }));
 
     // Seed tournaments
     await Tournaments.bulkCreate(tournamentsData);
 
     // Seed levels
     await Levels.bulkCreate(levelsData);
+
+    // Seed players tournaments
+    await PlayersTournaments.bulkCreate(playersTournamentsData);
 
     console.log('Seed data successfully inserted.');
   } catch (error) {
