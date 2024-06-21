@@ -36,7 +36,9 @@ const tournamentsData = [
     rebuy_chips: 500,
     addon_money: 25,
     addon_chips: 250,
-    is_active: true
+    is_active: true,
+    pot_total: 0,
+    chip_count: 0
   },
   {
     buyin_money: 200,
@@ -45,7 +47,9 @@ const tournamentsData = [
     rebuy_chips: 1000,
     addon_money: 50,
     addon_chips: 500,
-    is_active: false
+    is_active: false,
+    pot_total: 0,
+    chip_count: 0
   },
   {
     buyin_money: 300,
@@ -54,7 +58,9 @@ const tournamentsData = [
     rebuy_chips: 1500,
     addon_money: 75,
     addon_chips: 750,
-    is_active: true
+    is_active: true,
+    pot_total: 0,
+    chip_count: 0
   },
   {
     buyin_money: 400,
@@ -63,7 +69,9 @@ const tournamentsData = [
     rebuy_chips: 2000,
     addon_money: 100,
     addon_chips: 1000,
-    is_active: false
+    is_active: false,
+    pot_total: 0,
+    chip_count: 0
   },
   {
     buyin_money: 500,
@@ -72,7 +80,9 @@ const tournamentsData = [
     rebuy_chips: 2500,
     addon_money: 125,
     addon_chips: 1250,
-    is_active: true
+    is_active: true,
+    pot_total: 0,
+    chip_count: 0
   }
 ];
 
@@ -114,18 +124,21 @@ const levelsData = [
 ];
 
 const playersTournamentsData = [
-  { playerId: 1, tournamentId: 1 },
-  { playerId: 2, tournamentId: 1 },
-  { playerId: 3, tournamentId: 1 },
-  { playerId: 1, tournamentId: 2 },
-  { playerId: 2, tournamentId: 2 },
-  { playerId: 3, tournamentId: 3 },
-  { playerId: 1, tournamentId: 3 },
-  { playerId: 2, tournamentId: 4 },
-  { playerId: 3, tournamentId: 4 },
-  { playerId: 1, tournamentId: 5 },
-  { playerId: 2, tournamentId: 5 },
-  { playerId: 3, tournamentId: 5 }
+  { playerId: 1, tournamentId: 1, rebuys: 1, addon: true },
+  { playerId: 2, tournamentId: 1, rebuys: 1, addon: true },
+  { playerId: 3, tournamentId: 1, rebuys: 1, addon: true },
+  { playerId: 1, tournamentId: 2, rebuys: 1, addon: true },
+  { playerId: 2, tournamentId: 2, rebuys: 1, addon: true },
+  { playerId: 3, tournamentId: 2, rebuys: 1, addon: true },
+  { playerId: 1, tournamentId: 3, rebuys: 1, addon: true },
+  { playerId: 2, tournamentId: 3, rebuys: 1, addon: true },
+  { playerId: 3, tournamentId: 3, rebuys: 1, addon: true },
+  { playerId: 1, tournamentId: 4, rebuys: 1, addon: true },
+  { playerId: 2, tournamentId: 4, rebuys: 1, addon: true },
+  { playerId: 3, tournamentId: 4, rebuys: 1, addon: true },
+  { playerId: 1, tournamentId: 5, rebuys: 1, addon: true },
+  { playerId: 2, tournamentId: 5, rebuys: 1, addon: true },
+  { playerId: 3, tournamentId: 5, rebuys: 1, addon: true },
 ];
 
 // Function to seed the database

@@ -60,6 +60,14 @@ class PlayersTournaments extends Model {
           const { updatePotTotal, updateChipCount } = require('../services/tournamentsService');
           await updatePotTotal(instance.tournamentId); // Update pot total after update
           await updateChipCount(instance.tournamentId); // Update chip count after update
+        },
+        afterBulkCreate: async (instances) => {
+          for (const instance of instances) {
+            await setPlayerTotal(instance);
+            const { updatePotTotal, updateChipCount } = require('../services/tournamentsService');
+            await updatePotTotal(instance.tournamentId); // Update pot total after bulk create
+            await updateChipCount(instance.tournamentId); // Update chip count after bulk create
+          }
         }
       }
     });
