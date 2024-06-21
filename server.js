@@ -105,6 +105,13 @@ wss.on('connection', async (ws) => {
         await models.Tournaments.update({ clockStatus: true }, {
           where: { is_active: true }
         });
+
+        // Broadcast the clock start action to all connected clients
+        wss.clients.forEach(client => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ action: 'start' }));
+          }
+        });
       } catch (error) {
         console.error('Error updating clock status:', error);
       }
@@ -112,6 +119,13 @@ wss.on('connection', async (ws) => {
       try {
         await models.Tournaments.update({ clockStatus: false }, {
           where: { is_active: true }
+        });
+
+        // Broadcast the clock stop action to all connected clients
+        wss.clients.forEach(client => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ action: 'stop' }));
+          }
         });
       } catch (error) {
         console.error('Error updating clock status:', error);
@@ -121,6 +135,13 @@ wss.on('connection', async (ws) => {
       try {
         await models.Tournaments.update({ clockValue: newValue }, {
           where: { is_active: true }
+        });
+
+        // Broadcast the clock value update to all connected clients
+        wss.clients.forEach(client => {
+          if (client !== ws && client.readyState === WebSocket.OPEN) {
+            client.send(JSON.stringify({ action: 'update_value', newValue }));
+          }
         });
       } catch (error) {
         console.error('Error updating clock value:', error);

@@ -35,19 +35,64 @@ function initializeClock(blinds, sBlinds, bBlinds) {
   }
 }
 
-// WebSocket event handler for receiving tournament data
+// WebSocket event handler for receiving clock updates
+ws.onopen = () => {
+  console.log('WebSocket connection established');
+};
+
 ws.onmessage = (event) => {
   const data = JSON.parse(event.data);
-  initializeClock(data.blindsDuration, data.smallBlinds, data.bigBlinds);
+
+  if (data.action === 'start') {
+    handleClockStart();
+  } else if (data.action === 'stop') {
+    handleClockStop();
+  } else if (data.blindsDuration && data.smallBlinds && data.bigBlinds) {
+    initializeClock(data.blindsDuration, data.smallBlinds, data.bigBlinds);
+  }
 };
+
+ws.onerror = (error) => {
+  console.error('WebSocket error:', error);
+};
+
+ws.onclose = () => {
+  console.log('WebSocket connection closed');
+};
+
+// Function to handle clock start action
+function handleClockStart() {
+  clearInterval(interval);
+  interval = setInterval(update_timer, 1000);
+  start_button.innerHTML = "Stop";
+  clock_status = true;
+}
+
+// Function to handle clock stop action
+function handleClockStop() {
+  clearInterval(interval);
+  start_button.innerHTML = "Start";
+  clock_status = false;
+}
+
+// Function to send messages through WebSocket when ready
+function sendMessage(message) {
+  if (ws.readyState === WebSocket.OPEN) {
+    ws.send(JSON.stringify(message));
+  } else {
+    console.error('WebSocket is not open. Unable to send message:', message);
+  }
+}
 
 // Function to start or stop the clock
 function start_stop() {
   if (!clock_status) {
+    sendMessage({ action: 'start' });
     interval = setInterval(update_timer, 1000);
     start_button.innerHTML = "Stop";
     clock_status = true;
   } else {
+    sendMessage({ action: 'stop' });
     clearInterval(interval);
     start_button.innerHTML = "Start";
     clock_status = false;
@@ -83,43 +128,3 @@ function update_blinds() {
 
 // Event listener for start/stop button click
 start_button.onclick = start_stop;
-
-// Function to save the current clock state and status
-function saveClockState() {
-  localStorage.setItem('tournament_clock', JSON.stringify({
-    blindsDuration,
-    small,
-    big,
-    rounds_counter,
-    clock_status
-  }));
-}
-
-// Function to load the saved clock state and status
-function loadClockState() {
-  const savedState = JSON.parse(localStorage.getItem('tournament_clock'));
-  if (savedState) {
-    blindsDuration = savedState.blindsDuration;
-    small = savedState.small;
-    big = savedState.big;
-    rounds_counter = savedState.rounds_counter;
-    clock_status = savedState.clock_status;
-
-    // Initialize the clock with the loaded state
-    initializeClock(blindsDuration, small, big);
-
-    // Start or stop the clock based on the loaded status
-    if (clock_status) {
-      interval = setInterval(update_timer, 1000);
-      start_button.innerHTML = "Stop";
-    } else {
-      start_button.innerHTML = "Start";
-    }
-  }
-}
-
-// Load clock state when the page loads
-document.addEventListener('DOMContentLoaded', loadClockState);
-
-// Save clock state when navigating away from the page
-window.addEventListener('beforeunload', saveClockState);
