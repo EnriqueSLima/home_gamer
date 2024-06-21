@@ -21,6 +21,8 @@ module.exports = {
       const potTotal = activeTournament.pot_total;
       const chipCount = activeTournament.chip_count;
       const average = chipCount / playerCount;
+
+      console.log(`PLAYERS IN COUNTTTTTTTTTTTT: ${playersInCount}`);
       res.render('display', {
         css: 'display.css',
         js: 'display.js',

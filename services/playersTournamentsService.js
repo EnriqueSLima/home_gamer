@@ -27,15 +27,21 @@ async function eliminatePlayer(playerId, tournamentId) {
   try {
     const playerTournament = await PlayersTournaments.findOne({
       where: {
+        tournamentId,
         playerId,
-        tournamentId
-      }
+      },
+      include: [{
+        model: Players,
+        as: 'Player'
+      }]
     });
 
     if (!playerTournament) {
       throw new Error('Player registration not found in tournament');
     }
 
+    const position = await updatePlayerPosition(playerId, tournamentId);
+    playerTournament.position = position; // Set the position to the returned value
     playerTournament.player_status = 'out';
     await playerTournament.save();
 
@@ -109,6 +115,7 @@ async function getPlayersInCount(tournamentId) {
       player_status: 'in'
     }
   });
+  console.log(`PLAYERS IN COUNTTTTTTTTTTTT: ${playersInCount}`);
   return playersInCount;
 }
 
@@ -148,6 +155,39 @@ async function getAddonCount(tournamentId) {
   });
   return addonCount;
 }
+
+async function updatePlayerPosition(playerId, tournamentId) {
+  try {
+    const playersInCount = await getPlayersInCount(tournamentId);
+    const positionAsNumber = Number(playersInCount); // Convert to number
+
+    const player = await PlayersTournaments.findOne({
+      where: {
+        playerId,
+        tournamentId,
+      }
+    });
+
+    if (!player) {
+      throw new Error('Player registration not found in tournament');
+    }
+
+    player.position = positionAsNumber; // Ensure player.position is a number
+    await player.save();
+
+    console.log(`PLAYER POSITION: ${player.position}`); // Log the updated position
+
+    return positionAsNumber; // Return the actual position value
+  } catch (error) {
+    console.error('Error updating player position:', error);
+    throw error;
+  }
+}
+
+//async function updatePlayerPosition(tournamentId) {
+//  const playersInCount = await getPlayersInCount(tournamentId);
+//  return playersInCount; // Return current count as position (starting from total count)
+//}
 
 module.exports = {
   registerPlayer,

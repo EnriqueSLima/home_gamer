@@ -1,5 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 const Users = require('../models/Users');
+const Tournaments = require('../models/Tournaments');
 
 class PlayersTournaments extends Model {
   static initModel(sequelize) {
@@ -38,6 +39,10 @@ class PlayersTournaments extends Model {
       player_status: {
         type: DataTypes.ENUM('in', 'out'),
         defaultValue: 'in'
+      },
+      position: {
+        type: DataTypes.INTEGER,
+        allowNull: true
       }
     }, {
       sequelize,
