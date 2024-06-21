@@ -18,6 +18,8 @@ module.exports = {
       const playersInCount = await playersTournamentsService.getPlayersInCount(activeTournament.id);
       const rebuyCount = await playersTournamentsService.getRebuyCount(activeTournament.id);
       const addonCount = await playersTournamentsService.getAddonCount(activeTournament.id);
+      const potTotal = activeTournament.pot_total;
+      const chipCount = activeTournament.chip_count;
       res.render('display', {
         css: 'display.css',
         js: 'display.js',
@@ -25,7 +27,9 @@ module.exports = {
         playerCount,
         playersInCount,
         rebuyCount,
-        addonCount
+        addonCount,
+        potTotal,
+        chipCount
       });
     } catch (error) {
       console.error('Failed to fetch player count:', error);

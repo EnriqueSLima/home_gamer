@@ -1,10 +1,10 @@
 const PlayersTournaments = require('../models/PlayersTournaments');
-const { getActiveTournament } = require('../services/tournamentsService');
 const Players = require('../models/Players');
 const Users = require('../models/Users');
 const Sequelize = require('sequelize');
 
 async function registerPlayer(playerId, rebuys, addon) {
+  const { getActiveTournament } = require('../services/tournamentsService');
   const activeTournament = await getActiveTournament();
   if (!activeTournament) {
     throw new Error('No active tournament found');

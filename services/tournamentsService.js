@@ -2,6 +2,7 @@ const Tournaments = require('../models/Tournaments');
 const PlayersTournaments = require('../models/PlayersTournaments');
 const Levels = require('../models/Levels');
 const { Op } = require('sequelize');
+const playersTournamentsService = require('./playersTournamentsService');
 
 // Function to create a new tournament
 async function createTournament(data) {
@@ -137,8 +138,10 @@ async function updateChipCount(tournamentId) {
       tournamentId
     }
   });
+  const rebuyCount = await playersTournamentsService.getRebuyCount(tournamentId)
+  const addonCount = await playersTournamentsService.getAddonCount(tournamentId)
 
-  tournament.chip_count = playerCount * tournament.buyin_chips;
+  tournament.chip_count = (playerCount * tournament.buyin_chips) + (rebuyCount * tournament.rebuy_chips) + (addonCount * tournament.addon_chips);
   await tournament.save();
 }
 module.exports = {
