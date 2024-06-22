@@ -1,3 +1,11 @@
+h2 {
+  color: #53bbad;
+  margin-top: 10px;
+  margin-bottom: 15px;
+  text-align: center;
+  font-size: xx-large;
+}
+
 .grid-container {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
@@ -84,19 +92,22 @@ form select {
 }
 
 button {
-  background-color: #007bff;
+  background-color: #366164;
   /* Blue button background color */
   color: white;
   padding: 10px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  max-height: 36px;
+  box-shadow: 0 0 10px rgb(11, 13, 13);
 }
 
 button:hover {
-  background-color: #0056b3;
+  background-color: #152325;
   /* Darker blue button color on hover */
+  box-shadow: 0 0 10px rgb(76, 92, 90);
 }
 
 .hidden {

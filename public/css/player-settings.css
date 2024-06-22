@@ -7,6 +7,15 @@
   border: 1px solid #4b757b;
   /* Dark green border color */
   border-radius: 5px;
+  color: #53bbad;
+  width: 400px;
+}
+
+#search_form {
+  margin-left: 20px;
+  margin-right: 20px;
+  padding-top: 20px;
+  margin-top: 20px;
 }
 
 #players_in ul,
@@ -14,6 +23,18 @@
 #search_results ul {
   list-style-type: none;
   padding: 0;
+  color: #e0e0e0;
+}
+
+#add_player_menu {
+  box-sizing: content-box;
+  align-items: center;
+  margin-left: 10px;
+}
+
+#player_menu_content {
+  text-align: center;
+  color: #53bbad;
 }
 
 #players_in ul li,
@@ -31,34 +52,46 @@
   align-items: center;
 }
 
-.eliminate_player_button {
-  background-color: #d9534f;
-  /* Red button background color */
-  color: white;
-  border: none;
-  border-radius: 5px;
+
+.update_player_button,
+.eliminate_player_button,
+.register_player_button {
+  min-width: 80px;
+  /* Ensure uniform button size */
+  text-align: center;
   padding: 5px 10px;
   cursor: pointer;
+  border-radius: 5px;
+  border: 1px solid #4b757b;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  align-content: flex-end;
+}
+
+.update_player_button {
+  background-color: #366164;
+}
+
+.update_player_button:hover {
+  background-color: #152325;
+  box-shadow: 0 0 10px rgb(76, 92, 90);
+}
+
+.eliminate_player_button {
+  background-color: #d9534f;
 }
 
 .eliminate_player_button:hover {
   background-color: #c9302c;
-  /* Darker red button color on hover */
+  box-shadow: 0 0 10px rgb(76, 92, 90);
 }
 
 .register_player_button {
-  background-color: #007bff;
-  /* Blue button background color */
-  color: white;
-  border: none;
-  border-radius: 5px;
-  padding: 5px 10px;
-  cursor: pointer;
+  background-color: #366164;
 }
 
 .register_player_button:hover {
-  background-color: #0056b3;
-  /* Darker blue button color on hover */
+  background-color: #185914;
+  box-shadow: 0 0 10px rgb(76, 92, 90);
 }
 
 #player_structure_menu {
@@ -72,18 +105,38 @@
   margin-top: 40px;
 }
 
-#search_player_name,
-#search_player_button {
+#search_player_name {
   width: 100%;
   padding: 10px;
   margin: 10px 0;
   border: 1px solid #4b757b;
   /* Dark green border color */
   border-radius: 5px;
+  font-size: medium;
+  color: #53bbad;
+}
+
+#search_player_button {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0;
+  background-color: #366164;
+  /* Mexer aqui no html 0000000000000000000000*/
+  border: 1px solid #4b757b;
+  /* Dark green border color */
+  border-radius: 5px;
+  font-size: medium;
+  box-shadow: 0 0 10px rgb(11, 13, 13);
+}
+
+#search_player_button:hover {
+  background-color: #152325;
+  box-shadow: 0 0 10px rgb(76, 92, 90);
 }
 
 #search_results {
   margin-top: 20px;
+  box-shadow: #152325;
 }
 
 /* Responsive Design */
@@ -183,7 +236,9 @@ form {
   margin: 0 auto;
   padding: 20px;
   background-color: #2a3e41;
+  /* Dark green background color */
   border: 1px solid #4b757b;
+  /* Dark green border color */
   border-radius: 5px;
 }
 
@@ -209,7 +264,7 @@ form input[type="password"] {
 }
 
 form button[type="submit"] {
-  background-color: #007bff;
+  background-color: #366164;
   /* Blue button background color */
   color: white;
   padding: 10px 20px;
@@ -219,6 +274,7 @@ form button[type="submit"] {
 }
 
 form button[type="submit"]:hover {
-  background-color: #0056b3;
+  background-color: #152325;
   /* Darker blue button color on hover */
+  box-shadow: 0 0 10px rgb(76, 92, 90);
 }

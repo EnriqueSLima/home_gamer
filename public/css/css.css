@@ -33,11 +33,14 @@ nav ul {
   margin: 0;
   padding: 0;
   display: flex;
+  align-items: center;
+  min-height: 100px;
 }
 
 nav ul li {
-  margin-left: 10px;
+  margin-left: 0px;
   /* Adjust spacing between items */
+  border-radius: 5px;
 }
 
 nav ul li:first-child {

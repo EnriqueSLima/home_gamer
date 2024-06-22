@@ -80,9 +80,29 @@ button[type="submit"] {
   /* Button background color matching login */
   color: #fff;
   cursor: pointer;
+  font-size: medium;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgb(11, 13, 13);
 }
 
 button[type="submit"]:hover {
-  background-color: #2a4d52;
+  background-color: #152325;
   /* Hover background color matching login */
+  box-shadow: 0 0 10px rgb(76, 92, 90);
+}
+
+h2 {
+  margin-bottom: 5px;
+}
+
+p {
+  margin-top: 5px;
+}
+
+a {
+  color: #fff;
+}
+
+a:hover {
+  color: #53bbad;
 }

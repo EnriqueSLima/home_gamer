@@ -9,6 +9,7 @@
   border: 1px solid #ccc;
   /* Match login border color */
   border-radius: 5px;
+  font-size: 150%;
 }
 
 #center {
@@ -33,9 +34,9 @@
 }
 
 #start_button {
-  background-color: #366164;
+  background-color: #399387;
   /* Match login button color */
-  border: 1px solid #366164;
+  border: 1px solid #286855;
   /* Match login button color */
   border-radius: 50%;
   padding: 12px 24px;
@@ -43,6 +44,35 @@
   cursor: pointer;
   font-size: 24px;
   color: white;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgba(5, 5, 5, 2);
+  /* Sombra no hover */
+}
+
+/* Efeito de hover */
+#start_button:hover {
+  background-color: #185914;
+  /* Cor de fundo mais escura no hover */
+  border-color: #2a4d4e;
+  /* Cor da borda combinando no hover */
+  box-shadow: 0 0 10px rgba(189, 186, 186, 0.2);
+  /* Sombra no hover */
+}
+
+/* Estilo para o modo stop */
+#start_button.stop-mode {
+  background-color: #a83232;
+  /* Cor de fundo vermelha */
+  border-color: #a83232;
+  /* Cor da borda vermelha */
+}
+
+/* Efeito de hover no modo stop */
+#start_button.stop-mode:hover {
+  background-color: #921d1d;
+  /* Cor de fundo mais escura no hover */
+  border-color: #921d1d;
+  /* Cor da borda no hover */
 }
 
 #start_button i {
@@ -51,12 +81,24 @@
 
 #count_display {
   text-align: right;
+  margin-right: 20px;
+  margin-top: 5px;
+  font-size: 150%;
 }
 
 .general_display {
   margin: 10px;
   color: #53bbad;
   /* Match login text color */
+}
+
+/*=================== doglas */
+#main_footer {
+  margin-left: 20px;
+  color: #53bbad;
+  font-size: medium;
+  margin-top: -20px;
+  font-size: 150%;
 }
 
 /* Responsive Design */
@@ -77,4 +119,16 @@
   #count_display {
     text-align: center;
   }
+}
+
+.buyin_count {
+  color: #53bbad;
+}
+
+.rebuy_count {
+  color: #53bbad;
+}
+
+.addon_count {
+  color: #53bbad;
 }

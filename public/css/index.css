@@ -46,10 +46,18 @@
 .button {
   display: inline-block;
   padding: 10px 20px;
-  background-color: #53bbad;
+  background-color: #366164;
+  border: #fff;
   color: #ffffff;
   text-decoration: none;
   font-size: 1vw;
   border-radius: 5px;
   margin: 0 10px;
+  margin-top: 10px;
+}
+
+.button:hover {
+  background-color: #152325;
+  border-color: #fff;
+  box-shadow: 0 0 10px rgb(76, 92, 90);
 }

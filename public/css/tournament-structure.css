@@ -1,16 +1,18 @@
 .form-container {
   padding: 20px;
-  background-color: rgb(27, 30, 31);
-  border: 1px solid #ccc;
+  background-color: #2a3e41;
+  border: 1px solid #4b757b;
   border-radius: 10px;
-  border-color: rgb(58, 62, 65);
+  border-color: #4b757b;
   max-width: 800px;
   margin: 0 auto;
-  color: #d8d4cf;
+  color: #53bbad;
 }
 
 #structure_menu {
   background-color: #131516;
+  padding-top: 20px;
+  position: relative;
 }
 
 table {
@@ -21,10 +23,10 @@ table {
 
 table th,
 table td {
-  border: 1px solid #ccc;
+  border: 1px solid #4b757b;
   padding: 10px;
   text-align: center;
-  border-color: rgb(62, 68, 70);
+  border-color: #4b757b;
 }
 
 table th {
@@ -32,7 +34,7 @@ table th {
 }
 
 table td {
-  background-color: #131516;
+  background-color: #131615;
 }
 
 .structure-section {
@@ -40,7 +42,7 @@ table td {
 }
 
 input[type=number] {
-  background-color: rgb(15, 17, 17);
+  background-color: #152325;
   border-color: rgb(62, 68, 70);
   color: #d8d4cf;
 }
@@ -48,25 +50,56 @@ input[type=number] {
 .button-container {
   display: flex;
   justify-content: center;
-  gap: 10px;
+  gap: 20px;
 }
 
 .btn {
   background-color: #366164;
   color: white;
   padding: 10px 20px;
-  border: none;
+  border: 1px solid #4b757b;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  box-shadow: 0 0 10px rgb(11, 13, 13);
 }
 
 .btn:hover {
-  background-color: #2a4d52;
+  background-color: #152325;
+  box-shadow: 0 0 10px rgb(76, 92, 90);
 }
 
 .hidden {
   display: none;
+}
+
+#add_level {
+  background-color: #366164;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid #4b757b;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+}
+
+#add_level:hover {
+  background-color: #185914;
+}
+
+#delete_tournament {
+  background-color: #d9534f;
+  color: white;
+  padding: 10px 20px;
+  border: 1px solid #4b757b;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s, box-shadow 0.3s;
+  margin-left: 45%;
+}
+
+#delete_tournament:hover {
+  background-color: #c9302c;
 }
 
 /* Responsive Design */
@@ -83,4 +116,13 @@ input[type=number] {
   .button-container {
     flex-direction: column;
   }
+}
+
+#tournament_buttons {
+  margin-top: 20px;
+  padding-bottom: 105px;
+}
+
+#create_tournament:hover {
+  background-color: #185914;
 }
